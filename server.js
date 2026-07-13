@@ -9,13 +9,28 @@ const multer = require('multer');
 const app = express();
 const PORT = process.env.PORT || 3000;
 
+// ============ ALLOW ANY HOST (FIX FOR RENDER) ============
+app.set('trust proxy', true);
+
 // ============ MIDDLEWARE ============
 app.use(express.json({ limit: '50mb' }));
 app.use(express.static('.'));
+
+// ============ CORS FIX FOR RENDER ============
+app.use((req, res, next) => {
+    res.header('Access-Control-Allow-Origin', '*');
+    res.header('Access-Control-Allow-Headers', 'Origin, X-Requested-With, Content-Type, Accept, Authorization');
+    res.header('Access-Control-Allow-Methods', 'GET, POST, PUT, DELETE, OPTIONS');
+    if (req.method === 'OPTIONS') {
+        return res.sendStatus(200);
+    }
+    next();
+});
+
 app.use('/uploads', express.static('uploads'));
 
 // ============ DOMAIN CONFIGURATION ============
-const BASE_URL = process.env.BASE_URL || 'https://www.talktomequestville.com';
+const BASE_URL = process.env.BASE_URL || 'https://talktome.onrender.com';
 console.log('🌐 Site URL:', BASE_URL);
 
 // ============ PAYONEER CONFIGURATION ============
@@ -24,7 +39,7 @@ const PAYONEER_API_SECRET = process.env.PAYONEER_API_SECRET;
 console.log('💳 Payoneer:', PAYONEER_API_KEY ? '✅ Connected' : '❌ Not configured');
 
 // ============ FILE UPLOAD ============
-const uploadDirs = ['uploads/cvs', 'uploads/id_photos', 'uploads/certificates', 'uploads/profile_photos'];
+const uploadDirs = ['uploads/cvs', 'uploads/id_photos', 'uploads/certificates', 'uploads/profile_photos', 'uploads/ndas', 'uploads/agreements'];
 uploadDirs.forEach(dir => {
     const fullPath = path.join(__dirname, dir);
     if (!fs.existsSync(fullPath)) fs.mkdirSync(fullPath, { recursive: true });
@@ -193,7 +208,6 @@ app.post('/api/create-booking', async (req, res) => {
         console.log('📝 Session created:', sessionId);
         console.log('💰 Amount USD: $' + amountUSD);
 
-        // Check if Payoneer is configured
         if (!PAYONEER_API_KEY) {
             console.log('⚠️ Payoneer not configured, falling back to test mode');
             sessions[sessionId].status = 'booked';
@@ -210,7 +224,6 @@ app.post('/api/create-booking', async (req, res) => {
             });
         }
 
-        // Initialize Payoneer payment
         const payoneerResponse = await axios.post('https://api.payoneer.com/v4/programs/payments', {
             amount: amountUSD,
             currency: 'USD',
@@ -248,7 +261,6 @@ app.post('/api/create-booking', async (req, res) => {
     } catch (error) {
         console.error('❌ Booking error:', error.response?.data || error.message);
         
-        // Fallback to test mode
         const fallbackSessionId = 'session_' + crypto.randomBytes(8).toString('hex');
         const fallbackToken = crypto.randomBytes(16).toString('hex');
         
@@ -936,7 +948,7 @@ app.get('/api/status', (req, res) => {
 });
 
 // ============ START SERVER ============
-app.listen(PORT, '0.0.0.0', () => {
+app.listen(PORT, () => {
     console.log('');
     console.log('🚀 Talk to Me Server Running');
     console.log('📍 http://localhost:' + PORT);

@@ -104,6 +104,7 @@ async function notifyNewBooking(session) {
             <p><strong>Price:</strong> $${session.price / 100}</p>
             <p><strong>Scheduled:</strong> ${new Date(session.scheduledAt).toLocaleString()}</p>
             <p><strong>Note:</strong> ${session.note || 'None'}</p>
+            <p><strong>Status:</strong> ${session.status}</p>
             <hr>
             <a href="${BASE_URL}/admin.html" style="background: #2D6A4F; color: white; padding: 10px 20px; border-radius: 50px; text-decoration: none;">View in Admin</a>
         </div>
@@ -248,6 +249,7 @@ const listenerApplications = [];
 const membershipPayments = {};
 const chatSessions = {};
 const gifts = {};
+const testimonials = [];
 
 // ============ PRICING ============
 const TIERS = {
@@ -294,6 +296,128 @@ function generateListenerNickname() {
 function generateClientNickname() {
     return `Guest ${CLIENT_ADJECTIVES[Math.floor(Math.random() * CLIENT_ADJECTIVES.length)]} ${CLIENT_NOUNS[Math.floor(Math.random() * CLIENT_NOUNS.length)]}`;
 }
+
+// ============ TESTIMONIAL SYSTEM ============
+
+app.post('/api/testimonial/submit', async (req, res) => {
+    try {
+        const { firstName, age, location, issue, quote, sessions, email, anonymous } = req.body;
+
+        if (!firstName || !age || !location || !issue || !quote) {
+            return res.status(400).json({ error: 'Missing required fields' });
+        }
+
+        const testimonial = {
+            id: 'test_' + Date.now() + '_' + crypto.randomBytes(4).toString('hex'),
+            firstName: anonymous ? null : firstName,
+            age,
+            location,
+            issue,
+            quote,
+            sessions: sessions || '1-3',
+            email: email || null,
+            anonymous: anonymous || false,
+            status: 'pending_review',
+            createdAt: Date.now(),
+            approvedAt: null,
+            displayName: anonymous ? 'Anonymous' : firstName
+        };
+
+        testimonials.push(testimonial);
+
+        const discountCode = 'TALK' + Math.random().toString(36).substring(2, 8).toUpperCase();
+
+        const subject = `📝 New Testimonial - ${firstName}`;
+        const html = `
+            <div style="font-family: system-ui; max-width: 600px; padding: 20px;">
+                <h2 style="color: #2D6A4F;">📝 New Testimonial Submitted!</h2>
+                <p><strong>Name:</strong> ${firstName} (${anonymous ? 'Anonymous' : 'Public'})</p>
+                <p><strong>Age:</strong> ${age}</p>
+                <p><strong>Location:</strong> ${location}</p>
+                <p><strong>Issue:</strong> ${issue}</p>
+                <p><strong>Sessions:</strong> ${sessions}</p>
+                <p><strong>Story:</strong></p>
+                <div style="background: #f8f9fe; padding: 15px; border-radius: 8px; margin: 10px 0;">
+                    ${quote}
+                </div>
+                ${email ? `<p><strong>Email:</strong> ${email}</p>` : ''}
+                <p><strong>Discount Code:</strong> ${discountCode}</p>
+                <hr>
+                <a href="${BASE_URL}/admin.html" style="background: #2D6A4F; color: white; padding: 10px 20px; border-radius: 50px; text-decoration: none;">Review in Admin</a>
+            </div>
+        `;
+
+        await sendEmail(ADMIN_EMAIL, subject, html);
+
+        if (email) {
+            const userHtml = `
+                <div style="font-family: system-ui; max-width: 600px; padding: 20px;">
+                    <h2 style="color: #2D6A4F;">🎁 Thank You for Sharing!</h2>
+                    <p>Dear ${firstName},</p>
+                    <p>Thank you for sharing your story on Talk to Me. Your courage helps others heal.</p>
+                    <div style="background: #f0fdf4; padding: 20px; border-radius: 12px; margin: 20px 0; border: 2px dashed #2D6A4F; text-align: center;">
+                        <p style="font-size: 14px; color: #6a7a6a;">Your Discount Code:</p>
+                        <p style="font-size: 28px; font-weight: 700; color: #2D6A4F; letter-spacing: 2px;">${discountCode}</p>
+                    </div>
+                    <p style="font-size: 14px; color: #6a7a6a;">Use this code at checkout for 10% off your next session.</p>
+                    <a href="${BASE_URL}/book.html" style="background: #2D6A4F; color: white; padding: 10px 20px; border-radius: 50px; text-decoration: none; display: inline-block;">Book Now</a>
+                </div>
+            `;
+            await sendEmail(email, '🎁 Thank You for Sharing Your Story!', userHtml);
+        }
+
+        res.json({
+            success: true,
+            message: 'Thank you for sharing your story!',
+            discountCode: discountCode
+        });
+
+    } catch (error) {
+        console.error('Testimonial error:', error);
+        res.status(500).json({ error: 'Failed to submit testimonial' });
+    }
+});
+
+app.get('/api/admin/testimonials', verifyAdmin, (req, res) => {
+    res.json(testimonials);
+});
+
+app.post('/api/admin/approve-testimonial', verifyAdmin, (req, res) => {
+    const { testimonialId } = req.body;
+    const testimonial = testimonials.find(t => t.id === testimonialId);
+    if (testimonial) {
+        testimonial.status = 'approved';
+        testimonial.approvedAt = Date.now();
+        res.json({ success: true, message: 'Testimonial approved!' });
+    } else {
+        res.status(404).json({ error: 'Testimonial not found' });
+    }
+});
+
+app.post('/api/admin/delete-testimonial', verifyAdmin, (req, res) => {
+    const { testimonialId } = req.body;
+    const index = testimonials.findIndex(t => t.id === testimonialId);
+    if (index !== -1) {
+        testimonials.splice(index, 1);
+        res.json({ success: true, message: 'Testimonial deleted!' });
+    } else {
+        res.status(404).json({ error: 'Testimonial not found' });
+    }
+});
+
+app.get('/api/testimonials', (req, res) => {
+    const approved = testimonials
+        .filter(t => t.status === 'approved')
+        .map(t => ({
+            displayName: t.anonymous ? 'Anonymous' : t.firstName,
+            age: t.age,
+            location: t.location,
+            issue: t.issue,
+            quote: t.quote,
+            createdAt: t.createdAt
+        }));
+    res.json(approved);
+});
 
 // ============ GIFT SYSTEM ============
 function generateGiftCode() {
@@ -1134,7 +1258,8 @@ app.get('/api/status', (req, res) => {
         listeners: Object.keys(listeners).length, 
         applications: listenerApplications.length, 
         chats: Object.keys(chatSessions).length,
-        gifts: Object.keys(gifts).length
+        gifts: Object.keys(gifts).length,
+        testimonials: testimonials.length
     });
 });
 
@@ -1155,6 +1280,7 @@ app.listen(PORT, () => {
     console.log('📝 Applications:', listenerApplications.length);
     console.log('💬 Chats:', Object.keys(chatSessions).length);
     console.log('🎁 Gifts:', Object.keys(gifts).length);
+    console.log('📝 Testimonials:', testimonials.length);
     console.log('📱 WhatsApp: +254700886207');
     console.log('✅ Press Ctrl+C to stop');
     console.log('');

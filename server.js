@@ -94,7 +94,6 @@ async function sendEmail(to, subject, html) {
 
 // ============ NOTIFICATION FUNCTIONS ============
 
-// 1. New Booking Notification
 async function notifyNewBooking(session) {
     const subject = `📅 New Booking - Session ${session.id}`;
     const html = `
@@ -105,7 +104,6 @@ async function notifyNewBooking(session) {
             <p><strong>Price:</strong> $${session.price / 100}</p>
             <p><strong>Scheduled:</strong> ${new Date(session.scheduledAt).toLocaleString()}</p>
             <p><strong>Note:</strong> ${session.note || 'None'}</p>
-            <p><strong>Status:</strong> ${session.status}</p>
             <hr>
             <a href="${BASE_URL}/admin.html" style="background: #2D6A4F; color: white; padding: 10px 20px; border-radius: 50px; text-decoration: none;">View in Admin</a>
         </div>
@@ -113,7 +111,6 @@ async function notifyNewBooking(session) {
     await sendEmail(ADMIN_EMAIL, subject, html);
 }
 
-// 2. Payment Notification
 async function notifyPayment(session, reference) {
     const subject = `💰 Payment Received - ${reference}`;
     const html = `
@@ -131,7 +128,6 @@ async function notifyPayment(session, reference) {
     await sendEmail(ADMIN_EMAIL, subject, html);
 }
 
-// 3. New Listener Application Notification
 async function notifyListenerApplication(application) {
     const subject = `👂 New Listener Application - ${application.fullName}`;
     const html = `
@@ -151,7 +147,6 @@ async function notifyListenerApplication(application) {
     await sendEmail(ADMIN_EMAIL, subject, html);
 }
 
-// 4. New Chat Message Notification
 async function notifyChatMessage(sessionId, sender, message) {
     const subject = `💬 New Chat Message - Session ${sessionId}`;
     const html = `
@@ -170,7 +165,6 @@ async function notifyChatMessage(sessionId, sender, message) {
     await sendEmail(ADMIN_EMAIL, subject, html);
 }
 
-// 5. New Gift Notification
 async function notifyNewGift(gift) {
     const subject = `🎁 New Gift Session - ${gift.giverName} → ${gift.friendName}`;
     const html = `
@@ -188,7 +182,6 @@ async function notifyNewGift(gift) {
     await sendEmail(ADMIN_EMAIL, subject, html);
 }
 
-// 6. Gift Redeemed Notification
 async function notifyGiftRedeemed(gift, sessionId) {
     const subject = `✅ Gift Redeemed - ${gift.code}`;
     const html = `
@@ -206,7 +199,6 @@ async function notifyGiftRedeemed(gift, sessionId) {
     await sendEmail(ADMIN_EMAIL, subject, html);
 }
 
-// 7. Listener Approved Notification
 async function notifyListenerApproved(email, name) {
     const subject = `✅ You're Approved! - Talk to Me Listener`;
     const html = `

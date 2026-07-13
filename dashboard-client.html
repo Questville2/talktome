@@ -1,0 +1,719 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>My Dashboard — Talk to Me</title>
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        body {
+            font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif;
+            background: #f8f9fe;
+            color: #1A1A2E;
+            line-height: 1.6;
+        }
+
+        nav {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            padding: 20px 60px;
+            background: white;
+            box-shadow: 0 2px 10px rgba(0,0,0,0.05);
+            flex-wrap: wrap;
+        }
+
+        .logo {
+            font-size: 24px;
+            font-weight: 700;
+            color: #6C63FF;
+        }
+
+        nav a {
+            margin: 0 15px;
+            text-decoration: none;
+            color: #1A1A2E;
+            font-weight: 500;
+        }
+
+        nav a:hover {
+            color: #6C63FF;
+        }
+
+        .btn-outline {
+            background: transparent;
+            border: 2px solid #6C63FF;
+            color: #6C63FF;
+            padding: 8px 20px;
+            border-radius: 50px;
+            font-weight: 600;
+            cursor: pointer;
+            transition: all 0.3s;
+            text-decoration: none;
+        }
+
+        .btn-outline:hover {
+            background: #6C63FF;
+            color: white;
+        }
+
+        .dashboard-container {
+            max-width: 1200px;
+            margin: 40px auto;
+            padding: 0 20px;
+        }
+
+        .dashboard-header {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            margin-bottom: 30px;
+            flex-wrap: wrap;
+        }
+
+        .dashboard-header h1 {
+            font-size: 32px;
+        }
+
+        .dashboard-header .subtitle {
+            color: #6B7280;
+        }
+
+        .stats-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fill, minmax(180px, 1fr));
+            gap: 20px;
+            margin-bottom: 30px;
+        }
+
+        .stat-card {
+            background: white;
+            padding: 20px;
+            border-radius: 12px;
+            box-shadow: 0 2px 10px rgba(0,0,0,0.05);
+            text-align: center;
+        }
+
+        .stat-card .value {
+            font-size: 28px;
+            font-weight: 700;
+            color: #6C63FF;
+        }
+
+        .stat-card .label {
+            font-size: 14px;
+            color: #6B7280;
+        }
+
+        .loyalty-section {
+            background: white;
+            padding: 25px;
+            border-radius: 12px;
+            box-shadow: 0 2px 10px rgba(0,0,0,0.05);
+            margin-bottom: 30px;
+        }
+
+        .loyalty-section h2 {
+            font-size: 18px;
+            margin-bottom: 15px;
+        }
+
+        .loyalty-info {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            flex-wrap: wrap;
+            gap: 15px;
+            margin-bottom: 10px;
+        }
+
+        .loyalty-hours {
+            font-weight: 700;
+            color: #6C63FF;
+        }
+
+        .progress-bar {
+            width: 100%;
+            height: 10px;
+            background: #E5E7EB;
+            border-radius: 10px;
+            overflow: hidden;
+        }
+
+        .progress-fill {
+            height: 100%;
+            background: linear-gradient(90deg, #6C63FF, #FF6584);
+            border-radius: 10px;
+            transition: width 0.5s ease;
+        }
+
+        .loyalty-status {
+            font-size: 14px;
+            color: #6B7280;
+            margin-top: 8px;
+        }
+
+        .free-session-banner {
+            background: linear-gradient(135deg, #6C63FF, #FF6584);
+            color: white;
+            padding: 20px;
+            border-radius: 12px;
+            margin-top: 15px;
+            text-align: center;
+        }
+
+        .section-header {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            margin: 30px 0 15px 0;
+        }
+
+        .section-header h2 {
+            font-size: 22px;
+        }
+
+        .session-card {
+            background: white;
+            padding: 20px;
+            border-radius: 12px;
+            box-shadow: 0 2px 10px rgba(0,0,0,0.05);
+            margin-bottom: 15px;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            flex-wrap: wrap;
+            gap: 15px;
+        }
+
+        .session-card .session-info {
+            flex: 1;
+        }
+
+        .session-card .session-tier {
+            font-weight: 700;
+            color: #6C63FF;
+        }
+
+        .session-card .session-time {
+            color: #6B7280;
+            font-size: 14px;
+        }
+
+        .session-card .session-status {
+            padding: 4px 12px;
+            border-radius: 20px;
+            font-size: 12px;
+            font-weight: 600;
+        }
+
+        .session-card .session-status.booked {
+            background: #FEF3C7;
+            color: #D97706;
+        }
+
+        .session-card .session-status.accepted {
+            background: #DBEAFE;
+            color: #2563EB;
+        }
+
+        .session-card .session-status.active {
+            background: #D1FAE5;
+            color: #065F46;
+        }
+
+        .session-card .session-status.completed {
+            background: #F3F4F6;
+            color: #6B7280;
+        }
+
+        .session-card .session-status.cancelled {
+            background: #FEE2E2;
+            color: #DC2626;
+        }
+
+        .btn-small {
+            padding: 8px 20px;
+            border: none;
+            border-radius: 50px;
+            font-weight: 600;
+            cursor: pointer;
+            transition: all 0.3s;
+            text-decoration: none;
+            display: inline-block;
+        }
+
+        .btn-small.primary {
+            background: #6C63FF;
+            color: white;
+        }
+
+        .btn-small.primary:hover {
+            background: #5A52D5;
+            transform: translateY(-2px);
+        }
+
+        .btn-small.chat {
+            background: #34D399;
+            color: white;
+        }
+
+        .btn-small.chat:hover {
+            background: #10B981;
+            transform: translateY(-2px);
+        }
+
+        .btn-small.danger {
+            background: #EF4444;
+            color: white;
+        }
+
+        .empty-state {
+            text-align: center;
+            padding: 40px;
+            color: #6B7280;
+        }
+
+        .empty-state .emoji {
+            font-size: 48px;
+            margin-bottom: 15px;
+        }
+
+        .empty-state .btn-primary {
+            display: inline-block;
+            margin-top: 15px;
+            background: #6C63FF;
+            color: white;
+            padding: 12px 30px;
+            border-radius: 50px;
+            text-decoration: none;
+            font-weight: 600;
+        }
+
+        .referral-gift-grid {
+            display: grid;
+            grid-template-columns: 1fr 1fr;
+            gap: 20px;
+            margin: 20px 0;
+        }
+
+        .referral-gift-grid .card {
+            background: white;
+            padding: 20px;
+            border-radius: 12px;
+            box-shadow: 0 2px 10px rgba(0,0,0,0.05);
+        }
+
+        .referral-gift-grid .card h3 {
+            font-size: 16px;
+            margin-bottom: 10px;
+        }
+
+        .referral-gift-grid .card p {
+            color: #6B7280;
+            font-size: 14px;
+        }
+
+        .referral-gift-grid .btn-small {
+            margin-top: 10px;
+        }
+
+        @media (max-width: 768px) {
+            nav {
+                padding: 15px 20px;
+            }
+            .dashboard-container {
+                padding: 0 15px;
+            }
+            .dashboard-header {
+                flex-direction: column;
+                align-items: flex-start;
+                gap: 10px;
+            }
+            .dashboard-header h1 {
+                font-size: 24px;
+            }
+            .stats-grid {
+                grid-template-columns: repeat(2, 1fr);
+            }
+            .referral-gift-grid {
+                grid-template-columns: 1fr;
+            }
+            .session-card {
+                flex-direction: column;
+                align-items: flex-start;
+            }
+        }
+    </style>
+</head>
+<body>
+    <nav>
+        <div class="logo">🎙️ Talk to Me</div>
+        <div>
+            <a href="/">Home</a>
+            <a href="/book.html">Book Session</a>
+            <a href="/referral.html">Referrals</a>
+            <a href="/gift.html">Gift</a>
+            <button class="btn-outline" onclick="logout()">🚪 Logout</button>
+        </div>
+    </nav>
+
+    <div class="dashboard-container">
+        <div class="dashboard-header">
+            <div>
+                <h1>📋 My Sessions</h1>
+                <p class="subtitle">Track your sessions and healing journey</p>
+            </div>
+            <a href="/book.html" class="btn-outline" style="text-decoration:none;">+ Book New Session</a>
+        </div>
+
+        <div class="stats-grid" id="stats-grid">
+            <div class="stat-card">
+                <div class="value" id="total-sessions">0</div>
+                <div class="label">Total Sessions</div>
+            </div>
+            <div class="stat-card">
+                <div class="value" id="hours-booked">0</div>
+                <div class="label">Hours Booked</div>
+            </div>
+            <div class="stat-card">
+                <div class="value" id="rating-display">0</div>
+                <div class="label">Your Rating</div>
+            </div>
+            <div class="stat-card">
+                <div class="value" id="discount-display">0%</div>
+                <div class="label">Your Discount</div>
+            </div>
+        </div>
+
+        <div class="loyalty-section">
+            <h2>🎁 Loyalty Program</h2>
+            <div class="loyalty-info">
+                <span>Book <strong>5 hours</strong> this month → Get <strong>1 FREE hour</strong> next month!</span>
+                <span class="loyalty-hours">
+                    <span id="loyalty-hours">0.0</span> / 5 hours
+                </span>
+            </div>
+            <div class="progress-bar">
+                <div class="progress-fill" id="loyalty-progress" style="width:0%;"></div>
+            </div>
+            <div class="loyalty-status" id="loyalty-status">
+                ⏳ Keep going! You're on your way to a free session.
+            </div>
+            <div id="free-session-available" style="display:none;">
+                <div class="free-session-banner">
+                    🎉 <strong>You've earned a FREE hour-long session!</strong>
+                    <button onclick="bookFreeSession()" class="btn-small primary" style="margin-top:10px;">
+                        📅 Book Your Free Session
+                    </button>
+                </div>
+            </div>
+        </div>
+
+        <div class="referral-gift-grid">
+            <div class="card" id="referral-stats">
+                <h3>📢 Referrals</h3>
+                <p>Loading referral stats...</p>
+                <button onclick="location.href='/referral.html'" class="btn-small primary">Manage Referrals</button>
+            </div>
+            <div class="card" id="gift-stats">
+                <h3>🎁 Gifts</h3>
+                <p>Loading gift stats...</p>
+                <button onclick="location.href='/gift.html'" class="btn-small primary">Send a Gift</button>
+            </div>
+        </div>
+
+        <div class="section-header">
+            <h2>🟢 Upcoming Sessions</h2>
+        </div>
+        <div id="upcoming-sessions">
+            <div class="empty-state">
+                <div class="emoji">📅</div>
+                <p>No upcoming sessions</p>
+                <a href="/book.html" class="btn-primary">Book Your First Session</a>
+            </div>
+        </div>
+
+        <div class="section-header">
+            <h2>📜 Session History</h2>
+        </div>
+        <div id="past-sessions">
+            <div class="empty-state">
+                <div class="emoji">📜</div>
+                <p>No past sessions yet</p>
+            </div>
+        </div>
+    </div>
+
+    <script>
+        const sessionToken = localStorage.getItem('session_token');
+
+        async function loadDashboard() {
+            if (!sessionToken) {
+                document.getElementById('upcoming-sessions').innerHTML = `
+                    <div class="empty-state">
+                        <div class="emoji">🔐</div>
+                        <p>Please book a session to get started</p>
+                        <a href="/book.html" class="btn-primary">Book Now</a>
+                    </div>
+                `;
+                return;
+            }
+
+            try {
+                const response = await fetch(`/api/client/sessions/${sessionToken}`);
+                const data = await response.json();
+
+                if (data.sessions && data.sessions.length > 0) {
+                    renderSessions(data.sessions);
+                    updateStats(data.sessions);
+                    updateLoyalty(data.loyalty);
+                } else {
+                    document.getElementById('upcoming-sessions').innerHTML = `
+                        <div class="empty-state">
+                            <div class="emoji">📅</div>
+                            <p>You haven't booked any sessions yet</p>
+                            <a href="/book.html" class="btn-primary">Book Your First Session</a>
+                        </div>
+                    `;
+                }
+            } catch (error) {
+                console.error('Error loading dashboard:', error);
+            }
+
+            loadReferralStats();
+            loadGiftStats();
+        }
+
+        function renderSessions(sessions) {
+            const now = Date.now();
+            const upcoming = sessions.filter(s => s.scheduledAt > now && s.status !== 'completed' && s.status !== 'cancelled');
+            const past = sessions.filter(s => s.scheduledAt <= now || s.status === 'completed' || s.status === 'cancelled');
+
+            renderSessionList('upcoming-sessions', upcoming, true);
+            renderSessionList('past-sessions', past, false);
+        }
+
+        function renderSessionList(containerId, sessions, isUpcoming) {
+            const container = document.getElementById(containerId);
+            container.innerHTML = '';
+
+            if (sessions.length === 0) {
+                container.innerHTML = `
+                    <div class="empty-state">
+                        <div class="emoji">${isUpcoming ? '📅' : '📜'}</div>
+                        <p>${isUpcoming ? 'No upcoming sessions' : 'No past sessions yet'}</p>
+                    </div>
+                `;
+                return;
+            }
+
+            sessions.forEach(session => {
+                const card = document.createElement('div');
+                card.className = 'session-card';
+
+                const statusMap = {
+                    'booked': '⏳ Waiting for listener',
+                    'accepted': '✅ Listener assigned',
+                    'active': '🔴 In progress',
+                    'completed': '✔️ Completed',
+                    'cancelled': '❌ Cancelled'
+                };
+
+                const tierMap = {
+                    'standard': '30 min',
+                    'extended': '60 min'
+                };
+
+                const isTime = session.scheduledAt <= Date.now();
+                const canJoin = (session.status === 'accepted' || session.status === 'active') && isTime;
+
+                card.innerHTML = `
+                    <div class="session-info">
+                        <div>
+                            <span class="session-tier">${tierMap[session.tier] || session.tier}</span>
+                            ${session.isGift ? '🎁 Gift' : ''}
+                            ${session.isFree ? '🎁 Free' : ''}
+                        </div>
+                        <div class="session-time">📅 ${new Date(session.scheduledAt).toLocaleString()}</div>
+                        <span class="session-status ${session.status}">${statusMap[session.status] || session.status}</span>
+                    </div>
+                    <div>
+                        ${canJoin ? 
+                            `<button onclick="joinSession('${session.clientToken}')" class="btn-small primary">🔗 Join Now</button>
+                             <button onclick="openChat('${session.id}', 'client')" class="btn-small chat">💬 Chat</button>` : 
+                            session.status === 'active' ?
+                            `<button onclick="joinSession('${session.clientToken}')" class="btn-small primary" style="background:#EF4444;">🔴 Join Call</button>
+                             <button onclick="openChat('${session.id}', 'client')" class="btn-small chat">💬 Chat</button>` :
+                            session.status === 'completed' && !session.clientRating ?
+                            `<button onclick="rateSession('${session.id}')" class="btn-small primary">⭐ Rate</button>` :
+                            ''
+                        }
+                        ${session.isGift && !session.redeemed ? 
+                            `<button onclick="redeemGift('${session.giftCode}')" class="btn-small primary">🎁 Redeem</button>` : 
+                            ''
+                        }
+                    </div>
+                `;
+                container.appendChild(card);
+            });
+        }
+
+        function updateStats(sessions) {
+            const total = sessions.length;
+            const hours = sessions.reduce((sum, s) => sum + (s.duration / 3600), 0);
+            const completed = sessions.filter(s => s.status === 'completed');
+            const avgRating = completed.reduce((sum, s) => sum + (s.clientRating || 0), 0) / (completed.length || 1);
+
+            document.getElementById('total-sessions').textContent = total;
+            document.getElementById('hours-booked').textContent = hours.toFixed(1);
+            document.getElementById('rating-display').textContent = avgRating > 0 ? avgRating.toFixed(1) + '⭐' : '—';
+        }
+
+        function updateLoyalty(loyalty) {
+            if (!loyalty) return;
+            document.getElementById('loyalty-hours').textContent = loyalty.totalHours.toFixed(1);
+            document.getElementById('loyalty-progress').style.width = loyalty.progress + '%';
+
+            const statusEl = document.getElementById('loyalty-status');
+            const freeEl = document.getElementById('free-session-available');
+
+            if (loyalty.freeSessionAvailable) {
+                freeEl.style.display = 'block';
+                statusEl.textContent = '🎉 You have a FREE session waiting!';
+                statusEl.style.color = '#34D399';
+            } else if (loyalty.qualified) {
+                statusEl.textContent = '✅ You\'ve reached 5 hours! Your free session will be awarded next month.';
+                statusEl.style.color = '#6C63FF';
+            } else {
+                const remaining = (5 - loyalty.totalHours).toFixed(1);
+                statusEl.textContent = `⏳ ${remaining} more hours needed to earn a free session this month`;
+                statusEl.style.color = '#6B7280';
+            }
+        }
+
+        async function loadReferralStats() {
+            if (!sessionToken) return;
+            try {
+                const response = await fetch(`/api/referral/stats/${sessionToken}`);
+                const data = await response.json();
+                const container = document.getElementById('referral-stats');
+                if (!container) return;
+                const totalReferrals = data.myReferrals?.filter(r => r.status === 'completed').length || 0;
+                const pendingReferrals = data.myReferrals?.filter(r => r.status === 'pending').length || 0;
+                container.innerHTML = `
+                    <h3>📢 Referrals</h3>
+                    <p>Friends referred: <strong>${totalReferrals}</strong></p>
+                    <p>Pending: <strong>${pendingReferrals}</strong></p>
+                    <button onclick="location.href='/referral.html'" class="btn-small primary">Manage Referrals</button>
+                `;
+            } catch (error) {
+                console.error('Error loading referrals:', error);
+            }
+        }
+
+        async function loadGiftStats() {
+            if (!sessionToken) return;
+            try {
+                const response = await fetch(`/api/gift/stats/${sessionToken}`);
+                const data = await response.json();
+                const container = document.getElementById('gift-stats');
+                if (!container) return;
+                const sent = data.myGifts?.length || 0;
+                const received = data.receivedGifts?.length || 0;
+                container.innerHTML = `
+                    <h3>🎁 Gifts</h3>
+                    <p>Sent: <strong>${sent}</strong></p>
+                    <p>Received: <strong>${received}</strong></p>
+                    <button onclick="location.href='/gift.html'" class="btn-small primary">Send a Gift</button>
+                `;
+            } catch (error) {
+                console.error('Error loading gifts:', error);
+            }
+        }
+
+        async function joinSession(token) {
+            try {
+                const response = await fetch(`/api/session-status/${token}`);
+                const data = await response.json();
+                if (data.status === 'accepted' || data.status === 'active') {
+                    if (data.scheduledAt <= Date.now()) {
+                        window.location.href = `/call.html?token=${token}`;
+                    } else {
+                        const waitTime = Math.floor((data.scheduledAt - Date.now()) / 60000);
+                        alert(`⏳ Your session starts in ${waitTime} minutes. Please wait.`);
+                    }
+                } else if (data.status === 'booked') {
+                    alert('⏳ No listener has accepted your session yet. Please wait.');
+                } else if (data.status === 'completed') {
+                    alert('This session has already ended.');
+                } else {
+                    alert('Session not found.');
+                }
+            } catch (error) {
+                alert('Error joining session.');
+                console.error(error);
+            }
+        }
+
+        function openChat(sessionId, role) {
+            window.location.href = `/chat.html?session=${sessionId}&role=${role}`;
+        }
+
+        async function rateSession(sessionId) {
+            const rating = prompt('Rate your listener (1-5 stars):');
+            if (!rating || rating < 1 || rating > 5) return;
+            try {
+                const response = await fetch('/api/rate-session', {
+                    method: 'POST',
+                    headers: { 'Content-Type': 'application/json' },
+                    body: JSON.stringify({ sessionId, rating: parseInt(rating) })
+                });
+                const data = await response.json();
+                if (data.success) {
+                    alert('Thank you for your rating! ⭐');
+                    loadDashboard();
+                }
+            } catch (error) {
+                alert('Error submitting rating.');
+                console.error(error);
+            }
+        }
+
+        async function bookFreeSession() {
+            try {
+                const response = await fetch('/api/book-free-session', {
+                    method: 'POST',
+                    headers: { 'Content-Type': 'application/json' },
+                    body: JSON.stringify({ token: sessionToken })
+                });
+                const data = await response.json();
+                if (data.success) {
+                    alert('🎉 Free session booked! Check your dashboard.');
+                    window.location.href = '/book.html?free=true';
+                } else {
+                    alert(data.message || 'No free sessions available.');
+                }
+            } catch (error) {
+                alert('Error booking free session.');
+                console.error(error);
+            }
+        }
+
+        function logout() {
+            if (confirm('Are you sure you want to logout?')) {
+                localStorage.removeItem('session_token');
+                localStorage.removeItem('referral_code');
+                window.location.href = '/';
+            }
+        }
+
+        document.addEventListener('DOMContentLoaded', loadDashboard);
+    </script>
+</body>
+</html>

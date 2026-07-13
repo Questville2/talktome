@@ -1,0 +1,841 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Listener Dashboard — Talk to Me</title>
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        body {
+            font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif;
+            background: #f8f9fe;
+            color: #1A1A2E;
+            line-height: 1.6;
+        }
+
+        nav {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            padding: 20px 60px;
+            background: white;
+            box-shadow: 0 2px 10px rgba(0,0,0,0.05);
+            flex-wrap: wrap;
+        }
+
+        .logo {
+            font-size: 24px;
+            font-weight: 700;
+            color: #6C63FF;
+        }
+
+        nav a {
+            margin: 0 15px;
+            text-decoration: none;
+            color: #1A1A2E;
+            font-weight: 500;
+        }
+
+        nav a:hover {
+            color: #6C63FF;
+        }
+
+        .btn-outline {
+            background: transparent;
+            border: 2px solid #6C63FF;
+            color: #6C63FF;
+            padding: 8px 20px;
+            border-radius: 50px;
+            font-weight: 600;
+            cursor: pointer;
+            transition: all 0.3s;
+        }
+
+        .btn-outline:hover {
+            background: #6C63FF;
+            color: white;
+        }
+
+        .dashboard-container {
+            max-width: 1200px;
+            margin: 40px auto;
+            padding: 0 20px;
+        }
+
+        .dashboard-header {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            margin-bottom: 30px;
+            flex-wrap: wrap;
+        }
+
+        .dashboard-header h1 {
+            font-size: 32px;
+        }
+
+        .stats-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fill, minmax(180px, 1fr));
+            gap: 20px;
+            margin-bottom: 30px;
+        }
+
+        .stat-card {
+            background: white;
+            padding: 20px;
+            border-radius: 12px;
+            box-shadow: 0 2px 10px rgba(0,0,0,0.05);
+            text-align: center;
+        }
+
+        .stat-card .value {
+            font-size: 28px;
+            font-weight: 700;
+            color: #6C63FF;
+        }
+
+        .stat-card .label {
+            font-size: 14px;
+            color: #6B7280;
+        }
+
+        /* Status Toggle */
+        .status-toggle-container {
+            background: white;
+            padding: 20px;
+            border-radius: 12px;
+            box-shadow: 0 2px 10px rgba(0,0,0,0.05);
+            margin-bottom: 30px;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            flex-wrap: wrap;
+        }
+
+        .status-toggle {
+            display: flex;
+            align-items: center;
+            gap: 15px;
+        }
+
+        .toggle-track {
+            width: 60px;
+            height: 32px;
+            background: #ccc;
+            border-radius: 50px;
+            cursor: pointer;
+            position: relative;
+            transition: background 0.3s;
+        }
+
+        .toggle-track.active {
+            background: #6C63FF;
+        }
+
+        .toggle-thumb {
+            width: 26px;
+            height: 26px;
+            background: white;
+            border-radius: 50%;
+            position: absolute;
+            top: 3px;
+            left: 3px;
+            transition: transform 0.3s;
+        }
+
+        .toggle-track.active .toggle-thumb {
+            transform: translateX(28px);
+        }
+
+        .status-text.online {
+            color: #34D399;
+            font-weight: 600;
+        }
+
+        .status-text.offline {
+            color: #6B7280;
+            font-weight: 600;
+        }
+
+        .session-count {
+            font-size: 14px;
+            color: #6B7280;
+        }
+
+        /* Session Lists */
+        .section-header {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            margin: 30px 0 15px 0;
+        }
+
+        .section-header h2 {
+            font-size: 22px;
+        }
+
+        .badge {
+            background: #6C63FF;
+            color: white;
+            padding: 2px 12px;
+            border-radius: 20px;
+            font-size: 12px;
+            font-weight: 600;
+        }
+
+        .booking-card, .session-card {
+            background: white;
+            padding: 20px;
+            border-radius: 12px;
+            box-shadow: 0 2px 10px rgba(0,0,0,0.05);
+            margin-bottom: 15px;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            flex-wrap: wrap;
+            gap: 15px;
+        }
+
+        .booking-card .booking-time {
+            font-weight: 600;
+        }
+
+        .booking-card .booking-tier {
+            color: #6B7280;
+            font-size: 14px;
+        }
+
+        .booking-card .booking-note {
+            color: #6B7280;
+            font-size: 14px;
+            font-style: italic;
+        }
+
+        .btn-small {
+            padding: 8px 20px;
+            border: none;
+            border-radius: 50px;
+            font-weight: 600;
+            cursor: pointer;
+            transition: all 0.3s;
+        }
+
+        .btn-small:hover {
+            transform: translateY(-2px);
+        }
+
+        .btn-small.primary {
+            background: #6C63FF;
+            color: white;
+        }
+
+        .btn-small.success {
+            background: #34D399;
+            color: white;
+        }
+
+        .btn-small.danger {
+            background: #EF4444;
+            color: white;
+        }
+
+        .btn-small.warning {
+            background: #F59E0B;
+            color: white;
+        }
+
+        .empty-state {
+            text-align: center;
+            padding: 40px;
+            color: #6B7280;
+        }
+
+        .empty-state .emoji {
+            font-size: 48px;
+            margin-bottom: 15px;
+        }
+
+        /* Login Overlay */
+        .login-overlay {
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            min-height: 80vh;
+        }
+
+        .login-card {
+            background: white;
+            padding: 40px;
+            border-radius: 16px;
+            box-shadow: 0 8px 32px rgba(0,0,0,0.1);
+            max-width: 400px;
+            width: 100%;
+        }
+
+        .login-card h2 {
+            text-align: center;
+            margin-bottom: 10px;
+        }
+
+        .login-card .subtitle {
+            text-align: center;
+            color: #6B7280;
+            margin-bottom: 20px;
+        }
+
+        .login-card .form-group {
+            margin-bottom: 15px;
+        }
+
+        .login-card .form-group label {
+            display: block;
+            font-weight: 600;
+            margin-bottom: 5px;
+        }
+
+        .login-card .form-group input {
+            width: 100%;
+            padding: 12px;
+            border: 2px solid #E5E7EB;
+            border-radius: 8px;
+            font-size: 16px;
+        }
+
+        .login-card .form-group input:focus {
+            border-color: #6C63FF;
+            outline: none;
+        }
+
+        .login-card .btn-primary {
+            width: 100%;
+            padding: 14px;
+            background: #6C63FF;
+            color: white;
+            border: none;
+            border-radius: 50px;
+            font-weight: 600;
+            cursor: pointer;
+            font-size: 16px;
+        }
+
+        .login-card .btn-primary:hover {
+            background: #5A52D5;
+        }
+
+        .login-card .apply-link {
+            text-align: center;
+            margin-top: 15px;
+            font-size: 14px;
+            color: #6B7280;
+        }
+
+        .login-card .apply-link a {
+            color: #6C63FF;
+            text-decoration: none;
+        }
+
+        /* Earnings */
+        .earnings-list {
+            list-style: none;
+            padding: 0;
+        }
+
+        .earnings-list li {
+            display: flex;
+            justify-content: space-between;
+            padding: 12px 0;
+            border-bottom: 1px solid #f0f0f0;
+        }
+
+        .withdraw-btn {
+            width: 100%;
+            padding: 14px;
+            background: #34D399;
+            color: white;
+            border: none;
+            border-radius: 50px;
+            font-weight: 600;
+            cursor: pointer;
+            font-size: 16px;
+            margin-top: 20px;
+        }
+
+        .withdraw-btn:hover {
+            background: #10B981;
+        }
+
+        .withdraw-btn:disabled {
+            opacity: 0.5;
+            cursor: not-allowed;
+        }
+
+        @media (max-width: 768px) {
+            nav {
+                padding: 15px 20px;
+            }
+            .dashboard-container {
+                padding: 0 15px;
+            }
+            .dashboard-header {
+                flex-direction: column;
+                align-items: flex-start;
+                gap: 10px;
+            }
+            .stats-grid {
+                grid-template-columns: repeat(2, 1fr);
+            }
+            .booking-card, .session-card {
+                flex-direction: column;
+                align-items: flex-start;
+            }
+        }
+    </style>
+</head>
+<body>
+    <!-- Navigation -->
+    <nav>
+        <div class="logo">🎙️ Talk to Me</div>
+        <div>
+            <a href="/">Home</a>
+            <a href="/onboard.html">Apply</a>
+            <button class="btn-outline" onclick="logout()">🚪 Logout</button>
+        </div>
+    </nav>
+
+    <div class="dashboard-container" id="dashboard-content">
+        <!-- This will be populated by JavaScript -->
+    </div>
+
+    <script>
+        // ============ LISTENER DASHBOARD ============
+
+        const listenerToken = localStorage.getItem('listener_token');
+
+        // ============ CHECK IF LOGGED IN ============
+        async function loadDashboard() {
+            if (!listenerToken) {
+                showLogin();
+                return;
+            }
+
+            try {
+                const response = await fetch(`/api/listener/dashboard/${listenerToken}`);
+                const data = await response.json();
+
+                if (!data.success) {
+                    localStorage.removeItem('listener_token');
+                    showLogin();
+                    return;
+                }
+
+                renderDashboard(data.listener);
+            } catch (error) {
+                console.error('Error loading dashboard:', error);
+                showLogin();
+            }
+        }
+
+        // ============ SHOW LOGIN ============
+        function showLogin() {
+            document.getElementById('dashboard-content').innerHTML = `
+                <div class="login-overlay">
+                    <div class="login-card">
+                        <h2>👂 Listener Login</h2>
+                        <p class="subtitle">Access your listener dashboard</p>
+                        <form id="login-form">
+                            <div class="form-group">
+                                <label>Email</label>
+                                <input type="email" id="login-email" required placeholder="your@email.com">
+                            </div>
+                            <div class="form-group">
+                                <label>Password</label>
+                                <input type="password" id="login-password" required placeholder="Your password">
+                            </div>
+                            <button type="submit" class="btn-primary">🔐 Login</button>
+                        </form>
+                        <div class="apply-link">
+                            Don't have an account? <a href="/onboard.html">Apply here</a>
+                        </div>
+                    </div>
+                </div>
+            `;
+
+            document.getElementById('login-form').addEventListener('submit', async function(e) {
+                e.preventDefault();
+                const email = document.getElementById('login-email').value;
+                const password = document.getElementById('login-password').value;
+
+                try {
+                    const response = await fetch('/api/listener/login', {
+                        method: 'POST',
+                        headers: { 'Content-Type': 'application/json' },
+                        body: JSON.stringify({ email, password })
+                    });
+
+                    const data = await response.json();
+
+                    if (data.success) {
+                        localStorage.setItem('listener_token', data.token);
+                        loadDashboard();
+                    } else {
+                        alert('Invalid email or password.');
+                    }
+                } catch (error) {
+                    alert('Login failed. Please try again.');
+                }
+            });
+        }
+
+        // ============ RENDER DASHBOARD ============
+        function renderDashboard(listener) {
+            const container = document.getElementById('dashboard-content');
+
+            container.innerHTML = `
+                <!-- Header -->
+                <div class="dashboard-header">
+                    <div>
+                        <h1>👂 Welcome, ${listener.fullName || 'Listener'}!</h1>
+                        <p style="color:#6B7280;">Here's your listener dashboard</p>
+                    </div>
+                    <div>
+                        <span style="color:#6B7280;font-size:14px;">Status:</span>
+                        <span class="status-text ${listener.isOnline ? 'online' : 'offline'}">
+                            ${listener.isOnline ? '🟢 Online' : '⚪ Offline'}
+                        </span>
+                    </div>
+                </div>
+
+                <!-- Stats -->
+                <div class="stats-grid">
+                    <div class="stat-card">
+                        <div class="value">${listener.availableBookings || 0}</div>
+                        <div class="label">Available Sessions</div>
+                    </div>
+                    <div class="stat-card">
+                        <div class="value">${listener.sessionsCompleted || 0}</div>
+                        <div class="label">Sessions Completed</div>
+                    </div>
+                    <div class="stat-card">
+                        <div class="value">$${listener.balance || 0}</div>
+                        <div class="label">Balance</div>
+                    </div>
+                    <div class="stat-card">
+                        <div class="value">${listener.rating || 0}⭐</div>
+                        <div class="label">Rating</div>
+                    </div>
+                </div>
+
+                <!-- Status Toggle -->
+                <div class="status-toggle-container">
+                    <div class="status-toggle">
+                        <span>📢 Availability:</span>
+                        <div class="toggle-track ${listener.isOnline ? 'active' : ''}" id="toggle-track">
+                            <div class="toggle-thumb"></div>
+                        </div>
+                        <span class="status-text ${listener.isOnline ? 'online' : 'offline'}" id="status-label">
+                            ${listener.isOnline ? 'Online' : 'Offline'}
+                        </span>
+                    </div>
+                    <div class="session-count">
+                        Current sessions: ${listener.activeSessions || 0}/1
+                    </div>
+                </div>
+
+                <!-- Available Bookings -->
+                <div class="section-header">
+                    <h2>📋 Available Sessions</h2>
+                    <span class="badge" id="available-count">${listener.availableBookings || 0}</span>
+                </div>
+                <div id="available-list">
+                    <div class="empty-state">
+                        <div class="emoji">📭</div>
+                        <p>No sessions available right now</p>
+                    </div>
+                </div>
+
+                <!-- My Sessions -->
+                <div class="section-header">
+                    <h2>✅ My Sessions</h2>
+                </div>
+                <div id="my-sessions">
+                    <div class="empty-state">
+                        <div class="emoji">📋</div>
+                        <p>You haven't accepted any sessions yet</p>
+                    </div>
+                </div>
+
+                <!-- Earnings -->
+                <div class="section-header">
+                    <h2>💰 Earnings</h2>
+                </div>
+                <ul class="earnings-list" id="earnings-list">
+                    <li style="color:#6B7280;text-align:center;padding:20px;">No earnings yet</li>
+                </ul>
+
+                <button class="withdraw-btn" id="withdraw-btn" onclick="withdrawEarnings()">
+                    💳 Withdraw Balance
+                </button>
+            `;
+
+            // Load available bookings
+            loadAvailableBookings();
+
+            // Load my sessions
+            loadMySessions();
+
+            // Load earnings
+            loadEarnings();
+
+            // Toggle status
+            document.getElementById('toggle-track').addEventListener('click', toggleStatus);
+        }
+
+        // ============ TOGGLE STATUS ============
+        async function toggleStatus() {
+            const token = localStorage.getItem('listener_token');
+            const track = document.getElementById('toggle-track');
+            const label = document.getElementById('status-label');
+
+            const isOnline = track.classList.contains('active');
+
+            try {
+                const response = await fetch('/api/listener/status', {
+                    method: 'POST',
+                    headers: { 'Content-Type': 'application/json' },
+                    body: JSON.stringify({
+                        token: token,
+                        isOnline: !isOnline
+                    })
+                });
+
+                const data = await response.json();
+
+                if (data.success) {
+                    track.classList.toggle('active');
+                    const newStatus = track.classList.contains('active');
+                    label.textContent = newStatus ? 'Online' : 'Offline';
+                    label.className = 'status-text ' + (newStatus ? 'online' : 'offline');
+                }
+            } catch (error) {
+                alert('Error updating status.');
+            }
+        }
+
+        // ============ LOAD AVAILABLE BOOKINGS ============
+        async function loadAvailableBookings() {
+            const token = localStorage.getItem('listener_token');
+
+            try {
+                const response = await fetch(`/api/listener/bookings/${token}`);
+                const bookings = await response.json();
+
+                const container = document.getElementById('available-list');
+                const count = document.getElementById('available-count');
+
+                if (!container) return;
+
+                if (bookings.length === 0) {
+                    container.innerHTML = `
+                        <div class="empty-state">
+                            <div class="emoji">📭</div>
+                            <p>No sessions available right now</p>
+                        </div>
+                    `;
+                    if (count) count.textContent = '0';
+                    return;
+                }
+
+                if (count) count.textContent = bookings.length;
+
+                container.innerHTML = bookings.map(booking => `
+                    <div class="booking-card">
+                        <div>
+                            <div class="booking-time">📅 ${new Date(booking.scheduledAt).toLocaleString()}</div>
+                            <div class="booking-tier">⏱️ ${booking.tier === 'standard' ? '30 min' : '60 min'} — $${booking.price/100}</div>
+                            ${booking.note ? `<div class="booking-note">📝 ${booking.note}</div>` : ''}
+                        </div>
+                        <button onclick="acceptBooking('${booking.id}')" class="btn-small primary">✅ Accept</button>
+                    </div>
+                `).join('');
+            } catch (error) {
+                console.error('Error loading bookings:', error);
+            }
+        }
+
+        // ============ ACCEPT BOOKING ============
+        async function acceptBooking(sessionId) {
+            const token = localStorage.getItem('listener_token');
+
+            if (!confirm('Accept this session? The client will be notified.')) return;
+
+            try {
+                const response = await fetch('/api/listener/accept', {
+                    method: 'POST',
+                    headers: { 'Content-Type': 'application/json' },
+                    body: JSON.stringify({ sessionId, token })
+                });
+
+                const data = await response.json();
+
+                if (data.success) {
+                    alert('✅ Session accepted! The client has been notified.');
+                    loadDashboard();
+                } else {
+                    alert(data.message || 'Failed to accept booking.');
+                }
+            } catch (error) {
+                alert('Error accepting booking.');
+            }
+        }
+
+        // ============ LOAD MY SESSIONS ============
+        async function loadMySessions() {
+            const token = localStorage.getItem('listener_token');
+
+            try {
+                const response = await fetch(`/api/listener/my-sessions/${token}`);
+                const sessions = await response.json();
+
+                const container = document.getElementById('my-sessions');
+                if (!container) return;
+
+                if (sessions.length === 0) {
+                    container.innerHTML = `
+                        <div class="empty-state">
+                            <div class="emoji">📋</div>
+                            <p>You haven't accepted any sessions yet</p>
+                        </div>
+                    `;
+                    return;
+                }
+
+                container.innerHTML = sessions.map(session => {
+                    const statusEmoji = session.status === 'booked' ? '⏳' :
+                                      session.status === 'accepted' ? '✅' :
+                                      session.status === 'active' ? '🔴' : '✔️';
+                    const isTime = session.scheduledAt <= Date.now();
+                    const canJoin = (session.status === 'accepted' || session.status === 'active') && isTime;
+
+                    return `
+                        <div class="session-card">
+                            <div>
+                                <div class="booking-time">${statusEmoji} ${new Date(session.scheduledAt).toLocaleString()}</div>
+                                <div style="font-size:14px;color:#6B7280;">
+                                    ${session.tier === 'standard' ? '30 min' : '60 min'} • Status: ${session.status}
+                                </div>
+                            </div>
+                            ${canJoin ? 
+                                `<button onclick="joinListenerSession('${session.id}')" class="btn-small success">🔗 Join</button>` :
+                                session.status === 'active' ?
+                                `<button onclick="joinListenerSession('${session.id}')" class="btn-small danger">🔴 Join Now</button>` :
+                                `<span style="color:#6B7280;font-size:14px;">${isTime ? 'Session ended' : '⏳ Upcoming'}</span>`
+                            }
+                        </div>
+                    `;
+                }).join('');
+            } catch (error) {
+                console.error('Error loading my sessions:', error);
+            }
+        }
+
+        // ============ JOIN SESSION (LISTENER) ============
+        async function joinListenerSession(sessionId) {
+            const token = localStorage.getItem('listener_token');
+
+            try {
+                const response = await fetch('/api/listener/join-session', {
+                    method: 'POST',
+                    headers: { 'Content-Type': 'application/json' },
+                    body: JSON.stringify({ sessionId, token })
+                });
+
+                const data = await response.json();
+
+                if (data.success && data.isTime) {
+                    window.location.href = `/call.html?session=${sessionId}&role=listener`;
+                } else if (!data.isTime && data.scheduledAt) {
+                    const waitTime = Math.floor((data.scheduledAt - Date.now()) / 60000);
+                    alert(`⏳ Please wait ${waitTime} minutes until the session time.`);
+                } else {
+                    alert(data.message || 'Session not ready yet.');
+                }
+            } catch (error) {
+                alert('Error joining session.');
+            }
+        }
+
+        // ============ LOAD EARNINGS ============
+        async function loadEarnings() {
+            const token = localStorage.getItem('listener_token');
+
+            try {
+                const response = await fetch(`/api/listener/earnings/${token}`);
+                const earnings = await response.json();
+
+                const container = document.getElementById('earnings-list');
+                if (!container) return;
+
+                if (earnings.length === 0) {
+                    container.innerHTML = `
+                        <li style="color:#6B7280;text-align:center;padding:20px;">No earnings yet</li>
+                    `;
+                    return;
+                }
+
+                container.innerHTML = earnings.map(item => `
+                    <li>
+                        <span>${new Date(item.date).toLocaleDateString()}</span>
+                        <span>${item.tier} — $${item.amount}</span>
+                        <span style="color:#34D399;">${item.status}</span>
+                    </li>
+                `).join('');
+            } catch (error) {
+                console.error('Error loading earnings:', error);
+            }
+        }
+
+        // ============ WITHDRAW EARNINGS ============
+        async function withdrawEarnings() {
+            const token = localStorage.getItem('listener_token');
+
+            if (!confirm('Withdraw all earnings to your M-Pesa?')) return;
+
+            try {
+                const response = await fetch('/api/listener/withdraw', {
+                    method: 'POST',
+                    headers: { 'Content-Type': 'application/json' },
+                    body: JSON.stringify({ token })
+                });
+
+                const data = await response.json();
+
+                if (data.success) {
+                    alert(`✅ $${data.amount} withdrawn to M-Pesa!`);
+                    loadDashboard();
+                } else {
+                    alert(data.message || 'Withdrawal failed.');
+                }
+            } catch (error) {
+                alert('Error processing withdrawal.');
+            }
+        }
+
+        // ============ LOGOUT ============
+        function logout() {
+            if (confirm('Are you sure you want to logout?')) {
+                localStorage.removeItem('listener_token');
+                loadDashboard();
+            }
+        }
+
+        // ============ INIT ============
+        document.addEventListener('DOMContentLoaded', loadDashboard);
+    </script>
+</body>
+</html>

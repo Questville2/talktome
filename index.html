@@ -1,0 +1,211 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Talk to Me — You Are Not Alone</title>
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+        
+        body {
+            font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif;
+            background: #f8f9fe;
+            color: #1A1A2E;
+            line-height: 1.6;
+        }
+        
+        nav {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            padding: 20px 60px;
+            background: white;
+            box-shadow: 0 2px 10px rgba(0,0,0,0.05);
+        }
+        
+        .logo {
+            font-size: 24px;
+            font-weight: 700;
+            color: #6C63FF;
+        }
+        
+        nav a {
+            margin: 0 15px;
+            text-decoration: none;
+            color: #1A1A2E;
+            font-weight: 500;
+        }
+        
+        nav a:hover {
+            color: #6C63FF;
+        }
+        
+        .btn-primary {
+            background: #6C63FF;
+            color: white;
+            border: none;
+            padding: 16px 48px;
+            border-radius: 50px;
+            font-size: 18px;
+            font-weight: 600;
+            cursor: pointer;
+            transition: all 0.3s;
+        }
+        
+        .btn-primary:hover {
+            transform: translateY(-2px);
+            box-shadow: 0 12px 40px rgba(108, 99, 255, 0.3);
+            background: #5A52D5;
+        }
+        
+        .hero {
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+            padding: 80px 60px;
+            max-width: 1200px;
+            margin: 0 auto;
+            gap: 60px;
+        }
+        
+        .hero-content h1 {
+            font-size: 48px;
+            font-weight: 800;
+            line-height: 1.2;
+            margin-bottom: 20px;
+        }
+        
+        .highlight {
+            background: linear-gradient(135deg, #6C63FF, #FF6584);
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+        }
+        
+        .hero-content p {
+            font-size: 20px;
+            color: #6B7280;
+            margin-bottom: 30px;
+            max-width: 500px;
+        }
+        
+        .trust-badge {
+            font-size: 14px;
+            color: #6B7280;
+            margin-left: 20px;
+        }
+        
+        .stats {
+            display: flex;
+            gap: 30px;
+            margin-top: 30px;
+            font-size: 14px;
+            color: #6B7280;
+        }
+        
+        .floating-call {
+            background: white;
+            padding: 20px 30px;
+            border-radius: 16px;
+            box-shadow: 0 8px 32px rgba(108, 99, 255, 0.15);
+            display: flex;
+            align-items: center;
+            gap: 12px;
+        }
+        
+        .pulse-dot {
+            display: inline-block;
+            width: 12px;
+            height: 12px;
+            background: #34D399;
+            border-radius: 50%;
+            animation: pulse 1.5s infinite;
+        }
+        
+        @keyframes pulse {
+            0% { transform: scale(1); opacity: 1; }
+            50% { transform: scale(1.5); opacity: 0.7; }
+            100% { transform: scale(1); opacity: 1; }
+        }
+        
+        footer {
+            padding: 40px 60px;
+            text-align: center;
+            background: #1A1A2E;
+            color: white;
+        }
+        
+        @media (max-width: 768px) {
+            nav {
+                padding: 15px 20px;
+                flex-wrap: wrap;
+            }
+            .hero {
+                flex-direction: column;
+                padding: 40px 20px;
+                text-align: center;
+            }
+            .hero-content h1 {
+                font-size: 32px;
+            }
+            .hero-content p {
+                max-width: 100%;
+            }
+            .stats {
+                justify-content: center;
+                flex-wrap: wrap;
+            }
+            .trust-badge {
+                margin-left: 0;
+                display: block;
+                margin-top: 10px;
+            }
+        }
+    </style>
+</head>
+<body>
+    <!-- Navigation -->
+    <nav>
+        <div class="logo">🎙️ Talk to Me</div>
+        <div>
+            <a href="#how-it-works">How It Works</a>
+            <a href="#listeners">Become a Listener</a>
+            <button class="btn-primary" style="padding:10px 24px;font-size:14px;" onclick="location.href='/book.html'">💬 Book Now</button>
+        </div>
+    </nav>
+
+    <!-- Hero Section -->
+    <section class="hero">
+        <div class="hero-content">
+            <h1>You Are Not Alone. <span class="highlight">You Never Were.</span></h1>
+            <p>Whether you're carrying the weight of a broken marriage, the silence of infertility, the shame of addiction, the pressure of exams, or the emptiness of loneliness — there's someone here who will listen.</p>
+            <div>
+                <button class="btn-primary" onclick="location.href='/book.html'">💬 Start Your Session — $10</button>
+                <span class="trust-badge">🔒 100% Anonymous • No Sign-up</span>
+            </div>
+            <div class="stats">
+                <span>👥 1,200+ Conversations Today</span>
+                <span>⭐ 4.9/5 Rating</span>
+                <span>🌍 20+ Countries</span>
+            </div>
+        </div>
+        <div class="hero-image">
+            <div class="floating-call">
+                <span class="pulse-dot"></span>
+                <span>🎧 47 Listeners Available</span>
+            </div>
+        </div>
+    </section>
+
+    <!-- Footer -->
+    <footer>
+        <p>© 2026 Talk to Me — We're all in this together. ❤️</p>
+        <p style="font-size:14px;opacity:0.7;margin-top:10px;">
+            Not a crisis line. For emergencies: 🇺🇸 988 • 🇰🇪 1190 • 🇬🇧 116 123
+        </p>
+    </footer>
+</body>
+</html>

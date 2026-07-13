@@ -1,0 +1,871 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Become a Listener — Talk to Me</title>
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        body {
+            font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif;
+            background: #f8f9fe;
+            color: #1A1A2E;
+            line-height: 1.6;
+        }
+
+        nav {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            padding: 20px 60px;
+            background: white;
+            box-shadow: 0 2px 10px rgba(0,0,0,0.05);
+            flex-wrap: wrap;
+        }
+
+        .logo {
+            font-size: 24px;
+            font-weight: 700;
+            color: #6C63FF;
+        }
+
+        nav a {
+            margin: 0 15px;
+            text-decoration: none;
+            color: #1A1A2E;
+            font-weight: 500;
+        }
+
+        nav a:hover {
+            color: #6C63FF;
+        }
+
+        .onboarding-container {
+            max-width: 900px;
+            margin: 40px auto;
+            padding: 40px;
+            background: white;
+            border-radius: 16px;
+            box-shadow: 0 8px 32px rgba(0,0,0,0.08);
+        }
+
+        .onboarding-container h1 {
+            font-size: 32px;
+            color: #1A1A2E;
+            margin-bottom: 10px;
+        }
+
+        .onboarding-container .subtitle {
+            color: #6B7280;
+            margin-bottom: 30px;
+        }
+
+        .earn-badge {
+            background: linear-gradient(135deg, #6C63FF, #FF6584);
+            color: white;
+            padding: 15px 20px;
+            border-radius: 12px;
+            text-align: center;
+            margin-bottom: 20px;
+        }
+
+        .earn-badge strong {
+            font-size: 18px;
+        }
+
+        .membership-badge {
+            background: #FEF3C7;
+            border: 2px solid #F59E0B;
+            padding: 15px 20px;
+            border-radius: 12px;
+            margin-bottom: 20px;
+            text-align: center;
+        }
+
+        .membership-badge .price {
+            font-size: 28px;
+            font-weight: 700;
+            color: #D97706;
+        }
+
+        .membership-badge .label {
+            font-size: 14px;
+            color: #6B7280;
+        }
+
+        .form-group {
+            margin-bottom: 20px;
+        }
+
+        .form-group label {
+            display: block;
+            font-weight: 600;
+            margin-bottom: 8px;
+            color: #1A1A2E;
+        }
+
+        .form-group input,
+        .form-group select,
+        .form-group textarea {
+            width: 100%;
+            padding: 12px 16px;
+            border: 2px solid #E5E7EB;
+            border-radius: 8px;
+            font-size: 16px;
+            transition: border-color 0.3s;
+            font-family: inherit;
+        }
+
+        .form-group input:focus,
+        .form-group select:focus,
+        .form-group textarea:focus {
+            border-color: #6C63FF;
+            outline: none;
+        }
+
+        .form-group textarea {
+            min-height: 80px;
+            resize: vertical;
+        }
+
+        .form-group .hint {
+            font-size: 13px;
+            color: #6B7280;
+            margin-top: 5px;
+        }
+
+        .form-row {
+            display: grid;
+            grid-template-columns: 1fr 1fr;
+            gap: 20px;
+        }
+
+        .checkbox-group {
+            display: flex;
+            align-items: flex-start;
+            gap: 12px;
+            margin: 12px 0;
+        }
+
+        .checkbox-group input {
+            width: 20px;
+            height: 20px;
+            margin-top: 3px;
+            accent-color: #6C63FF;
+            flex-shrink: 0;
+        }
+
+        .checkbox-group label {
+            font-weight: 400;
+            font-size: 15px;
+            color: #4B5563;
+        }
+
+        .checkbox-group label strong {
+            color: #1A1A2E;
+        }
+
+        .photo-upload {
+            border: 2px dashed #E5E7EB;
+            border-radius: 12px;
+            padding: 30px;
+            text-align: center;
+            cursor: pointer;
+            transition: all 0.3s;
+            position: relative;
+        }
+
+        .photo-upload:hover {
+            border-color: #6C63FF;
+            background: #f8f9fe;
+        }
+
+        .photo-upload.has-image {
+            border-color: #34D399;
+            background: #f0fdf4;
+        }
+
+        .photo-upload input[type="file"] {
+            display: none;
+        }
+
+        .photo-upload .preview {
+            max-width: 200px;
+            max-height: 200px;
+            border-radius: 12px;
+            margin: 10px auto;
+            display: none;
+        }
+
+        .photo-upload .placeholder {
+            color: #6B7280;
+        }
+
+        .photo-upload .placeholder .icon {
+            font-size: 48px;
+            display: block;
+            margin-bottom: 10px;
+        }
+
+        .photo-upload .file-name {
+            font-weight: 600;
+            color: #34D399;
+            display: none;
+        }
+
+        .btn-primary {
+            width: 100%;
+            background: #6C63FF;
+            color: white;
+            border: none;
+            padding: 16px;
+            border-radius: 50px;
+            font-size: 18px;
+            font-weight: 600;
+            cursor: pointer;
+            transition: all 0.3s;
+        }
+
+        .btn-primary:hover {
+            background: #5A52D5;
+            transform: translateY(-2px);
+            box-shadow: 0 12px 40px rgba(108, 99, 255, 0.3);
+        }
+
+        .btn-primary:disabled {
+            opacity: 0.5;
+            cursor: not-allowed;
+            transform: none;
+        }
+
+        .btn-secondary {
+            width: 100%;
+            background: #34D399;
+            color: white;
+            border: none;
+            padding: 16px;
+            border-radius: 50px;
+            font-size: 18px;
+            font-weight: 600;
+            cursor: pointer;
+            transition: all 0.3s;
+            margin-top: 10px;
+        }
+
+        .btn-secondary:hover {
+            background: #10B981;
+            transform: translateY(-2px);
+        }
+
+        .payment-section {
+            display: none;
+            background: #f8f9fe;
+            padding: 20px;
+            border-radius: 12px;
+            margin: 20px 0;
+            text-align: center;
+        }
+
+        .payment-section .amount {
+            font-size: 32px;
+            font-weight: 700;
+            color: #6C63FF;
+        }
+
+        .success-box {
+            display: none;
+            text-align: center;
+            padding: 30px;
+        }
+
+        .success-box h2 {
+            color: #34D399;
+            margin: 15px 0;
+        }
+
+        .success-box p {
+            color: #6B7280;
+            margin-bottom: 10px;
+        }
+
+        @media (max-width: 768px) {
+            nav {
+                padding: 15px 20px;
+            }
+            .onboarding-container {
+                padding: 20px;
+                margin: 20px;
+            }
+            .form-row {
+                grid-template-columns: 1fr;
+            }
+            .onboarding-container h1 {
+                font-size: 24px;
+            }
+        }
+    </style>
+</head>
+<body>
+    <!-- Navigation -->
+    <nav>
+        <div class="logo">🎙️ Talk to Me</div>
+        <div>
+            <a href="/">Home</a>
+            <a href="/dashboard-listener.html">Dashboard</a>
+        </div>
+    </nav>
+
+    <!-- Onboarding Form -->
+    <div class="onboarding-container">
+        <h1>👂 Become a Listener</h1>
+        <p class="subtitle">Turn your empathy into income. Help others heal.</p>
+
+        <div class="earn-badge">
+            💰 <strong>Earn $3 per 30-min session • $9 per hour</strong>
+        </div>
+
+        <div class="membership-badge">
+            <div class="label">🔐 One-Time Membership Fee</div>
+            <div class="price">KES 500</div>
+            <div style="font-size:13px;color:#6B7280;margin-top:5px;">
+                Covers training, verification, and platform access
+            </div>
+        </div>
+
+        <form id="onboarding-form">
+            <!-- Personal Info -->
+            <div class="form-row">
+                <div class="form-group">
+                    <label>Full Name *</label>
+                    <input type="text" id="full-name" required placeholder="e.g., Jane Doe">
+                </div>
+                <div class="form-group">
+                    <label>Age *</label>
+                    <input type="number" id="age" required min="18" max="99" placeholder="e.g., 25">
+                </div>
+            </div>
+
+            <div class="form-row">
+                <div class="form-group">
+                    <label>Email Address *</label>
+                    <input type="email" id="email" required placeholder="jane@email.com">
+                    <div class="hint">Used for login and notifications</div>
+                </div>
+                <div class="form-group">
+                    <label>Password *</label>
+                    <input type="password" id="password" required minlength="8" placeholder="Min 8 characters">
+                </div>
+            </div>
+
+            <div class="form-group">
+                <label>M-Pesa Phone Number *</label>
+                <input type="tel" id="mpesa-number" required placeholder="e.g., 0712345678">
+                <div class="hint">We'll send your earnings here after each session</div>
+            </div>
+
+            <!-- ============ FILE UPLOADS ============ -->
+            <div style="border:2px solid #6C63FF;padding:20px;border-radius:12px;margin:20px 0;background:#f8f9fe;">
+                <h3 style="color:#6C63FF;margin-bottom:15px;">📁 Required Documents</h3>
+                <p style="font-size:14px;color:#6B7280;margin-bottom:15px;">
+                    Please upload the following documents. All files must be clear and readable.
+                </p>
+
+                <!-- CV Upload -->
+                <div class="form-group">
+                    <label>Upload Your CV (PDF) *</label>
+                    <div class="photo-upload" id="cv-upload" onclick="document.getElementById('cv-file').click()">
+                        <input type="file" id="cv-file" accept=".pdf" required>
+                        <div class="placeholder" id="cv-placeholder">
+                            <span class="icon">📄</span>
+                            Click to upload your CV<br>
+                            <span style="font-size:13px;color:#6B7280;">PDF format (Max 5MB)</span>
+                        </div>
+                        <div class="file-name" id="cv-file-name">✅ CV uploaded</div>
+                    </div>
+                    <div class="hint">Upload your CV/Resume in PDF format</div>
+                </div>
+
+                <!-- Academic Certificates -->
+                <div class="form-group">
+                    <label>Upload Academic Certificates (Diploma/Degree) *</label>
+                    <div class="photo-upload" id="cert-upload" onclick="document.getElementById('cert-file').click()">
+                        <input type="file" id="cert-file" accept=".pdf,.jpg,.png" required>
+                        <div class="placeholder" id="cert-placeholder">
+                            <span class="icon">🎓</span>
+                            Click to upload your certificates<br>
+                            <span style="font-size:13px;color:#6B7280;">PDF, JPG, or PNG (Max 5MB)</span>
+                        </div>
+                        <div class="file-name" id="cert-file-name">✅ Certificate uploaded</div>
+                    </div>
+                    <div class="hint">Upload your Diploma or Degree certificate</div>
+                </div>
+
+                <!-- Professional Photo -->
+                <div class="form-group">
+                    <label>Professional Profile Photo *</label>
+                    <div class="photo-upload" id="profile-upload" onclick="document.getElementById('profile-photo').click()">
+                        <input type="file" id="profile-photo" accept="image/*" required>
+                        <div class="placeholder" id="profile-placeholder">
+                            <span class="icon">📸</span>
+                            Click to upload your photo<br>
+                            <span style="font-size:13px;color:#6B7280;">JPG or PNG (Max 5MB)</span>
+                        </div>
+                        <img class="preview" id="profile-preview">
+                        <div class="file-name" id="profile-file-name">✅ Photo uploaded</div>
+                    </div>
+                    <div class="hint">Upload a professional passport-style photo</div>
+                </div>
+            </div>
+
+            <!-- ============ ID VERIFICATION ============ -->
+            <div style="border:2px solid #2563EB;padding:20px;border-radius:12px;margin:20px 0;background:#EFF6FF;">
+                <h3 style="color:#2563EB;margin-bottom:15px;">🪪 Identity Verification</h3>
+                <p style="font-size:14px;color:#6B7280;margin-bottom:15px;">
+                    Please provide your official identification. This is required for security and compliance.
+                </p>
+
+                <div class="form-group">
+                    <label>ID Type *</label>
+                    <select id="id-type" required>
+                        <option value="">Select ID Type...</option>
+                        <option value="national_id">National ID Card</option>
+                        <option value="passport">Passport</option>
+                        <option value="drivers_license">Driver's License</option>
+                        <option value="alien_card">Alien Card / Foreigner ID</option>
+                    </select>
+                </div>
+
+                <div class="form-group">
+                    <label>ID/Passport Number *</label>
+                    <input type="text" id="id-number" required placeholder="e.g., 12345678">
+                    <div class="hint">Enter the number exactly as it appears on your ID</div>
+                </div>
+
+                <div class="form-group">
+                    <label>Full Name on ID *</label>
+                    <input type="text" id="name-on-id" required placeholder="e.g., JANE MARY DOE">
+                    <div class="hint">Must match exactly as it appears on your ID document</div>
+                </div>
+
+                <div class="form-group">
+                    <label>Upload ID/Passport Photo *</label>
+                    <div class="photo-upload" id="photo-upload" onclick="document.getElementById('id-photo').click()">
+                        <input type="file" id="id-photo" accept="image/*" required>
+                        <div class="placeholder" id="photo-placeholder">
+                            <span class="icon">📷</span>
+                            Click to upload your ID photo<br>
+                            <span style="font-size:13px;color:#6B7280;">.jpg, .png (Max 5MB)</span>
+                        </div>
+                        <img class="preview" id="photo-preview">
+                        <div class="file-name" id="photo-file-name">✅ Photo uploaded</div>
+                    </div>
+                    <div class="hint">Upload a clear photo showing your full ID with visible photo and name</div>
+                </div>
+            </div>
+
+            <!-- ============ NDA SECTION ============ -->
+            <div style="border:2px solid #DC2626;padding:20px;border-radius:12px;margin:20px 0;background:#FEF2F2;">
+                <h3 style="color:#DC2626;margin-bottom:15px;">🔒 Non-Disclosure Agreement (NDA)</h3>
+                <p style="font-size:14px;color:#6B7280;margin-bottom:15px;">
+                    Please read the following NDA carefully. You must agree to these terms to become a listener.
+                </p>
+
+                <div style="background:white;padding:15px;border-radius:8px;max-height:200px;overflow-y:auto;font-size:13px;border:1px solid #E5E7EB;margin-bottom:15px;">
+                    <p><strong>NON-DISCLOSURE AGREEMENT</strong></p>
+                    <p>I, the undersigned Listener, agree to maintain strict confidentiality regarding all client information, conversations, and experiences shared during sessions on the Talk to Me platform.</p>
+                    <p><strong>I understand that:</strong></p>
+                    <ul>
+                        <li>I will not disclose any client information to third parties</li>
+                        <li>I will not use client information for personal benefit</li>
+                        <li>I will not record, screenshot, or share session content</li>
+                        <li>I will maintain absolute anonymity of all clients</li>
+                        <li>Breach of this NDA will result in immediate termination and legal action</li>
+                    </ul>
+                    <p><em>This agreement is governed by the laws of Kenya.</em></p>
+                </div>
+
+                <div class="form-group">
+                    <label>Full Name (Digital Signature) *</label>
+                    <input type="text" id="nda-signature" required placeholder="Type your full name as your signature">
+                    <div class="hint">This serves as your electronic signature and is legally binding</div>
+                </div>
+
+                <div class="form-group">
+                    <label>Date *</label>
+                    <input type="date" id="nda-date" required>
+                </div>
+
+                <div class="checkbox-group">
+                    <input type="checkbox" id="nda-agree" required>
+                    <label for="nda-agree">
+                        <strong>I have read, understood, and agree to the terms of the Non-Disclosure Agreement.</strong>
+                    </label>
+                </div>
+
+                <div class="checkbox-group">
+                    <input type="checkbox" id="nda-legal" required>
+                    <label for="nda-legal">
+                        I understand that breaching this NDA may result in <strong>legal action</strong> including claims for damages.
+                    </label>
+                </div>
+            </div>
+
+            <!-- ============ FULL AGREEMENT ============ -->
+            <div style="border:2px solid #F59E0B;padding:20px;border-radius:12px;margin:20px 0;background:#FFFBEB;">
+                <h3 style="color:#D97706;margin-bottom:15px;">📋 Listener Terms & Conditions</h3>
+                <p style="font-size:14px;color:#6B7280;margin-bottom:15px;">
+                    Please read the complete agreement carefully. You must agree to all terms before being approved.
+                </p>
+
+                <div style="background:white;padding:15px;border-radius:8px;max-height:200px;overflow-y:auto;font-size:13px;border:1px solid #E5E7EB;margin-bottom:15px;">
+                    <p><strong>LISTENER TERMS & CONDITIONS</strong></p>
+                    <p><strong>1. PAYMENT TERMS:</strong> Listeners earn $3 per 30-min session and $9 per 60-min session. Payments are processed weekly via M-Pesa.</p>
+                    <p><strong>2. PRIVACY:</strong> Listeners must never ask for or record client names or identifying information.</p>
+                    <p><strong>3. CONDUCT:</strong> Listeners must treat all clients with respect and maintain professional boundaries.</p>
+                    <p><strong>4. AVAILABILITY:</strong> Listeners must keep their online status accurate and respond to booking requests within 15 minutes.</p>
+                    <p><strong>5. ABSENCE:</strong> Listeners must inform the platform in advance if they will be unavailable.</p>
+                    <p><strong>6. CONVENIENCE:</strong> Listeners may cancel sessions with at least 2 hours notice.</p>
+                    <p><strong>7. TERMINATION:</strong> This agreement may be terminated by either party with 7 days written notice.</p>
+                    <p><em>By signing below, you agree to all terms and conditions.</em></p>
+                </div>
+
+                <div class="form-group">
+                    <label>Full Name (Digital Signature) *</label>
+                    <input type="text" id="agreement-signature" required placeholder="Type your full name as your signature">
+                    <div class="hint">This serves as your electronic signature and is legally binding</div>
+                </div>
+
+                <div class="form-group">
+                    <label>Date *</label>
+                    <input type="date" id="agreement-date" required>
+                </div>
+
+                <div class="checkbox-group">
+                    <input type="checkbox" id="payment-agree" required>
+                    <label for="payment-agree">I agree to the <strong>Payment Terms</strong></label>
+                </div>
+                <div class="checkbox-group">
+                    <input type="checkbox" id="privacy-agree" required>
+                    <label for="privacy-agree">I agree to the <strong>Privacy Policy</strong></label>
+                </div>
+                <div class="checkbox-group">
+                    <input type="checkbox" id="conduct-agree" required>
+                    <label for="conduct-agree">I agree to the <strong>Code of Conduct</strong></label>
+                </div>
+                <div class="checkbox-group">
+                    <input type="checkbox" id="availability-agree" required>
+                    <label for="availability-agree">I agree to the <strong>Availability Requirements</strong></label>
+                </div>
+                <div class="checkbox-group">
+                    <input type="checkbox" id="absence-agree" required>
+                    <label for="absence-agree">I agree to the <strong>Absence Policy</strong></label>
+                </div>
+                <div class="checkbox-group">
+                    <input type="checkbox" id="convenience-agree" required>
+                    <label for="convenience-agree">I agree to the <strong>Convenience & Cancellation Policy</strong></label>
+                </div>
+                <div class="checkbox-group">
+                    <input type="checkbox" id="termination-agree" required>
+                    <label for="termination-agree">I agree to the <strong>Termination Terms</strong></label>
+                </div>
+            </div>
+
+            <!-- Why Join -->
+            <div class="form-group">
+                <label>Why do you want to be a listener? *</label>
+                <textarea id="motivation" required placeholder="Tell us about yourself and why you'd be a good listener..."></textarea>
+            </div>
+
+            <div class="form-group">
+                <label>Previous Experience (Optional)</label>
+                <textarea id="experience" placeholder="Any counseling, coaching, or listening experience?"></textarea>
+            </div>
+
+            <!-- Availability -->
+            <div class="form-group">
+                <label>Availability (Select days you're available)</label>
+                <div style="display:grid;grid-template-columns:repeat(auto-fill,minmax(80px,1fr));gap:10px;">
+                    <label><input type="checkbox" value="monday"> Mon</label>
+                    <label><input type="checkbox" value="tuesday"> Tue</label>
+                    <label><input type="checkbox" value="wednesday"> Wed</label>
+                    <label><input type="checkbox" value="thursday"> Thu</label>
+                    <label><input type="checkbox" value="friday"> Fri</label>
+                    <label><input type="checkbox" value="saturday"> Sat</label>
+                    <label><input type="checkbox" value="sunday"> Sun</label>
+                </div>
+            </div>
+
+            <div class="form-group">
+                <label>Preferred Time Slots</label>
+                <div style="display:grid;grid-template-columns:repeat(auto-fill,minmax(120px,1fr));gap:10px;">
+                    <label><input type="checkbox" value="morning"> Morning (9AM-12PM)</label>
+                    <label><input type="checkbox" value="afternoon"> Afternoon (12PM-5PM)</label>
+                    <label><input type="checkbox" value="evening"> Evening (5PM-9PM)</label>
+                </div>
+            </div>
+
+            <!-- Agreements -->
+            <div class="checkbox-group">
+                <input type="checkbox" id="terms" required>
+                <label for="terms">I agree to the <a href="#" onclick="alert('Terms of Service will be here');return false;">Terms of Service</a></label>
+            </div>
+
+            <div class="checkbox-group">
+                <input type="checkbox" id="background-check" required>
+                <label for="background-check">I consent to a background verification check</label>
+            </div>
+
+            <div class="checkbox-group">
+                <input type="checkbox" id="data-consent" required>
+                <label for="data-consent">I consent to my ID information being stored securely for verification purposes</label>
+            </div>
+
+            <button type="submit" class="btn-primary" id="submit-btn">📝 Submit Application (KES 500)</button>
+        </form>
+
+        <!-- Payment Section -->
+        <div class="payment-section" id="payment-section">
+            <p style="font-size:14px;color:#6B7280;">✅ Application Submitted!</p>
+            <p style="font-weight:600;">Pay the membership fee to activate your account:</p>
+            <div class="amount">KES 500</div>
+            <button class="btn-secondary" id="pay-membership-btn">💳 Pay with M-Pesa</button>
+            <p style="font-size:13px;color:#6B7280;margin-top:10px;">
+                You'll be redirected to Paystack for secure payment
+            </p>
+        </div>
+
+        <!-- Success Message -->
+        <div class="success-box" id="success-box">
+            <div style="font-size:48px;">🎉</div>
+            <h2>Welcome to Talk to Me!</h2>
+            <p>Your membership is active. You can now start accepting sessions.</p>
+            <button onclick="location.href='/dashboard-listener.html'" style="background:#6C63FF;color:white;border:none;padding:12px 30px;border-radius:50px;font-weight:600;cursor:pointer;margin-top:15px;">
+                Go to Dashboard
+            </button>
+        </div>
+    </div>
+
+    <script>
+        // ============ SET DEFAULT DATES ============
+        document.getElementById('nda-date').value = new Date().toISOString().split('T')[0];
+        document.getElementById('agreement-date').value = new Date().toISOString().split('T')[0];
+
+        // ============ FILE UPLOAD PREVIEWS ============
+
+        // CV Upload
+        document.getElementById('cv-file').addEventListener('change', function(e) {
+            const file = this.files[0];
+            if (file) {
+                document.getElementById('cv-placeholder').style.display = 'none';
+                document.getElementById('cv-file-name').style.display = 'block';
+                document.getElementById('cv-upload').classList.add('has-image');
+            }
+        });
+
+        // Certificate Upload
+        document.getElementById('cert-file').addEventListener('change', function(e) {
+            const file = this.files[0];
+            if (file) {
+                document.getElementById('cert-placeholder').style.display = 'none';
+                document.getElementById('cert-file-name').style.display = 'block';
+                document.getElementById('cert-upload').classList.add('has-image');
+            }
+        });
+
+        // Profile Photo
+        document.getElementById('profile-photo').addEventListener('change', function(e) {
+            const file = this.files[0];
+            if (file) {
+                const reader = new FileReader();
+                reader.onload = function(event) {
+                    const preview = document.getElementById('profile-preview');
+                    preview.src = event.target.result;
+                    preview.style.display = 'block';
+                    document.getElementById('profile-placeholder').style.display = 'none';
+                    document.getElementById('profile-file-name').style.display = 'block';
+                    document.getElementById('profile-upload').classList.add('has-image');
+                };
+                reader.readAsDataURL(file);
+            }
+        });
+
+        // ID Photo
+        document.getElementById('id-photo').addEventListener('change', function(e) {
+            const file = this.files[0];
+            if (file) {
+                const reader = new FileReader();
+                reader.onload = function(event) {
+                    const preview = document.getElementById('photo-preview');
+                    preview.src = event.target.result;
+                    preview.style.display = 'block';
+                    document.getElementById('photo-placeholder').style.display = 'none';
+                    document.getElementById('photo-file-name').style.display = 'block';
+                    document.getElementById('photo-upload').classList.add('has-image');
+                };
+                reader.readAsDataURL(file);
+            }
+        });
+
+        // ============ FORM SUBMISSION ============
+        let applicationData = {};
+
+        document.getElementById('onboarding-form').addEventListener('submit', async function(e) {
+            e.preventDefault();
+
+            // Get form data
+            const formData = new FormData();
+
+            // Personal Info
+            formData.append('fullName', document.getElementById('full-name').value);
+            formData.append('age', document.getElementById('age').value);
+            formData.append('email', document.getElementById('email').value);
+            formData.append('password', document.getElementById('password').value);
+            formData.append('mpesaNumber', document.getElementById('mpesa-number').value);
+
+            // Files
+            formData.append('cv', document.getElementById('cv-file').files[0]);
+            formData.append('idPhoto', document.getElementById('id-photo').files[0]);
+            formData.append('certificate', document.getElementById('cert-file').files[0]);
+            formData.append('profilePhoto', document.getElementById('profile-photo').files[0]);
+
+            // ID Verification
+            formData.append('idType', document.getElementById('id-type').value);
+            formData.append('idNumber', document.getElementById('id-number').value);
+            formData.append('nameOnId', document.getElementById('name-on-id').value);
+
+            // NDA
+            formData.append('ndaSignature', document.getElementById('nda-signature').value);
+            formData.append('ndaDate', document.getElementById('nda-date').value);
+            formData.append('ndaAgree', document.getElementById('nda-agree').checked);
+            formData.append('ndaLegal', document.getElementById('nda-legal').checked);
+
+            // Agreement
+            formData.append('agreementSignature', document.getElementById('agreement-signature').value);
+            formData.append('agreementDate', document.getElementById('agreement-date').value);
+            formData.append('paymentTermsAgree', document.getElementById('payment-agree').checked);
+            formData.append('privacyAgree', document.getElementById('privacy-agree').checked);
+            formData.append('conductAgree', document.getElementById('conduct-agree').checked);
+            formData.append('availabilityAgree', document.getElementById('availability-agree').checked);
+            formData.append('absenceAgree', document.getElementById('absence-agree').checked);
+            formData.append('convenienceAgree', document.getElementById('convenience-agree').checked);
+            formData.append('terminationAgree', document.getElementById('termination-agree').checked);
+
+            // Other
+            formData.append('motivation', document.getElementById('motivation').value);
+            formData.append('experience', document.getElementById('experience').value);
+            formData.append('terms', document.getElementById('terms').checked);
+            formData.append('backgroundCheck', document.getElementById('background-check').checked);
+            formData.append('dataConsent', document.getElementById('data-consent').checked);
+
+            // Availability
+            const availability = Array.from(document.querySelectorAll('.form-group input[type="checkbox"]:checked'))
+                .map(cb => cb.value);
+            formData.append('availability', JSON.stringify(availability));
+
+            const timeSlots = Array.from(document.querySelectorAll('.form-group input[type="checkbox"]:checked'))
+                .filter(cb => ['morning', 'afternoon', 'evening'].includes(cb.value))
+                .map(cb => cb.value);
+            formData.append('timeSlots', JSON.stringify(timeSlots));
+
+            // Show loading
+            const btn = document.getElementById('submit-btn');
+            btn.disabled = true;
+            btn.textContent = '⏳ Submitting...';
+
+            try {
+                const response = await fetch('/api/listener/apply', {
+                    method: 'POST',
+                    body: formData
+                });
+
+                const data = await response.json();
+
+                if (data.success) {
+                    document.getElementById('onboarding-form').style.display = 'none';
+                    document.getElementById('payment-section').style.display = 'block';
+                    applicationData = {
+                        email: document.getElementById('email').value,
+                        fullName: document.getElementById('full-name').value,
+                        mpesaNumber: document.getElementById('mpesa-number').value,
+                        applicationId: data.applicationId
+                    };
+                    btn.disabled = false;
+                    btn.textContent = '📝 Submit Application (KES 500)';
+                } else {
+                    alert(data.error || 'Application failed. Please try again.');
+                    btn.disabled = false;
+                    btn.textContent = '📝 Submit Application (KES 500)';
+                }
+            } catch (error) {
+                alert('Error submitting application. Please check your internet connection.');
+                console.error(error);
+                btn.disabled = false;
+                btn.textContent = '📝 Submit Application (KES 500)';
+            }
+        });
+
+        // ============ PAY MEMBERSHIP ============
+        document.getElementById('pay-membership-btn').addEventListener('click', async function() {
+            const btn = this;
+            btn.disabled = true;
+            btn.textContent = '⏳ Processing...';
+
+            try {
+                const response = await fetch('/api/listener/initiate-membership', {
+                    method: 'POST',
+                    headers: { 'Content-Type': 'application/json' },
+                    body: JSON.stringify({
+                        email: applicationData.email,
+                        fullName: applicationData.fullName,
+                        mpesaNumber: applicationData.mpesaNumber,
+                        applicationId: applicationData.applicationId
+                    })
+                });
+
+                const data = await response.json();
+
+                if (data.authorization_url) {
+                    window.location.href = data.authorization_url;
+                } else {
+                    alert('Payment initiation failed. Please try again.');
+                    btn.disabled = false;
+                    btn.textContent = '💳 Pay with M-Pesa';
+                }
+            } catch (error) {
+                alert('Error initiating payment. Please try again.');
+                console.error(error);
+                btn.disabled = false;
+                btn.textContent = '💳 Pay with M-Pesa';
+            }
+        });
+
+        // ============ HANDLE MEMBERSHIP CALLBACK ============
+        function handleMembershipCallback() {
+            const params = new URLSearchParams(window.location.search);
+            const status = params.get('membership');
+            const reference = params.get('reference');
+
+            if (status === 'success') {
+                document.getElementById('payment-section').style.display = 'none';
+                document.getElementById('success-box').style.display = 'block';
+            } else if (status === 'failed' || status === 'error') {
+                alert('Payment failed. Please try again.');
+                document.getElementById('payment-section').style.display = 'block';
+            } else if (status === 'cancelled') {
+                alert('Payment was cancelled.');
+                document.getElementById('payment-section').style.display = 'block';
+            }
+        }
+
+        // ============ INIT ============
+        document.addEventListener('DOMContentLoaded', function() {
+            handleMembershipCallback();
+        });
+    </script>
+</body>
+</html>

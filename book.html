@@ -1,0 +1,518 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Book a Session — Talk to Me</title>
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        body {
+            font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif;
+            background: #f8f9fe;
+            color: #1A1A2E;
+            line-height: 1.6;
+        }
+
+        nav {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            padding: 20px 60px;
+            background: white;
+            box-shadow: 0 2px 10px rgba(0,0,0,0.05);
+        }
+
+        .logo {
+            font-size: 24px;
+            font-weight: 700;
+            color: #6C63FF;
+        }
+
+        nav a {
+            margin: 0 15px;
+            text-decoration: none;
+            color: #1A1A2E;
+            font-weight: 500;
+        }
+
+        nav a:hover {
+            color: #6C63FF;
+        }
+
+        .booking-container {
+            max-width: 700px;
+            margin: 40px auto;
+            padding: 40px;
+            background: white;
+            border-radius: 16px;
+            box-shadow: 0 8px 32px rgba(0,0,0,0.08);
+        }
+
+        .booking-container h1 {
+            font-size: 32px;
+            margin-bottom: 10px;
+            color: #1A1A2E;
+        }
+
+        .booking-container .subtitle {
+            color: #6B7280;
+            margin-bottom: 30px;
+            font-size: 16px;
+        }
+
+        .form-group {
+            margin-bottom: 25px;
+        }
+
+        .form-group label {
+            display: block;
+            font-weight: 600;
+            margin-bottom: 8px;
+            color: #1A1A2E;
+        }
+
+        .form-group input,
+        .form-group select,
+        .form-group textarea {
+            width: 100%;
+            padding: 12px 16px;
+            border: 2px solid #E5E7EB;
+            border-radius: 8px;
+            font-size: 16px;
+            transition: border-color 0.3s;
+            font-family: inherit;
+        }
+
+        .form-group input:focus,
+        .form-group select:focus,
+        .form-group textarea:focus {
+            border-color: #6C63FF;
+            outline: none;
+        }
+
+        .form-group textarea {
+            min-height: 80px;
+            resize: vertical;
+        }
+
+        .tier-selector {
+            display: grid;
+            grid-template-columns: 1fr 1fr;
+            gap: 15px;
+        }
+
+        .tier-option {
+            padding: 20px;
+            border: 2px solid #E5E7EB;
+            border-radius: 12px;
+            text-align: center;
+            cursor: pointer;
+            transition: all 0.3s;
+        }
+
+        .tier-option:hover {
+            border-color: #6C63FF;
+        }
+
+        .tier-option.selected {
+            border-color: #6C63FF;
+            background: #f8f9fe;
+        }
+
+        .tier-option .price {
+            font-size: 28px;
+            font-weight: 700;
+            color: #6C63FF;
+        }
+
+        .tier-option .duration {
+            font-size: 14px;
+            color: #6B7280;
+        }
+
+        .tier-option .badge {
+            display: inline-block;
+            background: #34D399;
+            color: white;
+            padding: 2px 12px;
+            border-radius: 20px;
+            font-size: 12px;
+            font-weight: 600;
+            margin-top: 5px;
+        }
+
+        .price-summary {
+            background: #f8f9fe;
+            padding: 20px;
+            border-radius: 12px;
+            margin: 20px 0;
+        }
+
+        .price-row {
+            display: flex;
+            justify-content: space-between;
+            padding: 8px 0;
+        }
+
+        .price-row.total {
+            border-top: 2px solid #E5E7EB;
+            padding-top: 15px;
+            font-weight: 700;
+            font-size: 18px;
+        }
+
+        .btn-primary {
+            width: 100%;
+            background: #6C63FF;
+            color: white;
+            border: none;
+            padding: 16px;
+            border-radius: 50px;
+            font-size: 18px;
+            font-weight: 600;
+            cursor: pointer;
+            transition: all 0.3s;
+        }
+
+        .btn-primary:hover {
+            background: #5A52D5;
+            transform: translateY(-2px);
+            box-shadow: 0 12px 40px rgba(108, 99, 255, 0.3);
+        }
+
+        .btn-primary:disabled {
+            opacity: 0.5;
+            cursor: not-allowed;
+            transform: none;
+        }
+
+        .discount-section {
+            display: none;
+            background: #f0fdf4;
+            padding: 15px;
+            border-radius: 12px;
+            margin: 15px 0;
+            border: 2px solid #34D399;
+        }
+
+        .discount-section .discount-amount {
+            color: #6C63FF;
+            font-weight: 700;
+            font-size: 18px;
+        }
+
+        .secure-badge {
+            text-align: center;
+            color: #6B7280;
+            font-size: 14px;
+            margin-top: 20px;
+        }
+
+        .secure-badge span {
+            display: inline-block;
+            margin: 0 10px;
+        }
+
+        @media (max-width: 768px) {
+            nav {
+                padding: 15px 20px;
+                flex-wrap: wrap;
+            }
+            .booking-container {
+                padding: 20px;
+                margin: 20px;
+            }
+            .tier-selector {
+                grid-template-columns: 1fr;
+            }
+            .booking-container h1 {
+                font-size: 24px;
+            }
+        }
+    </style>
+</head>
+<body>
+    <!-- Navigation -->
+    <nav>
+        <div class="logo">🎙️ Talk to Me</div>
+        <div>
+            <a href="/">Home</a>
+            <a href="/dashboard-client.html">My Sessions</a>
+        </div>
+    </nav>
+
+    <!-- Booking Form -->
+    <div class="booking-container">
+        <h1>📅 Book Your Session</h1>
+        <p class="subtitle">Choose your session type and pick a time. You'll be matched with a trained listener.</p>
+
+        <form id="booking-form">
+            <!-- Tier Selection -->
+            <div class="form-group">
+                <label>Select Session Type</label>
+                <div class="tier-selector">
+                    <div class="tier-option selected" data-tier="standard" onclick="selectTier(this, 'standard')">
+                        <div class="duration">🌱 Standard</div>
+                        <div class="price">$10</div>
+                        <div style="font-size:13px;color:#6B7280;">30 minutes</div>
+                        <div class="badge">Popular</div>
+                    </div>
+                    <div class="tier-option" data-tier="extended" onclick="selectTier(this, 'extended')">
+                        <div class="duration">🌿 Extended</div>
+                        <div class="price">$30</div>
+                        <div style="font-size:13px;color:#6B7280;">60 minutes</div>
+                        <div class="badge">Best Value</div>
+                    </div>
+                </div>
+                <input type="hidden" id="tier" value="standard">
+                <input type="hidden" id="price" value="1000">
+            </div>
+
+            <!-- Date & Time -->
+            <div class="form-group">
+                <label>Select Date & Time</label>
+                <input type="datetime-local" id="booking-datetime" required>
+                <div style="font-size:13px;color:#6B7280;margin-top:5px;">
+                    Minimum 1 hour from now. Available 9 AM - 9 PM daily.
+                </div>
+            </div>
+
+            <!-- Optional Note -->
+            <div class="form-group">
+                <label>Anything you'd like to share? (Optional)</label>
+                <textarea id="booking-note" placeholder="E.g., 'I'm feeling anxious about work...'"></textarea>
+                <div style="font-size:13px;color:#6B7280;margin-top:5px;">
+                    This is shared with your listener to help them prepare.
+                </div>
+            </div>
+
+            <!-- Discount Section -->
+            <div class="discount-section" id="discount-section">
+                <div style="display:flex;justify-content:space-between;">
+                    <span>🎉 Your Discount:</span>
+                    <span class="discount-amount" id="discount-display">0%</span>
+                </div>
+                <div style="display:flex;justify-content:space-between;font-size:14px;color:#6B7280;">
+                    <span>Original price:</span>
+                    <span id="original-price">$10.00</span>
+                </div>
+                <div style="display:flex;justify-content:space-between;font-weight:700;font-size:18px;">
+                    <span>You pay:</span>
+                    <span id="discounted-price">$10.00</span>
+                </div>
+            </div>
+
+            <!-- Price Summary -->
+            <div class="price-summary">
+                <div class="price-row">
+                    <span>Session</span>
+                    <span id="summary-tier">Standard (30 min)</span>
+                </div>
+                <div class="price-row total">
+                    <span>Total</span>
+                    <span id="summary-price">$10.00</span>
+                </div>
+            </div>
+
+            <button type="submit" class="btn-primary" id="pay-btn">💳 Pay & Book</button>
+        </form>
+
+        <div class="secure-badge">
+            <span>🔒 100% Secure Payment</span>
+            <span>🛡️ PCI Compliant</span>
+            <span>🔐 No Card Storage</span>
+        </div>
+
+        <!-- Confirmation (hidden initially) -->
+        <div id="confirmation" style="display:none;text-align:center;padding:20px;">
+            <div style="font-size:48px;margin-bottom:15px;">✅</div>
+            <h2 style="color:#34D399;">Session Booked!</h2>
+            <p>Your session is confirmed for <span id="confirm-time"></span></p>
+            <p style="color:#6B7280;margin:10px 0;">You'll be matched with a listener shortly.</p>
+            <button onclick="location.href='/dashboard-client.html'" style="background:#6C63FF;color:white;border:none;padding:12px 30px;border-radius:50px;font-weight:600;cursor:pointer;margin-top:15px;">
+                Go to My Sessions
+            </button>
+        </div>
+    </div>
+
+    <script>
+        // ============ TIER SELECTION ============
+        let selectedTier = 'standard';
+        const prices = { standard: 1000, extended: 3000 };
+        const tierLabels = { standard: 'Standard (30 min)', extended: 'Extended (60 min)' };
+
+        function selectTier(el, tier) {
+            document.querySelectorAll('.tier-option').forEach(t => t.classList.remove('selected'));
+            el.classList.add('selected');
+            selectedTier = tier;
+            document.getElementById('tier').value = tier;
+            document.getElementById('price').value = prices[tier];
+
+            const price = prices[tier] / 100;
+            document.getElementById('summary-tier').textContent = tierLabels[tier];
+            document.getElementById('summary-price').textContent = '$' + price.toFixed(2);
+
+            // Check if discount applies
+            applyDiscountToPrice(price);
+        }
+
+        // ============ DATE TIME PICKER ============
+        function setMinDateTime() {
+            const now = new Date();
+            const minTime = new Date(now.getTime() + 3600000); // 1 hour from now
+            const input = document.getElementById('booking-datetime');
+            input.min = minTime.toISOString().slice(0, 16);
+
+            // Restrict to 9 AM - 9 PM
+            input.addEventListener('change', function() {
+                const selected = new Date(this.value);
+                const hours = selected.getHours();
+                if (hours < 9 || hours >= 21) {
+                    alert('Sessions are only available between 9 AM and 9 PM.');
+                    this.value = '';
+                }
+            });
+        }
+
+        // ============ DISCOUNT SYSTEM ============
+        function applyDiscountToPrice(price) {
+            // Check for referral discount from URL
+            const params = new URLSearchParams(window.location.search);
+            const ref = params.get('ref');
+            
+            let discount = 0;
+            
+            // If referral code exists, apply 2% discount
+            if (ref) {
+                discount = 2;
+                document.getElementById('discount-section').style.display = 'block';
+                document.getElementById('discount-display').textContent = '2% (Referral)';
+                
+                // Store referral code to apply on server
+                localStorage.setItem('referral_code', ref);
+            }
+            
+            // Check for loyalty discount (from previous sessions)
+            const token = localStorage.getItem('session_token');
+            if (token) {
+                // We'll check with server later
+                // For now, just show if we have it stored
+                const savedDiscount = localStorage.getItem('client_discount');
+                if (savedDiscount && parseInt(savedDiscount) > discount) {
+                    discount = parseInt(savedDiscount);
+                    document.getElementById('discount-section').style.display = 'block';
+                    document.getElementById('discount-display').textContent = discount + '% (Loyalty)';
+                }
+            }
+            
+            // Apply discount
+            if (discount > 0) {
+                const discountedPrice = price * (1 - discount / 100);
+                document.getElementById('original-price').textContent = '$' + price.toFixed(2);
+                document.getElementById('discounted-price').textContent = '$' + discountedPrice.toFixed(2);
+                document.getElementById('summary-price').textContent = '$' + discountedPrice.toFixed(2);
+            } else {
+                document.getElementById('discount-section').style.display = 'none';
+                document.getElementById('summary-price').textContent = '$' + price.toFixed(2);
+            }
+        }
+
+        // ============ FORM SUBMISSION ============
+        document.getElementById('booking-form').addEventListener('submit', async function(e) {
+            e.preventDefault();
+
+            const tier = document.getElementById('tier').value;
+            const price = parseInt(document.getElementById('price').value);
+            const scheduledAt = new Date(document.getElementById('booking-datetime').value).getTime();
+            const note = document.getElementById('booking-note').value;
+            const referralCode = localStorage.getItem('referral_code');
+
+            // Validate
+            if (!scheduledAt) {
+                alert('Please select a date and time.');
+                return;
+            }
+
+            if (scheduledAt < Date.now() + 3600000) {
+                alert('Please select a time at least 1 hour from now.');
+                return;
+            }
+
+            // Show loading state
+            const btn = document.getElementById('pay-btn');
+            btn.disabled = true;
+            btn.textContent = '⏳ Processing...';
+
+            try {
+                const response = await fetch('/api/create-booking', {
+                    method: 'POST',
+                    headers: { 'Content-Type': 'application/json' },
+                    body: JSON.stringify({
+                        tier,
+                        scheduledAt,
+                        note,
+                        amount: price,
+                        referralCode
+                    })
+                });
+
+                const data = await response.json();
+
+                if (data.authorization_url) {
+                    // Redirect to Paystack payment page
+                    window.location.href = data.authorization_url;
+                } else {
+                    alert('Booking failed: ' + (data.error || 'Unknown error'));
+                    btn.disabled = false;
+                    btn.textContent = '💳 Pay & Book';
+                }
+            } catch (error) {
+                alert('Booking failed. Please try again.');
+                console.error(error);
+                btn.disabled = false;
+                btn.textContent = '💳 Pay & Book';
+            }
+        });
+
+        // ============ HANDLE PAYMENT CALLBACK ============
+        function handlePaymentCallback() {
+            const params = new URLSearchParams(window.location.search);
+            const reference = params.get('reference');
+            const status = params.get('status');
+
+            if (status === 'success' && reference) {
+                // Show confirmation
+                document.getElementById('booking-form').style.display = 'none';
+                document.getElementById('confirmation').style.display = 'block';
+                document.getElementById('confirm-time').textContent = 
+                    new Date().toLocaleString();
+
+                // Store session token
+                localStorage.setItem('session_token', reference);
+
+                // Clear referral code
+                localStorage.removeItem('referral_code');
+
+            } else if (status === 'cancelled') {
+                alert('Payment was cancelled.');
+            }
+        }
+
+        // ============ INITIALIZATION ============
+        document.addEventListener('DOMContentLoaded', function() {
+            setMinDateTime();
+            
+            // Check if returning from payment
+            handlePaymentCallback();
+
+            // Set default tier
+            document.querySelector('.tier-option[data-tier="standard"]').classList.add('selected');
+        });
+    </script>
+</body>
+</html>

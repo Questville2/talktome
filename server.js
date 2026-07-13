@@ -6,9 +6,18 @@ const bcrypt = require('bcrypt');
 const fs = require('fs');
 const path = require('path');
 const multer = require('multer');
-const nodemailer = require('nodemailer');
 const app = express();
 const PORT = process.env.PORT || 3000;
+
+// ============ TRY TO LOAD NODEMAILER ============
+let nodemailer;
+try {
+    nodemailer = require('nodemailer');
+    console.log('📧 Nodemailer loaded successfully');
+} catch (error) {
+    console.log('⚠️ Nodemailer not installed. Email features will be disabled.');
+    nodemailer = null;
+}
 
 // ============ ALLOW ANY HOST (FIX FOR RENDER) ============
 app.set('trust proxy', true);
@@ -30,23 +39,43 @@ app.use((req, res, next) => {
 
 app.use('/uploads', express.static('uploads'));
 
-// ============ DOMAIN CONFIGURATION ============
-const BASE_URL = process.env.BASE_URL || 'https://talktome-1m1b.onrender.com';
-console.log('🌐 Site URL:', BASE_URL);
-
-// ============ EMAIL CONFIGURATION ============
-const EMAIL_USER = process.env.EMAIL_USER;
+// ============ DOMAIN & EMAIL CONFIGURATION ============
+const BASE_URL = process.env.BASE_URL || 'https://www.talktomequestville.com';
+const ADMIN_EMAIL = process.env.ADMIN_EMAIL || 'talktomequest@gmail.com';
+const EMAIL_USER = process.env.EMAIL_USER || 'talktomequest@gmail.com';
 const EMAIL_PASSWORD = process.env.EMAIL_PASSWORD;
 
-const transporter = nodemailer.createTransport({
-    service: 'gmail',
-    auth: {
-        user: EMAIL_USER,
-        pass: EMAIL_PASSWORD
-    }
-});
+console.log('🌐 Site URL:', BASE_URL);
+console.log('📧 Admin Email:', ADMIN_EMAIL);
 
+// ============ EMAIL TRANSPORTER ============
+let transporter = null;
+
+if (nodemailer && EMAIL_USER && EMAIL_PASSWORD) {
+    try {
+        transporter = nodemailer.createTransport({
+            service: 'gmail',
+            auth: {
+                user: EMAIL_USER,
+                pass: EMAIL_PASSWORD
+            }
+        });
+        console.log('📧 Email configured successfully');
+    } catch (error) {
+        console.log('⚠️ Email configuration failed:', error.message);
+    }
+} else {
+    console.log('⚠️ Email not configured. Please set EMAIL_USER and EMAIL_PASSWORD in .env');
+}
+
+// ============ EMAIL FUNCTIONS ============
 async function sendEmail(to, subject, html) {
+    if (!transporter) {
+        console.log('📧 Email would be sent to:', to);
+        console.log('📧 Subject:', subject);
+        return null;
+    }
+    
     try {
         const mailOptions = {
             from: `"Talk to Me" <${EMAIL_USER}>`,
@@ -61,6 +90,137 @@ async function sendEmail(to, subject, html) {
         console.error('❌ Email error:', error.message);
         return null;
     }
+}
+
+// ============ NOTIFICATION FUNCTIONS ============
+
+// 1. New Booking Notification
+async function notifyNewBooking(session) {
+    const subject = `📅 New Booking - Session ${session.id}`;
+    const html = `
+        <div style="font-family: system-ui; max-width: 600px; padding: 20px;">
+            <h2 style="color: #2D6A4F;">📅 New Booking!</h2>
+            <p><strong>Session ID:</strong> ${session.id}</p>
+            <p><strong>Tier:</strong> ${session.tier === 'standard' ? 'Standard (30 min)' : 'Extended (60 min)'}</p>
+            <p><strong>Price:</strong> $${session.price / 100}</p>
+            <p><strong>Scheduled:</strong> ${new Date(session.scheduledAt).toLocaleString()}</p>
+            <p><strong>Note:</strong> ${session.note || 'None'}</p>
+            <p><strong>Status:</strong> ${session.status}</p>
+            <hr>
+            <a href="${BASE_URL}/admin.html" style="background: #2D6A4F; color: white; padding: 10px 20px; border-radius: 50px; text-decoration: none;">View in Admin</a>
+        </div>
+    `;
+    await sendEmail(ADMIN_EMAIL, subject, html);
+}
+
+// 2. Payment Notification
+async function notifyPayment(session, reference) {
+    const subject = `💰 Payment Received - ${reference}`;
+    const html = `
+        <div style="font-family: system-ui; max-width: 600px; padding: 20px;">
+            <h2 style="color: #2D6A4F;">💰 Payment Received!</h2>
+            <p><strong>Reference:</strong> ${reference}</p>
+            <p><strong>Session ID:</strong> ${session.id}</p>
+            <p><strong>Amount:</strong> $${session.price / 100}</p>
+            <p><strong>Tier:</strong> ${session.tier === 'standard' ? 'Standard (30 min)' : 'Extended (60 min)'}</p>
+            <p><strong>Time:</strong> ${new Date().toLocaleString()}</p>
+            <hr>
+            <a href="${BASE_URL}/admin.html" style="background: #2D6A4F; color: white; padding: 10px 20px; border-radius: 50px; text-decoration: none;">View in Admin</a>
+        </div>
+    `;
+    await sendEmail(ADMIN_EMAIL, subject, html);
+}
+
+// 3. New Listener Application Notification
+async function notifyListenerApplication(application) {
+    const subject = `👂 New Listener Application - ${application.fullName}`;
+    const html = `
+        <div style="font-family: system-ui; max-width: 600px; padding: 20px;">
+            <h2 style="color: #2D6A4F;">👂 New Listener Application!</h2>
+            <p><strong>Name:</strong> ${application.fullName}</p>
+            <p><strong>Email:</strong> ${application.email}</p>
+            <p><strong>Age:</strong> ${application.age}</p>
+            <p><strong>M-Pesa:</strong> ${application.mpesaNumber}</p>
+            <p><strong>ID Type:</strong> ${application.idType}</p>
+            <p><strong>ID Number:</strong> ${application.idNumber}</p>
+            <p><strong>Motivation:</strong> ${application.motivation.substring(0, 200)}...</p>
+            <hr>
+            <a href="${BASE_URL}/admin.html" style="background: #2D6A4F; color: white; padding: 10px 20px; border-radius: 50px; text-decoration: none;">Review Application</a>
+        </div>
+    `;
+    await sendEmail(ADMIN_EMAIL, subject, html);
+}
+
+// 4. New Chat Message Notification
+async function notifyChatMessage(sessionId, sender, message) {
+    const subject = `💬 New Chat Message - Session ${sessionId}`;
+    const html = `
+        <div style="font-family: system-ui; max-width: 600px; padding: 20px;">
+            <h2 style="color: #2D6A4F;">💬 New Chat Message!</h2>
+            <p><strong>Session:</strong> ${sessionId}</p>
+            <p><strong>From:</strong> ${sender}</p>
+            <p><strong>Message:</strong></p>
+            <div style="background: #f8f9fe; padding: 15px; border-radius: 8px; margin: 10px 0;">
+                ${message}
+            </div>
+            <hr>
+            <a href="${BASE_URL}/admin.html" style="background: #2D6A4F; color: white; padding: 10px 20px; border-radius: 50px; text-decoration: none;">View Chat</a>
+        </div>
+    `;
+    await sendEmail(ADMIN_EMAIL, subject, html);
+}
+
+// 5. New Gift Notification
+async function notifyNewGift(gift) {
+    const subject = `🎁 New Gift Session - ${gift.giverName} → ${gift.friendName}`;
+    const html = `
+        <div style="font-family: system-ui; max-width: 600px; padding: 20px;">
+            <h2 style="color: #2D6A4F;">🎁 New Gift!</h2>
+            <p><strong>From:</strong> ${gift.giverName}</p>
+            <p><strong>To:</strong> ${gift.friendName}</p>
+            <p><strong>Email:</strong> ${gift.friendEmail}</p>
+            <p><strong>Gift Code:</strong> <code style="background: #f0fdf4; padding: 4px 12px; border-radius: 4px; font-size: 18px;">${gift.code}</code></p>
+            ${gift.message ? `<p><strong>Message:</strong> "${gift.message}"</p>` : ''}
+            <hr>
+            <a href="${BASE_URL}/admin.html" style="background: #2D6A4F; color: white; padding: 10px 20px; border-radius: 50px; text-decoration: none;">View Gifts</a>
+        </div>
+    `;
+    await sendEmail(ADMIN_EMAIL, subject, html);
+}
+
+// 6. Gift Redeemed Notification
+async function notifyGiftRedeemed(gift, sessionId) {
+    const subject = `✅ Gift Redeemed - ${gift.code}`;
+    const html = `
+        <div style="font-family: system-ui; max-width: 600px; padding: 20px;">
+            <h2 style="color: #2D6A4F;">✅ Gift Redeemed!</h2>
+            <p><strong>Gift Code:</strong> ${gift.code}</p>
+            <p><strong>From:</strong> ${gift.giverName}</p>
+            <p><strong>To:</strong> ${gift.friendName}</p>
+            <p><strong>Session ID:</strong> ${sessionId}</p>
+            <p><strong>Redeemed at:</strong> ${new Date().toLocaleString()}</p>
+            <hr>
+            <a href="${BASE_URL}/admin.html" style="background: #2D6A4F; color: white; padding: 10px 20px; border-radius: 50px; text-decoration: none;">View Sessions</a>
+        </div>
+    `;
+    await sendEmail(ADMIN_EMAIL, subject, html);
+}
+
+// 7. Listener Approved Notification
+async function notifyListenerApproved(email, name) {
+    const subject = `✅ You're Approved! - Talk to Me Listener`;
+    const html = `
+        <div style="font-family: system-ui; max-width: 600px; padding: 20px;">
+            <h2 style="color: #2D6A4F;">🎉 Welcome to the Team!</h2>
+            <p>Dear ${name},</p>
+            <p>We're excited to inform you that your application to become a Talk to Me listener has been <strong>approved</strong>!</p>
+            <p>You can now log in to your dashboard and start accepting sessions.</p>
+            <a href="${BASE_URL}/dashboard-listener.html" style="background: #2D6A4F; color: white; padding: 10px 20px; border-radius: 50px; text-decoration: none;">Go to Dashboard</a>
+            <hr>
+            <p style="font-size: 14px; color: #6a7a6a;">Thank you for joining Talk to Me. We're excited to have you!</p>
+        </div>
+    `;
+    await sendEmail(email, subject, html);
 }
 
 // ============ FILE UPLOAD ============
@@ -96,7 +256,6 @@ const listenerApplications = [];
 const membershipPayments = {};
 const chatSessions = {};
 const gifts = {};
-const referrals = {};
 
 // ============ PRICING ============
 const TIERS = {
@@ -106,7 +265,6 @@ const TIERS = {
 
 // ============ ADMIN ============
 const ADMIN_PASSWORD = process.env.ADMIN_PASSWORD || 'admin123';
-const ADMIN_EMAIL = process.env.ADMIN_EMAIL || 'admin@talktome.com';
 let adminToken = null;
 
 app.post('/api/admin/login', (req, res) => {
@@ -193,19 +351,19 @@ app.post('/api/gift/create', async (req, res) => {
                     Redeem Your Gift
                 </a>
                 <p style="font-size: 14px; color: #6a7a6a; margin-top: 20px;">This gift expires in 30 days.</p>
-                <p style="font-size: 12px; color: #6a7a6a;">Talk to Me — Anonymous emotional support. 100% private.</p>
             </div>
         `;
         
-        if (EMAIL_USER && EMAIL_PASSWORD) {
+        if (transporter) {
             await sendEmail(friendEmail, `🎁 ${giverName} sent you a gift session!`, emailHtml);
+            await notifyNewGift(gifts[giftId]);
         }
         
         res.json({
             success: true,
             giftId: giftId,
             giftCode: giftCode,
-            message: 'Gift created and email sent!'
+            message: 'Gift created!'
         });
         
     } catch (error) {
@@ -268,6 +426,8 @@ app.post('/api/gift/redeem', (req, res) => {
         giftCode: giftCode
     };
     
+    notifyGiftRedeemed(gift, sessionId);
+    
     res.json({
         success: true,
         message: 'Gift redeemed successfully!',
@@ -303,24 +463,12 @@ app.get('/api/gift/status/:code', (req, res) => {
 
 // ============ ROUTES ============
 
-// ============ SERVE HOMEPAGE ============
 app.get('/', (req, res) => res.sendFile(__dirname + '/index.html'));
-
-// ============ GET TOKEN BY REFERENCE ============
-app.get('/api/get-token/:reference', (req, res) => {
-    const { reference } = req.params;
-    for (const [id, session] of Object.entries(sessions)) {
-        if (session.paymentRef === reference) {
-            return res.json({ token: session.clientToken, sessionId: id });
-        }
-    }
-    res.status(404).json({ error: 'Session not found' });
-});
 
 // ============ CREATE BOOKING ============
 app.post('/api/create-booking', async (req, res) => {
     try {
-        const { tier, scheduledAt, note, amount, testMode } = req.body;
+        const { tier, scheduledAt, note, amount, testMode, clientEmail } = req.body;
         console.log('📝 Booking request:', { tier, scheduledAt, amount, testMode });
 
         if (!tier || !scheduledAt || !amount) {
@@ -355,6 +503,8 @@ app.post('/api/create-booking', async (req, res) => {
             };
 
             console.log('✅ TEST session created:', sessionId);
+            await notifyNewBooking(sessions[sessionId]);
+            
             return res.json({
                 success: true,
                 sessionId: sessionId,
@@ -384,12 +534,13 @@ app.post('/api/create-booking', async (req, res) => {
         };
 
         console.log('📝 Session created:', sessionId);
+        await notifyNewBooking(sessions[sessionId]);
 
         res.json({
             success: true,
             sessionId: sessionId,
             token: clientToken,
-            message: 'Session created! Please complete payment.',
+            message: 'Session created!',
             redirectUrl: '/book.html?status=success',
             testMode: false
         });
@@ -417,6 +568,8 @@ app.post('/api/create-booking', async (req, res) => {
             isTest: true,
             paymentVerified: true
         };
+        
+        await notifyNewBooking(sessions[fallbackSessionId]);
         
         res.json({
             success: true,
@@ -448,7 +601,7 @@ app.get('/payment-callback', async (req, res) => {
             session.paymentVerified = true;
             session.paymentDate = Date.now();
             console.log('✅ Session updated to booked:', session.id);
-            
+            await notifyPayment(session, reference);
             res.redirect(`${BASE_URL}/book.html?status=success&reference=${reference}&token=${session.clientToken}`);
         } else {
             res.redirect(`${BASE_URL}/book.html?status=error`);
@@ -520,7 +673,7 @@ app.post('/api/listener/apply', upload.fields([
         const hashedPassword = await bcrypt.hash(password, 10);
         const applicationId = 'app_' + crypto.randomBytes(8).toString('hex');
 
-        listenerApplications.push({
+        const application = {
             id: applicationId,
             fullName,
             email,
@@ -538,7 +691,10 @@ app.post('/api/listener/apply', upload.fields([
             agreement: { signature: agreementSignature },
             status: 'pending_review',
             createdAt: Date.now()
-        });
+        };
+
+        listenerApplications.push(application);
+        await notifyListenerApplication(application);
 
         res.json({ success: true, message: 'Application submitted!', applicationId });
     } catch (error) {
@@ -759,6 +915,8 @@ app.post('/api/listener/initiate-membership', async (req, res) => {
             joinedAt: Date.now()
         };
         
+        await notifyListenerApproved(email, fullName);
+        
         res.json({ 
             success: true, 
             message: 'Membership activated!',
@@ -799,7 +957,7 @@ app.get('/api/chat/listener-nickname/:sessionId', (req, res) => {
     res.json({ nickname: listenerNickname || 'Listener' });
 });
 
-app.post('/api/chat/send', (req, res) => {
+app.post('/api/chat/send', async (req, res) => {
     const { sessionId, sender, message, senderType } = req.body;
     if (!sessionId || !sender || !message || !senderType) {
         return res.status(400).json({ error: 'Missing required fields' });
@@ -840,6 +998,8 @@ app.post('/api/chat/send', (req, res) => {
     
     chatSessions[sessionId].messages.push(messageObj);
     console.log(`💬 Chat [${sessionId}] - ${senderName}: ${message.substring(0, 50)}...`);
+    
+    await notifyChatMessage(sessionId, senderName, message);
     
     res.json({ success: true, message: messageObj });
 });
@@ -992,7 +1152,8 @@ app.listen(PORT, () => {
     console.log('🚀 Talk to Me Server Running');
     console.log('📍 http://localhost:' + PORT);
     console.log('🌐 Site URL:', BASE_URL);
-    console.log('📧 Email:', EMAIL_USER ? '✅ Configured' : '❌ Not configured');
+    console.log('📧 Admin Email:', ADMIN_EMAIL);
+    console.log('📧 Email:', transporter ? '✅ Configured' : '❌ Not configured');
     console.log('💰 Pricing:');
     console.log('   Standard: $10');
     console.log('   Extended: $30');
@@ -1002,6 +1163,7 @@ app.listen(PORT, () => {
     console.log('📝 Applications:', listenerApplications.length);
     console.log('💬 Chats:', Object.keys(chatSessions).length);
     console.log('🎁 Gifts:', Object.keys(gifts).length);
+    console.log('📱 WhatsApp: +254700886207');
     console.log('✅ Press Ctrl+C to stop');
     console.log('');
 });

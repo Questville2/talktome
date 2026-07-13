@@ -6,6 +6,7 @@ const bcrypt = require('bcrypt');
 const fs = require('fs');
 const path = require('path');
 const multer = require('multer');
+const nodemailer = require('nodemailer');
 const app = express();
 const PORT = process.env.PORT || 3000;
 
@@ -16,7 +17,7 @@ app.set('trust proxy', true);
 app.use(express.json({ limit: '50mb' }));
 app.use(express.static('.'));
 
-// ============ CORS FIX FOR RENDER ============
+// ============ CORS FIX ============
 app.use((req, res, next) => {
     res.header('Access-Control-Allow-Origin', '*');
     res.header('Access-Control-Allow-Headers', 'Origin, X-Requested-With, Content-Type, Accept, Authorization');
@@ -30,13 +31,37 @@ app.use((req, res, next) => {
 app.use('/uploads', express.static('uploads'));
 
 // ============ DOMAIN CONFIGURATION ============
-const BASE_URL = process.env.BASE_URL || 'https://talktome.onrender.com';
+const BASE_URL = process.env.BASE_URL || 'https://talktome-1m1b.onrender.com';
 console.log('🌐 Site URL:', BASE_URL);
 
-// ============ PAYONEER CONFIGURATION ============
-const PAYONEER_API_KEY = process.env.PAYONEER_API_KEY;
-const PAYONEER_API_SECRET = process.env.PAYONEER_API_SECRET;
-console.log('💳 Payoneer:', PAYONEER_API_KEY ? '✅ Connected' : '❌ Not configured');
+// ============ EMAIL CONFIGURATION ============
+const EMAIL_USER = process.env.EMAIL_USER;
+const EMAIL_PASSWORD = process.env.EMAIL_PASSWORD;
+
+const transporter = nodemailer.createTransport({
+    service: 'gmail',
+    auth: {
+        user: EMAIL_USER,
+        pass: EMAIL_PASSWORD
+    }
+});
+
+async function sendEmail(to, subject, html) {
+    try {
+        const mailOptions = {
+            from: `"Talk to Me" <${EMAIL_USER}>`,
+            to: to,
+            subject: subject,
+            html: html
+        };
+        const info = await transporter.sendMail(mailOptions);
+        console.log('📧 Email sent:', info.messageId);
+        return info;
+    } catch (error) {
+        console.error('❌ Email error:', error.message);
+        return null;
+    }
+}
 
 // ============ FILE UPLOAD ============
 const uploadDirs = ['uploads/cvs', 'uploads/id_photos', 'uploads/certificates', 'uploads/profile_photos', 'uploads/ndas', 'uploads/agreements'];
@@ -70,6 +95,8 @@ const listeners = {};
 const listenerApplications = [];
 const membershipPayments = {};
 const chatSessions = {};
+const gifts = {};
+const referrals = {};
 
 // ============ PRICING ============
 const TIERS = {
@@ -118,6 +145,162 @@ function generateClientNickname() {
     return `Guest ${CLIENT_ADJECTIVES[Math.floor(Math.random() * CLIENT_ADJECTIVES.length)]} ${CLIENT_NOUNS[Math.floor(Math.random() * CLIENT_NOUNS.length)]}`;
 }
 
+// ============ GIFT SYSTEM ============
+function generateGiftCode() {
+    const chars = 'ABCDEFGHIJKLMNOPQRSTUVWXYZ0123456789';
+    let code = 'GIFT-';
+    for (let i = 0; i < 8; i++) {
+        code += chars.charAt(Math.floor(Math.random() * chars.length));
+    }
+    return code;
+}
+
+app.post('/api/gift/create', async (req, res) => {
+    try {
+        const { giverName, friendName, friendEmail, message } = req.body;
+        
+        if (!giverName || !friendName || !friendEmail) {
+            return res.status(400).json({ error: 'Missing required fields' });
+        }
+        
+        const giftCode = generateGiftCode();
+        const giftId = 'gift_' + Date.now() + '_' + crypto.randomBytes(4).toString('hex');
+        
+        gifts[giftId] = {
+            id: giftId,
+            code: giftCode,
+            giverName,
+            friendName,
+            friendEmail,
+            message: message || '',
+            status: 'pending',
+            createdAt: Date.now(),
+            expiresAt: Date.now() + 30 * 24 * 60 * 60 * 1000,
+            redeemedAt: null,
+            redeemedBy: null
+        };
+        
+        const emailHtml = `
+            <div style="font-family: system-ui; max-width: 600px; margin: 0 auto; padding: 20px; background: #f7faf7;">
+                <h1 style="color: #2D6A4F;">🎁 You've Received a Gift!</h1>
+                <p><strong>${giverName}</strong> has gifted you a 30-minute anonymous session on Talk to Me.</p>
+                ${message ? `<p style="font-style: italic; color: #4a5a4a;">"${message}"</p>` : ''}
+                <div style="background: white; padding: 20px; border-radius: 12px; margin: 20px 0; border: 2px dashed #2D6A4F;">
+                    <p style="font-size: 14px; color: #6a7a6a;">Your Gift Code:</p>
+                    <p style="font-size: 28px; font-weight: 700; color: #2D6A4F; letter-spacing: 2px;">${giftCode}</p>
+                </div>
+                <a href="${BASE_URL}/redeem-gift.html?code=${giftCode}" style="background: #2D6A4F; color: white; padding: 14px 28px; border-radius: 50px; text-decoration: none; display: inline-block; font-weight: 600;">
+                    Redeem Your Gift
+                </a>
+                <p style="font-size: 14px; color: #6a7a6a; margin-top: 20px;">This gift expires in 30 days.</p>
+                <p style="font-size: 12px; color: #6a7a6a;">Talk to Me — Anonymous emotional support. 100% private.</p>
+            </div>
+        `;
+        
+        if (EMAIL_USER && EMAIL_PASSWORD) {
+            await sendEmail(friendEmail, `🎁 ${giverName} sent you a gift session!`, emailHtml);
+        }
+        
+        res.json({
+            success: true,
+            giftId: giftId,
+            giftCode: giftCode,
+            message: 'Gift created and email sent!'
+        });
+        
+    } catch (error) {
+        console.error('❌ Gift creation error:', error);
+        res.status(500).json({ error: 'Failed to create gift' });
+    }
+});
+
+app.post('/api/gift/redeem', (req, res) => {
+    const { giftCode, recipientToken } = req.body;
+    
+    if (!giftCode || !recipientToken) {
+        return res.status(400).json({ error: 'Missing required fields' });
+    }
+    
+    let gift = null;
+    let giftId = null;
+    for (const [id, g] of Object.entries(gifts)) {
+        if (g.code === giftCode) {
+            gift = g;
+            giftId = id;
+            break;
+        }
+    }
+    
+    if (!gift) {
+        return res.status(404).json({ error: 'Invalid gift code' });
+    }
+    
+    if (gift.status === 'redeemed') {
+        return res.status(400).json({ error: 'This gift has already been redeemed' });
+    }
+    
+    if (gift.expiresAt < Date.now()) {
+        gift.status = 'expired';
+        return res.status(400).json({ error: 'This gift has expired' });
+    }
+    
+    gift.status = 'redeemed';
+    gift.redeemedAt = Date.now();
+    gift.redeemedBy = recipientToken;
+    
+    const sessionId = 'session_' + crypto.randomBytes(8).toString('hex');
+    sessions[sessionId] = {
+        id: sessionId,
+        clientToken: recipientToken,
+        tier: 'standard',
+        duration: 1800,
+        price: 0,
+        status: 'booked',
+        scheduledAt: Date.now() + 3600000,
+        note: `🎁 Gift session from ${gift.giverName}`,
+        createdAt: Date.now(),
+        startedAt: null,
+        completedAt: null,
+        clientRating: null,
+        listenerId: null,
+        paymentRef: 'gift_' + giftId,
+        isGift: true,
+        giftCode: giftCode
+    };
+    
+    res.json({
+        success: true,
+        message: 'Gift redeemed successfully!',
+        sessionId: sessionId
+    });
+});
+
+app.get('/api/gift/status/:code', (req, res) => {
+    const { code } = req.params;
+    
+    let gift = null;
+    for (const [id, g] of Object.entries(gifts)) {
+        if (g.code === code) {
+            gift = g;
+            break;
+        }
+    }
+    
+    if (!gift) {
+        return res.status(404).json({ error: 'Gift not found' });
+    }
+    
+    res.json({
+        code: gift.code,
+        giverName: gift.giverName,
+        friendName: gift.friendName,
+        status: gift.status,
+        createdAt: gift.createdAt,
+        expiresAt: gift.expiresAt,
+        isExpired: gift.expiresAt < Date.now()
+    });
+});
+
 // ============ ROUTES ============
 
 // ============ SERVE HOMEPAGE ============
@@ -151,7 +334,6 @@ app.post('/api/create-booking', async (req, res) => {
         const clientToken = crypto.randomBytes(16).toString('hex');
         const reference = 'TALK_' + Date.now() + '_' + crypto.randomBytes(4).toString('hex');
 
-        // ============ TEST MODE ============
         if (testMode === true) {
             sessions[sessionId] = {
                 id: sessionId,
@@ -183,15 +365,11 @@ app.post('/api/create-booking', async (req, res) => {
             });
         }
 
-        // ============ PAYMENT FLOW ============
-        const tierConfig = TIERS[tier];
-        const amountUSD = amount / 100;
-
         sessions[sessionId] = {
             id: sessionId,
             clientToken: clientToken,
             tier: tier,
-            duration: tierConfig.duration,
+            duration: TIERS[tier].duration,
             price: amount,
             status: 'pending_payment',
             scheduledAt: scheduledAt,
@@ -206,60 +384,17 @@ app.post('/api/create-booking', async (req, res) => {
         };
 
         console.log('📝 Session created:', sessionId);
-        console.log('💰 Amount USD: $' + amountUSD);
-
-        if (!PAYONEER_API_KEY) {
-            console.log('⚠️ Payoneer not configured, falling back to test mode');
-            sessions[sessionId].status = 'booked';
-            sessions[sessionId].paymentVerified = true;
-            sessions[sessionId].isTest = true;
-            
-            return res.json({
-                success: true,
-                sessionId: sessionId,
-                token: clientToken,
-                message: 'Payoneer not configured. Test session created!',
-                redirectUrl: '/dashboard-client.html',
-                testMode: true
-            });
-        }
-
-        const payoneerResponse = await axios.post('https://api.payoneer.com/v4/programs/payments', {
-            amount: amountUSD,
-            currency: 'USD',
-            description: 'Talk to Me Session - ' + tier,
-            reference: reference,
-            customer: {
-                email: 'anonymous@talktome.com',
-                country: 'US'
-            },
-            return_url: BASE_URL + '/payment-callback',
-            cancel_url: BASE_URL + '/book.html?status=cancelled',
-            metadata: {
-                sessionId: sessionId,
-                tier: tier,
-                scheduledAt: scheduledAt,
-                note: note || '',
-                clientToken: clientToken
-            }
-        }, {
-            headers: {
-                'X-PAYONEER-API-KEY': PAYONEER_API_KEY,
-                'X-PAYONEER-API-SECRET': PAYONEER_API_SECRET,
-                'Content-Type': 'application/json'
-            }
-        });
-
-        console.log('✅ Payoneer initialized');
 
         res.json({
-            authorization_url: payoneerResponse.data.payment_url,
-            reference: reference,
+            success: true,
             sessionId: sessionId,
+            token: clientToken,
+            message: 'Session created! Please complete payment.',
+            redirectUrl: '/book.html?status=success',
             testMode: false
         });
     } catch (error) {
-        console.error('❌ Booking error:', error.response?.data || error.message);
+        console.error('❌ Booking error:', error.message);
         
         const fallbackSessionId = 'session_' + crypto.randomBytes(8).toString('hex');
         const fallbackToken = crypto.randomBytes(16).toString('hex');
@@ -296,46 +431,26 @@ app.post('/api/create-booking', async (req, res) => {
 
 // ============ PAYMENT CALLBACK ============
 app.get('/payment-callback', async (req, res) => {
-    const { reference, status, payment_id } = req.query;
-    console.log('📞 Payment callback received:', { reference, status, payment_id });
+    const { reference, status } = req.query;
+    console.log('📞 Payment callback received:', { reference, status });
 
     if (status === 'success' && reference) {
-        try {
-            const verifyResponse = await axios.get(`https://api.payoneer.com/v4/programs/payments/${payment_id}`, {
-                headers: {
-                    'X-PAYONEER-API-KEY': PAYONEER_API_KEY,
-                    'X-PAYONEER-API-SECRET': PAYONEER_API_SECRET,
-                    'Content-Type': 'application/json'
-                }
-            });
-
-            const payment = verifyResponse.data;
-            console.log('✅ Payment verified:', payment);
-
-            if (payment.status === 'completed' || payment.status === 'success') {
-                let session = null;
-                for (const [id, s] of Object.entries(sessions)) {
-                    if (s.paymentRef === reference) {
-                        session = s;
-                        break;
-                    }
-                }
-
-                if (session) {
-                    session.status = 'booked';
-                    session.paymentVerified = true;
-                    session.paymentDate = Date.now();
-                    console.log('✅ Session updated to booked:', session.id);
-                    
-                    res.redirect(`${BASE_URL}/book.html?status=success&reference=${reference}&token=${session.clientToken}`);
-                } else {
-                    res.redirect(`${BASE_URL}/book.html?status=error`);
-                }
-            } else {
-                res.redirect(`${BASE_URL}/book.html?status=failed`);
+        let session = null;
+        for (const [id, s] of Object.entries(sessions)) {
+            if (s.paymentRef === reference) {
+                session = s;
+                break;
             }
-        } catch (error) {
-            console.error('❌ Verification error:', error.message);
+        }
+
+        if (session) {
+            session.status = 'booked';
+            session.paymentVerified = true;
+            session.paymentDate = Date.now();
+            console.log('✅ Session updated to booked:', session.id);
+            
+            res.redirect(`${BASE_URL}/book.html?status=success&reference=${reference}&token=${session.clientToken}`);
+        } else {
             res.redirect(`${BASE_URL}/book.html?status=error`);
         }
     } else {
@@ -621,115 +736,38 @@ app.post('/api/listener/initiate-membership', async (req, res) => {
             createdAt: Date.now() 
         };
         
-        if (!PAYONEER_API_KEY) {
-            const nickname = generateListenerNickname();
-            const token = 'listener_' + Date.now() + '_' + crypto.randomBytes(8).toString('hex');
-            const listenerId = 'listener_' + crypto.randomBytes(4).toString('hex');
-            const expiryDate = new Date();
-            expiryDate.setFullYear(expiryDate.getFullYear() + 1);
-            
-            listeners[email] = {
-                id: listenerId,
-                email: email,
-                fullName: fullName,
-                nickname: nickname,
-                mpesaNumber: mpesaNumber,
-                isOnline: false,
-                balance: 0,
-                sessionsCompleted: 0,
-                rating: 0,
-                token: token,
-                isActive: true,
-                membershipPaid: true,
-                membershipExpiry: expiryDate.toISOString(),
-                joinedAt: Date.now()
-            };
-            
-            return res.json({ 
-                success: true, 
-                message: 'Membership activated (test mode)!',
-                token: token
-            });
-        }
+        const nickname = generateListenerNickname();
+        const token = 'listener_' + Date.now() + '_' + crypto.randomBytes(8).toString('hex');
+        const listenerId = 'listener_' + crypto.randomBytes(4).toString('hex');
+        const expiryDate = new Date();
+        expiryDate.setFullYear(expiryDate.getFullYear() + 1);
         
-        const payoneerResponse = await axios.post('https://api.payoneer.com/v4/programs/payments', {
-            amount: 20,
-            currency: 'USD',
-            description: 'Talk to Me Listener Membership',
-            reference: reference,
-            customer: {
-                email: email,
-                country: 'US'
-            },
-            return_url: BASE_URL + '/membership-callback',
-            cancel_url: BASE_URL + '/dashboard-listener.html?membership=cancelled',
-            metadata: { 
-                type: 'listener_membership', 
-                email, 
-                fullName, 
-                mpesaNumber, 
-                applicationId 
-            }
-        }, {
-            headers: {
-                'X-PAYONEER-API-KEY': PAYONEER_API_KEY,
-                'X-PAYONEER-API-SECRET': PAYONEER_API_SECRET,
-                'Content-Type': 'application/json'
-            }
+        listeners[email] = {
+            id: listenerId,
+            email: email,
+            fullName: fullName,
+            nickname: nickname,
+            mpesaNumber: mpesaNumber,
+            isOnline: false,
+            balance: 0,
+            sessionsCompleted: 0,
+            rating: 0,
+            token: token,
+            isActive: true,
+            membershipPaid: true,
+            membershipExpiry: expiryDate.toISOString(),
+            joinedAt: Date.now()
+        };
+        
+        res.json({ 
+            success: true, 
+            message: 'Membership activated!',
+            token: token
         });
-        
-        res.json({ authorization_url: payoneerResponse.data.payment_url, reference });
     } catch (error) {
-        console.error('❌ Membership error:', error.response?.data || error.message);
-        res.status(500).json({ error: 'Payment initiation failed' });
+        console.error('❌ Membership error:', error.message);
+        res.status(500).json({ error: 'Membership activation failed' });
     }
-});
-
-app.get('/membership-callback', async (req, res) => {
-    const { reference, status, payment_id } = req.query;
-    if (status === 'success' && reference) {
-        try {
-            const verifyResponse = await axios.get(`https://api.payoneer.com/v4/programs/payments/${payment_id}`, {
-                headers: {
-                    'X-PAYONEER-API-KEY': PAYONEER_API_KEY,
-                    'X-PAYONEER-API-SECRET': PAYONEER_API_SECRET,
-                    'Content-Type': 'application/json'
-                }
-            });
-
-            if (verifyResponse.data.status === 'completed' || verifyResponse.data.status === 'success') {
-                const payment = membershipPayments[reference];
-                if (payment) {
-                    const nickname = generateListenerNickname();
-                    const token = 'listener_' + Date.now() + '_' + crypto.randomBytes(8).toString('hex');
-                    const listenerId = 'listener_' + crypto.randomBytes(4).toString('hex');
-                    
-                    const expiryDate = new Date();
-                    expiryDate.setFullYear(expiryDate.getFullYear() + 1);
-                    
-                    listeners[payment.email] = {
-                        id: listenerId,
-                        email: payment.email,
-                        fullName: payment.fullName,
-                        nickname,
-                        mpesaNumber: payment.mpesaNumber,
-                        isOnline: false,
-                        balance: 0,
-                        sessionsCompleted: 0,
-                        rating: 0,
-                        token,
-                        isActive: true,
-                        membershipPaid: true,
-                        membershipExpiry: expiryDate.toISOString(),
-                        joinedAt: Date.now()
-                    };
-                    
-                    console.log('✅ Listener activated:', payment.email);
-                }
-                res.redirect(`${BASE_URL}/dashboard-listener.html?membership=success&reference=${reference}`);
-            } else res.redirect(`${BASE_URL}/dashboard-listener.html?membership=failed`);
-        } catch { res.redirect(`${BASE_URL}/dashboard-listener.html?membership=error`); }
-    } else res.redirect(`${BASE_URL}/dashboard-listener.html?membership=cancelled`);
 });
 
 // ============ CHAT SYSTEM ============
@@ -943,7 +981,8 @@ app.get('/api/status', (req, res) => {
         sessions: Object.keys(sessions).length, 
         listeners: Object.keys(listeners).length, 
         applications: listenerApplications.length, 
-        chats: Object.keys(chatSessions).length 
+        chats: Object.keys(chatSessions).length,
+        gifts: Object.keys(gifts).length
     });
 });
 
@@ -953,7 +992,7 @@ app.listen(PORT, () => {
     console.log('🚀 Talk to Me Server Running');
     console.log('📍 http://localhost:' + PORT);
     console.log('🌐 Site URL:', BASE_URL);
-    console.log('💳 Payoneer:', PAYONEER_API_KEY ? '✅ Connected' : '❌ Not configured');
+    console.log('📧 Email:', EMAIL_USER ? '✅ Configured' : '❌ Not configured');
     console.log('💰 Pricing:');
     console.log('   Standard: $10');
     console.log('   Extended: $30');
@@ -962,6 +1001,7 @@ app.listen(PORT, () => {
     console.log('👂 Listeners:', Object.keys(listeners).length);
     console.log('📝 Applications:', listenerApplications.length);
     console.log('💬 Chats:', Object.keys(chatSessions).length);
+    console.log('🎁 Gifts:', Object.keys(gifts).length);
     console.log('✅ Press Ctrl+C to stop');
     console.log('');
 });

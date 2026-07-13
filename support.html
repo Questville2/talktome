@@ -1,0 +1,568 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>24/7 Support — Talk to Me</title>
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        body {
+            font-family: 'Segoe UI', -apple-system, BlinkMacSystemFont, Roboto, sans-serif;
+            background: linear-gradient(145deg, #f7faf7 0%, #e8f5e9 30%, #fff8e1 60%, #f1f8e9 100%);
+            color: #1a2a1f;
+            line-height: 1.7;
+            min-height: 100vh;
+        }
+
+        nav {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            padding: 16px 60px;
+            background: rgba(255,255,255,0.88);
+            backdrop-filter: blur(16px);
+            box-shadow: 0 4px 30px rgba(0,0,0,0.04);
+            flex-wrap: wrap;
+            gap: 12px;
+            border-bottom: 1px solid rgba(255,255,255,0.3);
+        }
+
+        .logo {
+            font-size: 24px;
+            font-weight: 700;
+            color: #2D6A4F;
+        }
+
+        .logo span {
+            color: #6C63FF;
+        }
+
+        nav a {
+            margin: 0 12px;
+            text-decoration: none;
+            color: #1A1A2E;
+            font-weight: 500;
+            font-size: 14px;
+        }
+
+        nav a:hover {
+            color: #2D6A4F;
+        }
+
+        .support-container {
+            max-width: 800px;
+            margin: 40px auto;
+            padding: 40px;
+            background: rgba(255,255,255,0.88);
+            backdrop-filter: blur(16px);
+            border-radius: 20px;
+            box-shadow: 0 8px 40px rgba(0,0,0,0.06);
+            border: 1px solid rgba(255,255,255,0.3);
+        }
+
+        .support-container h1 {
+            font-size: 32px;
+            color: #2D6A4F;
+            margin-bottom: 8px;
+        }
+
+        .support-container .subtitle {
+            color: #5a6a5a;
+            font-size: 17px;
+            margin-bottom: 30px;
+        }
+
+        .support-badges {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(140px, 1fr));
+            gap: 16px;
+            margin-bottom: 30px;
+        }
+
+        .support-badge {
+            background: rgba(255,255,255,0.6);
+            padding: 20px 16px;
+            border-radius: 16px;
+            text-align: center;
+            border: 1px solid rgba(255,255,255,0.3);
+        }
+
+        .support-badge .icon {
+            font-size: 32px;
+            margin-bottom: 6px;
+        }
+
+        .support-badge .label {
+            font-size: 13px;
+            color: #5a6a5a;
+        }
+
+        .support-badge .value {
+            font-weight: 700;
+            color: #2D6A4F;
+            font-size: 16px;
+        }
+
+        .support-options {
+            display: grid;
+            grid-template-columns: 1fr 1fr;
+            gap: 20px;
+            margin: 30px 0;
+        }
+
+        .support-option {
+            background: rgba(255,255,255,0.6);
+            padding: 28px 20px;
+            border-radius: 16px;
+            text-align: center;
+            transition: all 0.4s;
+            border: 1px solid rgba(255,255,255,0.3);
+        }
+
+        .support-option:hover {
+            transform: translateY(-4px);
+            box-shadow: 0 12px 40px rgba(0,0,0,0.06);
+            background: rgba(255,255,255,0.9);
+        }
+
+        .support-option .icon {
+            font-size: 38px;
+            margin-bottom: 12px;
+        }
+
+        .support-option h3 {
+            margin-bottom: 6px;
+            color: #1a2a1f;
+            font-size: 18px;
+        }
+
+        .support-option p {
+            color: #5a6a5a;
+            font-size: 14px;
+        }
+
+        .support-option .btn {
+            display: inline-block;
+            margin-top: 12px;
+            padding: 10px 28px;
+            border-radius: 50px;
+            background: #2D6A4F;
+            color: white;
+            text-decoration: none;
+            font-weight: 600;
+            transition: all 0.3s;
+            border: none;
+            cursor: pointer;
+            font-size: 14px;
+        }
+
+        .support-option .btn:hover {
+            background: #1B4332;
+            transform: translateY(-2px);
+        }
+
+        .support-option .btn-outline {
+            background: transparent;
+            color: #2D6A4F;
+            border: 2px solid #2D6A4F;
+        }
+
+        .support-option .btn-outline:hover {
+            background: #2D6A4F;
+            color: white;
+        }
+
+        .support-option .btn-whatsapp {
+            background: #25D366;
+        }
+
+        .support-option .btn-whatsapp:hover {
+            background: #1DA851;
+        }
+
+        .faq-section {
+            margin-top: 40px;
+        }
+
+        .faq-section h2 {
+            font-size: 24px;
+            margin-bottom: 20px;
+            color: #1a2a1f;
+        }
+
+        .faq-item {
+            border-bottom: 1px solid rgba(0,0,0,0.06);
+            padding: 16px 0;
+        }
+
+        .faq-item .question {
+            font-weight: 600;
+            color: #1a2a1f;
+            cursor: pointer;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            font-size: 16px;
+        }
+
+        .faq-item .question:hover {
+            color: #2D6A4F;
+        }
+
+        .faq-item .answer {
+            display: none;
+            padding-top: 10px;
+            color: #5a6a5a;
+            font-size: 15px;
+            line-height: 1.8;
+        }
+
+        .faq-item .answer.open {
+            display: block;
+        }
+
+        .faq-item .toggle-icon {
+            font-size: 18px;
+            transition: transform 0.3s;
+            color: #6a7a6a;
+        }
+
+        .faq-item .toggle-icon.open {
+            transform: rotate(180deg);
+        }
+
+        .emergency-section {
+            background: rgba(254, 242, 242, 0.8);
+            padding: 28px 30px;
+            border-radius: 16px;
+            margin-top: 30px;
+            border: 2px solid rgba(252, 165, 165, 0.3);
+        }
+
+        .emergency-section h3 {
+            color: #DC2626;
+            margin-bottom: 14px;
+            font-size: 20px;
+        }
+
+        .emergency-section .helpline-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(140px, 1fr));
+            gap: 14px;
+        }
+
+        .emergency-section .helpline-item {
+            background: rgba(255,255,255,0.8);
+            padding: 14px;
+            border-radius: 12px;
+            text-align: center;
+            border: 1px solid rgba(255,255,255,0.3);
+        }
+
+        .emergency-section .helpline-item .country {
+            font-weight: 600;
+            color: #1a2a1f;
+            font-size: 14px;
+        }
+
+        .emergency-section .helpline-item .phone {
+            font-size: 20px;
+            font-weight: 700;
+            color: #DC2626;
+        }
+
+        .whatsapp-float {
+            position: fixed;
+            bottom: 100px;
+            right: 20px;
+            background: #25D366;
+            color: white;
+            border-radius: 50px;
+            padding: 12px 20px;
+            display: flex;
+            align-items: center;
+            gap: 10px;
+            text-decoration: none;
+            font-weight: 600;
+            font-size: 14px;
+            box-shadow: 0 4px 20px rgba(37, 211, 102, 0.4);
+            z-index: 1000;
+            transition: all 0.3s;
+        }
+
+        .whatsapp-float:hover {
+            transform: scale(1.05);
+            box-shadow: 0 8px 30px rgba(37, 211, 102, 0.5);
+        }
+
+        .whatsapp-float img {
+            width: 28px;
+            height: 28px;
+            filter: brightness(0) invert(1);
+        }
+
+        .whatsapp-float span {
+            color: white;
+        }
+
+        footer {
+            padding: 30px 60px;
+            text-align: center;
+            background: #1a2a1f;
+            color: rgba(255,255,255,0.7);
+            margin-top: 40px;
+        }
+
+        footer a {
+            color: #7ae0b0;
+            text-decoration: none;
+        }
+
+        @media (max-width: 768px) {
+            nav {
+                padding: 12px 20px;
+                justify-content: center;
+            }
+            .support-container {
+                padding: 24px;
+                margin: 20px;
+            }
+            .support-options {
+                grid-template-columns: 1fr;
+            }
+            .support-badges {
+                grid-template-columns: 1fr 1fr;
+            }
+            .support-container h1 {
+                font-size: 26px;
+            }
+            .whatsapp-float {
+                bottom: 80px;
+                right: 10px;
+                padding: 10px 15px;
+                font-size: 12px;
+            }
+            .whatsapp-float img {
+                width: 22px;
+                height: 22px;
+            }
+            .whatsapp-float span {
+                display: none;
+            }
+            footer {
+                padding: 20px;
+            }
+            .emergency-section {
+                padding: 20px;
+            }
+        }
+
+        @media (max-width: 480px) {
+            .support-badges {
+                grid-template-columns: 1fr;
+            }
+        }
+    </style>
+</head>
+<body>
+    <nav>
+        <div class="logo">🌿 <span>Talk to Me</span></div>
+        <div>
+            <a href="/">Home</a>
+            <a href="/book.html">Book</a>
+            <a href="/dashboard-client.html">Dashboard</a>
+            <a href="/support.html" style="color:#2D6A4F;font-weight:600;">🕐 Support</a>
+            <a href="https://wa.me/254700886207?text=Hi%20Talk%20to%20Me!" target="_blank" style="color:#25D366;font-weight:600;">📱 WhatsApp</a>
+        </div>
+    </nav>
+
+    <div class="support-container">
+        <h1>🕐 24/7 Support</h1>
+        <p class="subtitle">We're here for you — any time, any day.</p>
+
+        <div class="support-badges">
+            <div class="support-badge">
+                <div class="icon">🕐</div>
+                <div class="label">Available</div>
+                <div class="value">24/7</div>
+            </div>
+            <div class="support-badge">
+                <div class="icon">💬</div>
+                <div class="label">Response Time</div>
+                <div class="value">&lt; 5 mins</div>
+            </div>
+            <div class="support-badge">
+                <div class="icon">🌍</div>
+                <div class="label">Global Support</div>
+                <div class="value">20+ Countries</div>
+            </div>
+            <div class="support-badge">
+                <div class="icon">🔒</div>
+                <div class="label">100% Private</div>
+                <div class="value">Encrypted</div>
+            </div>
+        </div>
+
+        <div class="support-options">
+            <div class="support-option">
+                <div class="icon">💬</div>
+                <h3>Tawk.to Chat</h3>
+                <p>Chat with a support agent instantly</p>
+                <button class="btn" onclick="openTawk()">Start Chat</button>
+            </div>
+            <div class="support-option">
+                <div class="icon">📧</div>
+                <h3>Email Support</h3>
+                <p>Send us a message and we'll respond</p>
+                <a href="mailto:talktomequest@gmail.com" class="btn btn-outline">Email Us</a>
+            </div>
+            <div class="support-option">
+                <div class="icon">📞</div>
+                <h3>Phone Support</h3>
+                <p>Call us directly for urgent matters</p>
+                <a href="tel:+254700886207" class="btn btn-outline">Call Now</a>
+            </div>
+            <div class="support-option">
+                <div class="icon">📱</div>
+                <h3>WhatsApp</h3>
+                <p>Message us on WhatsApp</p>
+                <a href="https://wa.me/254700886207?text=Hello%20Talk%20to%20Me%20Support%2C%20I%20need%20help..." class="btn btn-whatsapp" target="_blank">Chat on WhatsApp</a>
+            </div>
+        </div>
+
+        <div class="faq-section">
+            <h2>❓ Frequently Asked Questions</h2>
+
+            <div class="faq-item">
+                <div class="question" onclick="toggleFAQ(this)">
+                    How do I book a session?
+                    <span class="toggle-icon">▼</span>
+                </div>
+                <div class="answer">Simply click the "Book Now" button on our homepage, select your session type, choose a time, and complete the payment. You'll be matched with a listener instantly.</div>
+            </div>
+
+            <div class="faq-item">
+                <div class="question" onclick="toggleFAQ(this)">
+                    Is Talk to Me really anonymous?
+                    <span class="toggle-icon">▼</span>
+                </div>
+                <div class="answer">Yes! We never ask for your name, location, or any personal information. Your IP is hidden and we don't store logs of your calls or chats.</div>
+            </div>
+
+            <div class="faq-item">
+                <div class="question" onclick="toggleFAQ(this)">
+                    What if I'm in crisis right now?
+                    <span class="toggle-icon">▼</span>
+                </div>
+                <div class="answer">Talk to Me is not a crisis line. If you're in crisis, please call a professional helpline immediately. We've listed emergency numbers below for your convenience.</div>
+            </div>
+
+            <div class="faq-item">
+                <div class="question" onclick="toggleFAQ(this)">
+                    How do I become a listener?
+                    <span class="toggle-icon">▼</span>
+                </div>
+                <div class="answer">Click on "Become a Listener" on our homepage, fill out the application form, upload your documents, and pay the KES 2,000 annual membership fee. We'll review your application within 24-48 hours.</div>
+            </div>
+
+            <div class="faq-item">
+                <div class="question" onclick="toggleFAQ(this)">
+                    What payment methods do you accept?
+                    <span class="toggle-icon">▼</span>
+                </div>
+                <div class="answer">We accept all major credit/debit cards (Visa, Mastercard, Amex), M-Pesa, and bank transfers. All payments are securely processed.</div>
+            </div>
+        </div>
+
+        <div class="emergency-section">
+            <h3>🆘 Emergency Helplines</h3>
+            <p style="color:#5a6a5a;margin-bottom:14px;font-size:14px;">
+                If you're experiencing a mental health crisis, please call a professional helpline immediately:
+            </p>
+            <div class="helpline-grid">
+                <div class="helpline-item">
+                    <div class="country">🇺🇸 USA</div>
+                    <div class="phone">988</div>
+                    <div style="font-size:12px;color:#6a7a6a;">Suicide & Crisis Lifeline</div>
+                </div>
+                <div class="helpline-item">
+                    <div class="country">🇰🇪 Kenya</div>
+                    <div class="phone">1190</div>
+                    <div style="font-size:12px;color:#6a7a6a;">Kenya Red Cross</div>
+                </div>
+                <div class="helpline-item">
+                    <div class="country">🇬🇧 UK</div>
+                    <div class="phone">116 123</div>
+                    <div style="font-size:12px;color:#6a7a6a;">Samaritans</div>
+                </div>
+                <div class="helpline-item">
+                    <div class="country">🇨🇦 Canada</div>
+                    <div class="phone">1-833-456-4566</div>
+                    <div style="font-size:12px;color:#6a7a6a;">Talk Suicide Canada</div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <footer>
+        <p>© 2026 Talk to Me — We're all in this together. ❤️</p>
+        <p style="font-size:14px;color:#6a7a6a;">📱 WhatsApp: +254700886207</p>
+    </footer>
+
+    <a href="https://wa.me/254700886207?text=Hello%20Talk%20to%20Me!%20I%20need%20support..." 
+       class="whatsapp-float" 
+       target="_blank"
+       rel="noopener noreferrer">
+        <img src="https://upload.wikimedia.org/wikipedia/commons/6/6b/WhatsApp.svg" alt="WhatsApp">
+        <span>Chat on WhatsApp</span>
+    </a>
+
+    <script type="text/javascript">
+    var Tawk_API=Tawk_API||{}, Tawk_LoadStart=new Date();
+    (function(){
+    var s1=document.createElement("script"),s0=document.getElementsByTagName("script")[0];
+    s1.async=true;
+    s1.src='https://embed.tawk.to/6a5540c5550ea31d480b6301/1jtega1mn';
+    s1.charset='UTF-8';
+    s1.setAttribute('crossorigin','*');
+    s0.parentNode.insertBefore(s1,s0);
+    })();
+    </script>
+
+    <script>
+        function toggleFAQ(element) {
+            const answer = element.parentElement.querySelector('.answer');
+            const icon = element.querySelector('.toggle-icon');
+            if (answer.classList.contains('open')) {
+                answer.classList.remove('open');
+                icon.classList.remove('open');
+                icon.textContent = '▼';
+            } else {
+                answer.classList.add('open');
+                icon.classList.add('open');
+                icon.textContent = '▲';
+            }
+        }
+
+        function openTawk() {
+            if (typeof Tawk_API !== 'undefined' && Tawk_API) {
+                Tawk_API.toggle();
+            } else {
+                alert('💬 Live Chat: A support agent will be with you shortly.');
+            }
+        }
+
+        document.addEventListener('DOMContentLoaded', function() {
+            const firstFaq = document.querySelector('.faq-item .question');
+            if (firstFaq) {
+                setTimeout(() => toggleFAQ(firstFaq), 500);
+            }
+        });
+    </script>
+</body>
+</html>

@@ -12,68 +12,99 @@
         }
 
         body {
-            font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif;
-            background: #f8f9fe;
-            color: #1A1A2E;
-            line-height: 1.6;
+            font-family: 'Segoe UI', -apple-system, BlinkMacSystemFont, Roboto, sans-serif;
+            background: linear-gradient(145deg, #f7faf7 0%, #e8f5e9 30%, #fff8e1 60%, #f1f8e9 100%);
+            color: #1a2a1f;
+            line-height: 1.7;
+            min-height: 100vh;
         }
 
         nav {
             display: flex;
             justify-content: space-between;
             align-items: center;
-            padding: 20px 60px;
-            background: white;
-            box-shadow: 0 2px 10px rgba(0,0,0,0.05);
+            padding: 16px 60px;
+            background: rgba(255,255,255,0.88);
+            backdrop-filter: blur(16px);
+            box-shadow: 0 4px 30px rgba(0,0,0,0.04);
+            flex-wrap: wrap;
+            gap: 12px;
+            border-bottom: 1px solid rgba(255,255,255,0.3);
         }
 
         .logo {
             font-size: 24px;
             font-weight: 700;
+            color: #2D6A4F;
+        }
+
+        .logo span {
             color: #6C63FF;
         }
 
         nav a {
-            margin: 0 15px;
+            margin: 0 12px;
             text-decoration: none;
             color: #1A1A2E;
             font-weight: 500;
+            font-size: 14px;
         }
 
         nav a:hover {
-            color: #6C63FF;
+            color: #2D6A4F;
+        }
+
+        .btn-outline {
+            background: transparent;
+            border: 2px solid #2D6A4F;
+            color: #2D6A4F;
+            padding: 8px 20px;
+            border-radius: 50px;
+            font-weight: 600;
+            cursor: pointer;
+            transition: all 0.3s;
+            text-decoration: none;
+            display: inline-block;
+            font-size: 13px;
+        }
+
+        .btn-outline:hover {
+            background: #2D6A4F;
+            color: white;
         }
 
         .booking-container {
             max-width: 700px;
             margin: 40px auto;
             padding: 40px;
-            background: white;
-            border-radius: 16px;
-            box-shadow: 0 8px 32px rgba(0,0,0,0.08);
+            background: rgba(255,255,255,0.88);
+            backdrop-filter: blur(16px);
+            border-radius: 20px;
+            box-shadow: 0 8px 40px rgba(0,0,0,0.06);
+            border: 1px solid rgba(255,255,255,0.3);
         }
 
         .booking-container h1 {
             font-size: 32px;
-            margin-bottom: 10px;
-            color: #1A1A2E;
+            color: #2D6A4F;
+            margin-bottom: 8px;
         }
 
         .booking-container .subtitle {
-            color: #6B7280;
+            color: #5a6a5a;
+            font-size: 17px;
             margin-bottom: 30px;
-            font-size: 16px;
         }
 
         .form-group {
-            margin-bottom: 25px;
+            margin-bottom: 20px;
         }
 
         .form-group label {
             display: block;
             font-weight: 600;
-            margin-bottom: 8px;
-            color: #1A1A2E;
+            margin-bottom: 6px;
+            color: #1a2a1f;
         }
 
         .form-group input,
@@ -81,23 +112,31 @@
         .form-group textarea {
             width: 100%;
             padding: 12px 16px;
-            border: 2px solid #E5E7EB;
-            border-radius: 8px;
+            border: 2px solid #e5e7eb;
+            border-radius: 10px;
             font-size: 16px;
             transition: border-color 0.3s;
             font-family: inherit;
+            background: white;
         }
 
         .form-group input:focus,
         .form-group select:focus,
         .form-group textarea:focus {
-            border-color: #6C63FF;
+            border-color: #2D6A4F;
             outline: none;
+            box-shadow: 0 0 0 3px rgba(45, 106, 79, 0.1);
         }
 
         .form-group textarea {
             min-height: 80px;
             resize: vertical;
+        }
+
+        .form-group .hint {
+            font-size: 13px;
+            color: #6a7a6a;
+            margin-top: 5px;
         }
 
         .tier-selector {
@@ -108,36 +147,37 @@
 
         .tier-option {
             padding: 20px;
-            border: 2px solid #E5E7EB;
+            border: 2px solid #e5e7eb;
             border-radius: 12px;
             text-align: center;
             cursor: pointer;
             transition: all 0.3s;
+            background: white;
         }
 
         .tier-option:hover {
-            border-color: #6C63FF;
+            border-color: #2D6A4F;
         }
 
         .tier-option.selected {
-            border-color: #6C63FF;
-            background: #f8f9fe;
+            border-color: #2D6A4F;
+            background: #f0fdf4;
         }
 
         .tier-option .price {
             font-size: 28px;
             font-weight: 700;
-            color: #6C63FF;
+            color: #2D6A4F;
         }
 
         .tier-option .duration {
             font-size: 14px;
-            color: #6B7280;
+            color: #6a7a6a;
         }
 
         .tier-option .badge {
             display: inline-block;
-            background: #34D399;
+            background: #2D6A4F;
             color: white;
             padding: 2px 12px;
             border-radius: 20px;
@@ -160,7 +200,7 @@
         }
 
         .price-row.total {
-            border-top: 2px solid #E5E7EB;
+            border-top: 2px solid #e5e7eb;
             padding-top: 15px;
             font-weight: 700;
             font-size: 18px;
@@ -168,7 +208,7 @@
 
         .btn-primary {
             width: 100%;
-            background: #6C63FF;
+            background: linear-gradient(135deg, #2D6A4F, #40916C);
             color: white;
             border: none;
             padding: 16px;
@@ -180,9 +220,8 @@
         }
 
         .btn-primary:hover {
-            background: #5A52D5;
             transform: translateY(-2px);
-            box-shadow: 0 12px 40px rgba(108, 99, 255, 0.3);
+            box-shadow: 0 12px 40px rgba(45, 106, 79, 0.3);
         }
 
         .btn-primary:disabled {
@@ -191,24 +230,43 @@
             transform: none;
         }
 
-        .discount-section {
-            display: none;
-            background: #f0fdf4;
-            padding: 15px;
-            border-radius: 12px;
-            margin: 15px 0;
-            border: 2px solid #34D399;
+        .btn-secondary {
+            width: 100%;
+            background: #F59E0B;
+            color: #1a2a1f;
+            border: none;
+            padding: 16px;
+            border-radius: 50px;
+            font-size: 18px;
+            font-weight: 600;
+            cursor: pointer;
+            transition: all 0.3s;
+            margin-top: 10px;
         }
 
-        .discount-section .discount-amount {
-            color: #6C63FF;
+        .btn-secondary:hover {
+            transform: translateY(-2px);
+            box-shadow: 0 12px 40px rgba(245, 158, 11, 0.3);
+        }
+
+        .test-mode-banner {
+            background: #FEF3C7;
+            border: 2px solid #F59E0B;
+            padding: 10px 15px;
+            border-radius: 8px;
+            margin-bottom: 20px;
+            text-align: center;
+            display: none;
+        }
+
+        .test-mode-banner .highlight {
             font-weight: 700;
-            font-size: 18px;
+            color: #D97706;
         }
 
         .secure-badge {
             text-align: center;
-            color: #6B7280;
+            color: #6a7a6a;
             font-size: 14px;
             margin-top: 20px;
         }
@@ -218,54 +276,137 @@
             margin: 0 10px;
         }
 
+        .confirmation {
+            display: none;
+            text-align: center;
+            padding: 30px;
+        }
+
+        .confirmation .emoji {
+            font-size: 64px;
+        }
+
+        .confirmation h2 {
+            color: #34D399;
+            font-size: 28px;
+            margin: 15px 0;
+        }
+
+        .confirmation .btn-secondary {
+            width: auto;
+            padding: 12px 30px;
+            display: inline-block;
+        }
+
+        footer {
+            padding: 30px 60px;
+            text-align: center;
+            background: #1a2a1f;
+            color: rgba(255,255,255,0.7);
+            margin-top: 40px;
+        }
+
+        .whatsapp-float {
+            position: fixed;
+            bottom: 100px;
+            right: 20px;
+            background: #25D366;
+            color: white;
+            border-radius: 50px;
+            padding: 12px 20px;
+            display: flex;
+            align-items: center;
+            gap: 10px;
+            text-decoration: none;
+            font-weight: 600;
+            font-size: 14px;
+            box-shadow: 0 4px 20px rgba(37, 211, 102, 0.4);
+            z-index: 1000;
+            transition: all 0.3s;
+        }
+
+        .whatsapp-float:hover {
+            transform: scale(1.05);
+            box-shadow: 0 8px 30px rgba(37, 211, 102, 0.5);
+        }
+
+        .whatsapp-float img {
+            width: 28px;
+            height: 28px;
+            filter: brightness(0) invert(1);
+        }
+
+        .whatsapp-float span {
+            color: white;
+        }
+
         @media (max-width: 768px) {
             nav {
-                padding: 15px 20px;
-                flex-wrap: wrap;
+                padding: 12px 20px;
+                justify-content: center;
             }
             .booking-container {
-                padding: 20px;
+                padding: 24px;
                 margin: 20px;
             }
             .tier-selector {
                 grid-template-columns: 1fr;
             }
             .booking-container h1 {
-                font-size: 24px;
+                font-size: 26px;
+            }
+            .whatsapp-float {
+                bottom: 80px;
+                right: 10px;
+                padding: 10px 15px;
+                font-size: 12px;
+            }
+            .whatsapp-float img {
+                width: 22px;
+                height: 22px;
+            }
+            .whatsapp-float span {
+                display: none;
+            }
+            footer {
+                padding: 20px;
             }
         }
     </style>
 </head>
 <body>
-    <!-- Navigation -->
     <nav>
-        <div class="logo">🎙️ Talk to Me</div>
+        <div class="logo">🌿 <span>Talk to Me</span></div>
         <div>
             <a href="/">Home</a>
-            <a href="/dashboard-client.html">My Sessions</a>
+            <a href="/dashboard-client.html">Dashboard</a>
+            <a href="/support.html">🕐 Support</a>
+            <a href="https://wa.me/254700886207?text=Hi%20Talk%20to%20Me!" target="_blank" style="color:#25D366;font-weight:600;">📱 WhatsApp</a>
         </div>
     </nav>
 
-    <!-- Booking Form -->
     <div class="booking-container">
         <h1>📅 Book Your Session</h1>
         <p class="subtitle">Choose your session type and pick a time. You'll be matched with a trained listener.</p>
 
+        <div class="test-mode-banner" id="test-banner">
+            🧪 <span class="highlight">TEST MODE ACTIVE</span> — No real payments will be processed
+        </div>
+
         <form id="booking-form">
-            <!-- Tier Selection -->
             <div class="form-group">
                 <label>Select Session Type</label>
                 <div class="tier-selector">
                     <div class="tier-option selected" data-tier="standard" onclick="selectTier(this, 'standard')">
                         <div class="duration">🌱 Standard</div>
                         <div class="price">$10</div>
-                        <div style="font-size:13px;color:#6B7280;">30 minutes</div>
+                        <div style="font-size:13px;color:#6a7a6a;">30 minutes</div>
                         <div class="badge">Popular</div>
                     </div>
                     <div class="tier-option" data-tier="extended" onclick="selectTier(this, 'extended')">
                         <div class="duration">🌿 Extended</div>
                         <div class="price">$30</div>
-                        <div style="font-size:13px;color:#6B7280;">60 minutes</div>
+                        <div style="font-size:13px;color:#6a7a6a;">60 minutes</div>
                         <div class="badge">Best Value</div>
                     </div>
                 </div>
@@ -273,41 +414,24 @@
                 <input type="hidden" id="price" value="1000">
             </div>
 
-            <!-- Date & Time -->
             <div class="form-group">
                 <label>Select Date & Time</label>
                 <input type="datetime-local" id="booking-datetime" required>
-                <div style="font-size:13px;color:#6B7280;margin-top:5px;">
-                    Minimum 1 hour from now. Available 9 AM - 9 PM daily.
-                </div>
+                <div class="hint">Minimum 1 hour from now. Available 9 AM - 9 PM daily.</div>
             </div>
 
-            <!-- Optional Note -->
             <div class="form-group">
                 <label>Anything you'd like to share? (Optional)</label>
                 <textarea id="booking-note" placeholder="E.g., 'I'm feeling anxious about work...'"></textarea>
-                <div style="font-size:13px;color:#6B7280;margin-top:5px;">
-                    This is shared with your listener to help them prepare.
-                </div>
+                <div class="hint">This is shared with your listener to help them prepare.</div>
             </div>
 
-            <!-- Discount Section -->
-            <div class="discount-section" id="discount-section">
-                <div style="display:flex;justify-content:space-between;">
-                    <span>🎉 Your Discount:</span>
-                    <span class="discount-amount" id="discount-display">0%</span>
-                </div>
-                <div style="display:flex;justify-content:space-between;font-size:14px;color:#6B7280;">
-                    <span>Original price:</span>
-                    <span id="original-price">$10.00</span>
-                </div>
-                <div style="display:flex;justify-content:space-between;font-weight:700;font-size:18px;">
-                    <span>You pay:</span>
-                    <span id="discounted-price">$10.00</span>
-                </div>
+            <div class="form-group">
+                <label>Your Email (Optional)</label>
+                <input type="email" id="client-email" placeholder="you@email.com">
+                <div class="hint">We'll send you a confirmation email.</div>
             </div>
 
-            <!-- Price Summary -->
             <div class="price-summary">
                 <div class="price-row">
                     <span>Session</span>
@@ -319,7 +443,13 @@
                 </div>
             </div>
 
-            <button type="submit" class="btn-primary" id="pay-btn">💳 Pay & Book</button>
+            <div style="display:flex; gap:10px; margin-top:10px;">
+                <button type="submit" class="btn-primary" id="pay-btn" style="flex:2;">💳 Pay & Book</button>
+                <button type="button" class="btn-secondary" id="test-btn" style="flex:1;">🧪 Test Mode</button>
+            </div>
+            <div style="font-size:12px; color:#6a7a6a; text-align:center; margin-top:5px;">
+                Test Mode: Bypass payment for testing (no real charge)
+            </div>
         </form>
 
         <div class="secure-badge">
@@ -328,20 +458,42 @@
             <span>🔐 No Card Storage</span>
         </div>
 
-        <!-- Confirmation (hidden initially) -->
-        <div id="confirmation" style="display:none;text-align:center;padding:20px;">
-            <div style="font-size:48px;margin-bottom:15px;">✅</div>
-            <h2 style="color:#34D399;">Session Booked!</h2>
+        <div class="confirmation" id="confirmation">
+            <div class="emoji">✅</div>
+            <h2>Session Booked!</h2>
             <p>Your session is confirmed for <span id="confirm-time"></span></p>
-            <p style="color:#6B7280;margin:10px 0;">You'll be matched with a listener shortly.</p>
-            <button onclick="location.href='/dashboard-client.html'" style="background:#6C63FF;color:white;border:none;padding:12px 30px;border-radius:50px;font-weight:600;cursor:pointer;margin-top:15px;">
-                Go to My Sessions
-            </button>
+            <p style="color:#6a7a6a;margin:10px 0;">You'll be matched with a listener shortly.</p>
+            <button onclick="location.href='/dashboard-client.html'" class="btn-secondary">Go to My Sessions</button>
         </div>
     </div>
 
+    <footer>
+        <p>© 2026 Talk to Me — We're all in this together. ❤️</p>
+    </footer>
+
+    <!-- WhatsApp Floating Button -->
+    <a href="https://wa.me/254700886207?text=Hello%20Talk%20to%20Me!%20I%20need%20support..." 
+       class="whatsapp-float" 
+       target="_blank"
+       rel="noopener noreferrer">
+        <img src="https://upload.wikimedia.org/wikipedia/commons/6/6b/WhatsApp.svg" alt="WhatsApp">
+        <span>Chat on WhatsApp</span>
+    </a>
+
+    <!-- Tawk.to -->
+    <script type="text/javascript">
+    var Tawk_API=Tawk_API||{}, Tawk_LoadStart=new Date();
+    (function(){
+    var s1=document.createElement("script"),s0=document.getElementsByTagName("script")[0];
+    s1.async=true;
+    s1.src='https://embed.tawk.to/6a5540c5550ea31d480b6301/1jtega1mn';
+    s1.charset='UTF-8';
+    s1.setAttribute('crossorigin','*');
+    s0.parentNode.insertBefore(s1,s0);
+    })();
+    </script>
+
     <script>
-        // ============ TIER SELECTION ============
         let selectedTier = 'standard';
         const prices = { standard: 1000, extended: 3000 };
         const tierLabels = { standard: 'Standard (30 min)', extended: 'Extended (60 min)' };
@@ -356,19 +508,14 @@
             const price = prices[tier] / 100;
             document.getElementById('summary-tier').textContent = tierLabels[tier];
             document.getElementById('summary-price').textContent = '$' + price.toFixed(2);
-
-            // Check if discount applies
-            applyDiscountToPrice(price);
         }
 
-        // ============ DATE TIME PICKER ============
         function setMinDateTime() {
             const now = new Date();
-            const minTime = new Date(now.getTime() + 3600000); // 1 hour from now
+            const minTime = new Date(now.getTime() + 3600000);
             const input = document.getElementById('booking-datetime');
             input.min = minTime.toISOString().slice(0, 16);
 
-            // Restrict to 9 AM - 9 PM
             input.addEventListener('change', function() {
                 const selected = new Date(this.value);
                 const hours = selected.getHours();
@@ -379,60 +526,14 @@
             });
         }
 
-        // ============ DISCOUNT SYSTEM ============
-        function applyDiscountToPrice(price) {
-            // Check for referral discount from URL
-            const params = new URLSearchParams(window.location.search);
-            const ref = params.get('ref');
-            
-            let discount = 0;
-            
-            // If referral code exists, apply 2% discount
-            if (ref) {
-                discount = 2;
-                document.getElementById('discount-section').style.display = 'block';
-                document.getElementById('discount-display').textContent = '2% (Referral)';
-                
-                // Store referral code to apply on server
-                localStorage.setItem('referral_code', ref);
-            }
-            
-            // Check for loyalty discount (from previous sessions)
-            const token = localStorage.getItem('session_token');
-            if (token) {
-                // We'll check with server later
-                // For now, just show if we have it stored
-                const savedDiscount = localStorage.getItem('client_discount');
-                if (savedDiscount && parseInt(savedDiscount) > discount) {
-                    discount = parseInt(savedDiscount);
-                    document.getElementById('discount-section').style.display = 'block';
-                    document.getElementById('discount-display').textContent = discount + '% (Loyalty)';
-                }
-            }
-            
-            // Apply discount
-            if (discount > 0) {
-                const discountedPrice = price * (1 - discount / 100);
-                document.getElementById('original-price').textContent = '$' + price.toFixed(2);
-                document.getElementById('discounted-price').textContent = '$' + discountedPrice.toFixed(2);
-                document.getElementById('summary-price').textContent = '$' + discountedPrice.toFixed(2);
-            } else {
-                document.getElementById('discount-section').style.display = 'none';
-                document.getElementById('summary-price').textContent = '$' + price.toFixed(2);
-            }
-        }
-
-        // ============ FORM SUBMISSION ============
-        document.getElementById('booking-form').addEventListener('submit', async function(e) {
-            e.preventDefault();
-
+        // ============ TEST MODE ============
+        async function testBooking() {
             const tier = document.getElementById('tier').value;
             const price = parseInt(document.getElementById('price').value);
             const scheduledAt = new Date(document.getElementById('booking-datetime').value).getTime();
             const note = document.getElementById('booking-note').value;
-            const referralCode = localStorage.getItem('referral_code');
+            const clientEmail = document.getElementById('client-email').value;
 
-            // Validate
             if (!scheduledAt) {
                 alert('Please select a date and time.');
                 return;
@@ -443,7 +544,69 @@
                 return;
             }
 
-            // Show loading state
+            const btn = document.getElementById('test-btn');
+            btn.disabled = true;
+            btn.textContent = '⏳ Creating...';
+
+            try {
+                const response = await fetch('/api/create-booking', {
+                    method: 'POST',
+                    headers: { 'Content-Type': 'application/json' },
+                    body: JSON.stringify({
+                        tier,
+                        scheduledAt,
+                        note,
+                        amount: price,
+                        testMode: true,
+                        clientEmail
+                    })
+                });
+
+                const data = await response.json();
+
+                if (data.success) {
+                    localStorage.setItem('session_token', data.token);
+                    document.getElementById('booking-form').style.display = 'none';
+                    document.getElementById('confirmation').style.display = 'block';
+                    document.getElementById('confirm-time').textContent = new Date(scheduledAt).toLocaleString();
+                    document.querySelector('#confirmation h2').textContent = '✅ Test Session Created!';
+                    document.querySelector('#confirmation p').innerHTML = 'Your test session is confirmed! (No payment required)';
+                    
+                    setTimeout(() => {
+                        window.location.href = '/dashboard-client.html';
+                    }, 2000);
+                } else {
+                    alert('Test booking failed: ' + (data.error || 'Unknown error'));
+                }
+            } catch (error) {
+                alert('Test booking failed. Please try again.');
+                console.error(error);
+            }
+
+            btn.disabled = false;
+            btn.textContent = '🧪 Test Mode';
+        }
+
+        // ============ PAYMENT ============
+        document.getElementById('booking-form').addEventListener('submit', async function(e) {
+            e.preventDefault();
+
+            const tier = document.getElementById('tier').value;
+            const price = parseInt(document.getElementById('price').value);
+            const scheduledAt = new Date(document.getElementById('booking-datetime').value).getTime();
+            const note = document.getElementById('booking-note').value;
+            const clientEmail = document.getElementById('client-email').value;
+
+            if (!scheduledAt) {
+                alert('Please select a date and time.');
+                return;
+            }
+
+            if (scheduledAt < Date.now() + 3600000) {
+                alert('Please select a time at least 1 hour from now.');
+                return;
+            }
+
             const btn = document.getElementById('pay-btn');
             btn.disabled = true;
             btn.textContent = '⏳ Processing...';
@@ -457,61 +620,69 @@
                         scheduledAt,
                         note,
                         amount: price,
-                        referralCode
+                        testMode: false,
+                        clientEmail
                     })
                 });
 
                 const data = await response.json();
 
-                if (data.authorization_url) {
-                    // Redirect to Paystack payment page
-                    window.location.href = data.authorization_url;
+                if (data.success) {
+                    if (data.testMode) {
+                        localStorage.setItem('session_token', data.token);
+                        document.getElementById('booking-form').style.display = 'none';
+                        document.getElementById('confirmation').style.display = 'block';
+                        document.getElementById('confirm-time').textContent = new Date(scheduledAt).toLocaleString();
+                        document.querySelector('#confirmation h2').textContent = '✅ Session Created!';
+                        document.querySelector('#confirmation p').innerHTML = 'Your session is confirmed! (Test mode)';
+                        
+                        setTimeout(() => {
+                            window.location.href = '/dashboard-client.html';
+                        }, 2000);
+                    } else {
+                        // In production, this would redirect to Paystack
+                        alert('Payment processing would redirect to Paystack here.');
+                    }
                 } else {
                     alert('Booking failed: ' + (data.error || 'Unknown error'));
-                    btn.disabled = false;
-                    btn.textContent = '💳 Pay & Book';
                 }
             } catch (error) {
                 alert('Booking failed. Please try again.');
                 console.error(error);
-                btn.disabled = false;
-                btn.textContent = '💳 Pay & Book';
             }
+
+            btn.disabled = false;
+            btn.textContent = '💳 Pay & Book';
         });
 
         // ============ HANDLE PAYMENT CALLBACK ============
         function handlePaymentCallback() {
             const params = new URLSearchParams(window.location.search);
-            const reference = params.get('reference');
             const status = params.get('status');
+            const token = params.get('token');
 
-            if (status === 'success' && reference) {
-                // Show confirmation
+            if (status === 'success' && token) {
+                localStorage.setItem('session_token', token);
                 document.getElementById('booking-form').style.display = 'none';
                 document.getElementById('confirmation').style.display = 'block';
-                document.getElementById('confirm-time').textContent = 
-                    new Date().toLocaleString();
-
-                // Store session token
-                localStorage.setItem('session_token', reference);
-
-                // Clear referral code
-                localStorage.removeItem('referral_code');
-
+                document.getElementById('confirm-time').textContent = new Date().toLocaleString();
+                document.querySelector('#confirmation h2').textContent = '✅ Payment Successful!';
+                document.querySelector('#confirmation p').innerHTML = 'Your session is confirmed! You\'ll be matched with a listener shortly.';
+                
+                setTimeout(() => {
+                    window.location.href = '/dashboard-client.html';
+                }, 3000);
             } else if (status === 'cancelled') {
-                alert('Payment was cancelled.');
+                alert('Payment was cancelled. You can try again anytime.');
             }
         }
 
-        // ============ INITIALIZATION ============
+        document.getElementById('test-btn').addEventListener('click', testBooking);
+
         document.addEventListener('DOMContentLoaded', function() {
             setMinDateTime();
-            
-            // Check if returning from payment
-            handlePaymentCallback();
-
-            // Set default tier
             document.querySelector('.tier-option[data-tier="standard"]').classList.add('selected');
+            handlePaymentCallback();
         });
     </script>
 </body>

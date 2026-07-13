@@ -173,21 +173,6 @@
             color: #2d6a4f;
         }
 
-        nav a::after {
-            content: '';
-            position: absolute;
-            bottom: -4px;
-            left: 0;
-            width: 0;
-            height: 2px;
-            background: #2d6a4f;
-            transition: width 0.3s;
-        }
-
-        nav a:hover::after {
-            width: 100%;
-        }
-
         nav a.support-link {
             color: #2d6a4f;
             font-weight: 600;
@@ -258,6 +243,43 @@
             box-shadow: 0 16px 48px rgba(108, 99, 255, 0.35);
         }
 
+        /* ============ WHATSAPP FLOATING BUTTON ============ */
+        .whatsapp-float {
+            position: fixed;
+            bottom: 100px;
+            right: 20px;
+            background: #25D366;
+            color: white;
+            border-radius: 50px;
+            padding: 12px 20px;
+            display: flex;
+            align-items: center;
+            gap: 10px;
+            text-decoration: none;
+            font-weight: 600;
+            font-size: 14px;
+            box-shadow: 0 4px 20px rgba(37, 211, 102, 0.4);
+            z-index: 1000;
+            transition: all 0.3s;
+            border: none;
+            cursor: pointer;
+        }
+
+        .whatsapp-float:hover {
+            transform: scale(1.05);
+            box-shadow: 0 8px 30px rgba(37, 211, 102, 0.5);
+        }
+
+        .whatsapp-float img {
+            width: 28px;
+            height: 28px;
+            filter: brightness(0) invert(1);
+        }
+
+        .whatsapp-float span {
+            color: white;
+        }
+
         /* ============ HERO ============ */
         .hero {
             display: flex;
@@ -285,7 +307,6 @@
             font-weight: 600;
             margin-bottom: 20px;
             border: 1px solid rgba(45, 106, 79, 0.15);
-            backdrop-filter: blur(4px);
         }
 
         .hero-content h1 {
@@ -326,7 +347,6 @@
             background: rgba(255,255,255,0.5);
             padding: 6px 14px;
             border-radius: 50px;
-            backdrop-filter: blur(4px);
         }
 
         .hero-content .stats {
@@ -345,7 +365,6 @@
             background: rgba(255,255,255,0.4);
             padding: 6px 16px;
             border-radius: 50px;
-            backdrop-filter: blur(4px);
             border: 1px solid rgba(255,255,255,0.3);
         }
 
@@ -575,7 +594,6 @@
             box-shadow: 0 4px 24px rgba(0,0,0,0.03);
             transition: all 0.4s;
             border: 1px solid rgba(255,255,255,0.3);
-            backdrop-filter: blur(8px);
         }
 
         .testimonial-card:hover {
@@ -779,9 +797,6 @@
             .support-banner-content {
                 gap: 6px;
             }
-            .support-banner .support-divider {
-                display: none;
-            }
 
             nav {
                 padding: 12px 20px;
@@ -808,6 +823,20 @@
             .btn-primary {
                 padding: 14px 28px;
                 font-size: 16px;
+            }
+
+            .whatsapp-float {
+                bottom: 80px;
+                right: 10px;
+                padding: 10px 15px;
+                font-size: 12px;
+            }
+            .whatsapp-float img {
+                width: 22px;
+                height: 22px;
+            }
+            .whatsapp-float span {
+                display: none;
             }
 
             .features, .steps, .testimonials, .listener-cta {
@@ -861,7 +890,7 @@
             <span class="support-divider">|</span>
             <a href="/support.html" class="support-link">💬 Chat Now</a>
             <span class="support-divider">|</span>
-            <a href="tel:+254712345678" class="support-link">📞 Call +254 712 345 678</a>
+            <a href="tel:+254700886207" class="support-link">📞 Call +254 700 886 207</a>
             <span class="support-status"><span class="status-dot"></span> Online</span>
         </div>
     </div>
@@ -892,6 +921,7 @@
             <a href="/loyalty.html">⭐ Loyalty</a>
             <a href="#listeners">Become a Listener</a>
             <a href="/support.html" class="support-link">🕐 Support</a>
+            <a href="https://wa.me/254700886207?text=Hi%20Talk%20to%20Me!" target="_blank" style="color:#25D366;font-weight:600;">📱 WhatsApp</a>
             <a href="/book.html" class="btn-outline">💬 Book Now</a>
         </div>
     </nav>
@@ -995,9 +1025,7 @@
         <div class="testimonials-container">
             <h2>❤️ Real Stories, Real Healing</h2>
             <p class="subtitle">Hear from people who found their voice with Talk to Me</p>
-
             <div class="testimonial-grid">
-                <!-- Testimonial 1 -->
                 <div class="testimonial-card">
                     <div class="quote-icon">"</div>
                     <p class="testimonial-text">I was ready to leave my husband. I had the lawyer on speed dial. My listener didn't tell me to leave or stay. She just listened. I realized I was still in love with him. I went home and told him everything. We cried together for the first time in years.</p>
@@ -1010,8 +1038,6 @@
                         </div>
                     </div>
                 </div>
-
-                <!-- Testimonial 2 -->
                 <div class="testimonial-card">
                     <div class="quote-icon">"</div>
                     <p class="testimonial-text">I've had 4 miscarriages. My husband tries to understand, but he can't. My friends don't know what to say. My listener said, 'This is not your fault.' I had never heard those words before. I broke down. I still cry sometimes. But I don't cry alone anymore.</p>
@@ -1024,8 +1050,6 @@
                         </div>
                     </div>
                 </div>
-
-                <!-- Testimonial 3 -->
                 <div class="testimonial-card">
                     <div class="quote-icon">"</div>
                     <p class="testimonial-text">I was drinking myself to sleep every night. No one knew. I told my listener I was drinking a bottle of whiskey a day. She said, 'Thank you for trusting me with this.' That conversation was the beginning of my sobriety. I've been sober for 2 years now.</p>
@@ -1038,8 +1062,6 @@
                         </div>
                     </div>
                 </div>
-
-                <!-- Testimonial 4 -->
                 <div class="testimonial-card">
                     <div class="quote-icon">"</div>
                     <p class="testimonial-text">I was a straight-A student. Everyone thought I had it all figured out. But I was drowning. Panic attacks before exams. I couldn't sleep. My listener said, 'You are not your grades. You are so much more than a test result.' I'm still a student. But I'm no longer a prisoner of my own expectations.</p>
@@ -1052,8 +1074,6 @@
                         </div>
                     </div>
                 </div>
-
-                <!-- Testimonial 5 -->
                 <div class="testimonial-card">
                     <div class="quote-icon">"</div>
                     <p class="testimonial-text">My father was abusive. I never told anyone. Not my wife. Not my therapist. I told my listener everything. I cried for the first time in 15 years. He said, 'That was so heavy to carry. I'm proud of you for putting it down.' That conversation changed me.</p>
@@ -1066,8 +1086,6 @@
                         </div>
                     </div>
                 </div>
-
-                <!-- Testimonial 6 -->
                 <div class="testimonial-card">
                     <div class="quote-icon">"</div>
                     <p class="testimonial-text">I moved to London for work. I knew no one. I sat in my tiny apartment every night eating instant noodles and crying. I was so lonely it physically hurt. My listener just sat with me. I wasn't alone anymore. Talk to Me is my lifeline.</p>
@@ -1080,8 +1098,6 @@
                         </div>
                     </div>
                 </div>
-
-                <!-- Testimonial 7 -->
                 <div class="testimonial-card">
                     <div class="quote-icon">"</div>
                     <p class="testimonial-text">I couldn't leave my house for 6 months. I was trapped in my own mind. My listener said, 'It's okay to be scared. You're safe here.' That was the first time I felt safe in months. I slowly started leaving my house. I'm not cured. But I have a space where I can be honest about my fear.</p>
@@ -1094,8 +1110,6 @@
                         </div>
                     </div>
                 </div>
-
-                <!-- Testimonial 8 -->
                 <div class="testimonial-card">
                     <div class="quote-icon">"</div>
                     <p class="testimonial-text">I had $40,000 in credit card debt. I lost my job. I was terrified of losing everything. My listener said, 'You are not your debt. You are a human being who made mistakes. You can rebuild.' I cried for the first time in months. I still have the debt. But I'm no longer carrying it alone.</p>
@@ -1108,8 +1122,6 @@
                         </div>
                     </div>
                 </div>
-
-                <!-- Testimonial 9 -->
                 <div class="testimonial-card">
                     <div class="quote-icon">"</div>
                     <p class="testimonial-text">I was assaulted as a child. I never told anyone for 34 years. I told my listener the truth. She said, 'That was so heavy to carry. You've been carrying this alone for so long. You are safe now.' I sobbed for 30 minutes. I've been in trauma therapy ever since. I'm finally healing.</p>
@@ -1122,8 +1134,6 @@
                         </div>
                     </div>
                 </div>
-
-                <!-- Testimonial 10 -->
                 <div class="testimonial-card">
                     <div class="quote-icon">"</div>
                     <p class="testimonial-text">My boss was emotionally abusive. He belittled me in meetings. He took credit for my work. I cried in the bathroom every day. My listener said, 'You are not your job. You are a human being who deserves respect.' I reported my boss. He was fired. I stayed. I'm still healing.</p>
@@ -1137,7 +1147,6 @@
                     </div>
                 </div>
             </div>
-
             <div class="testimonials-cta">
                 <p>Your story could be here too. <a href="/google-form.html">Share your experience</a></p>
             </div>
@@ -1160,12 +1169,21 @@
             <a href="/loyalty.html">⭐ Loyalty Program</a>
             <a href="/onboard.html">👂 Become a Listener</a>
             <a href="/support.html">🕐 24/7 Support</a>
+            <a href="https://wa.me/254700886207?text=Hi%20Talk%20to%20Me!" target="_blank">📱 WhatsApp</a>
             <a href="/privacy.html">🔒 Privacy Policy</a>
         </div>
     </footer>
 
+    <!-- ============ WHATSAPP FLOATING BUTTON ============ -->
+    <a href="https://wa.me/254700886207?text=Hello%20Talk%20to%20Me!%20I%20need%20support..." 
+       class="whatsapp-float" 
+       target="_blank"
+       rel="noopener noreferrer">
+        <img src="https://upload.wikimedia.org/wikipedia/commons/6/6b/WhatsApp.svg" alt="WhatsApp">
+        <span>Chat on WhatsApp</span>
+    </a>
+
     <!-- ============ TAWK.TO LIVE CHAT ============ -->
-    <!--Start of Tawk.to Script-->
     <script type="text/javascript">
     var Tawk_API=Tawk_API||{}, Tawk_LoadStart=new Date();
     (function(){
@@ -1177,11 +1195,8 @@
     s0.parentNode.insertBefore(s1,s0);
     })();
     </script>
-    <!--End of Tawk.to Script-->
 
-    <!-- ============ SCRIPTS ============ -->
     <script>
-        // ============ Live listener count simulation ============
         function updateListenerCount() {
             const base = 42;
             const variation = Math.floor(Math.random() * 15);
@@ -1191,11 +1206,8 @@
                 element.textContent = `🎧 ${count} Listeners Available`;
             }
         }
-
-        // Update every 30 seconds
         setInterval(updateListenerCount, 30000);
 
-        // ============ Smooth scroll for navigation links ============
         document.querySelectorAll('a[href^="#"]').forEach(anchor => {
             anchor.addEventListener('click', function (e) {
                 e.preventDefault();
@@ -1206,11 +1218,9 @@
             });
         });
 
-        // ============ Console greeting ============
         console.log('🌿 Talk to Me — Your safe space to heal');
         console.log('❤️ You are not alone. You never were.');
-        console.log('🕐 24/7 Support available');
-        console.log('🌍 20+ Countries • 1,200+ Conversations Today');
+        console.log('📱 WhatsApp: +254700886207');
     </script>
 </body>
 </html>

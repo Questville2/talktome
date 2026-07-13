@@ -12,52 +12,64 @@
         }
 
         body {
-            font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif;
-            background: #f8f9fe;
-            color: #1A1A2E;
-            line-height: 1.6;
+            font-family: 'Segoe UI', -apple-system, BlinkMacSystemFont, Roboto, sans-serif;
+            background: linear-gradient(145deg, #f7faf7 0%, #e8f5e9 30%, #fff8e1 60%, #f1f8e9 100%);
+            color: #1a2a1f;
+            line-height: 1.7;
+            min-height: 100vh;
         }
 
         nav {
             display: flex;
             justify-content: space-between;
             align-items: center;
-            padding: 20px 60px;
-            background: white;
-            box-shadow: 0 2px 10px rgba(0,0,0,0.05);
+            padding: 16px 60px;
+            background: rgba(255,255,255,0.88);
+            backdrop-filter: blur(16px);
+            box-shadow: 0 4px 30px rgba(0,0,0,0.04);
             flex-wrap: wrap;
+            gap: 12px;
+            border-bottom: 1px solid rgba(255,255,255,0.3);
         }
 
         .logo {
             font-size: 24px;
             font-weight: 700;
+            color: #2D6A4F;
+        }
+
+        .logo span {
             color: #6C63FF;
         }
 
         nav a {
-            margin: 0 15px;
+            margin: 0 12px;
             text-decoration: none;
             color: #1A1A2E;
             font-weight: 500;
+            font-size: 14px;
         }
 
         nav a:hover {
-            color: #6C63FF;
+            color: #2D6A4F;
         }
 
         .btn-outline {
             background: transparent;
-            border: 2px solid #6C63FF;
-            color: #6C63FF;
+            border: 2px solid #2D6A4F;
+            color: #2D6A4F;
             padding: 8px 20px;
             border-radius: 50px;
             font-weight: 600;
             cursor: pointer;
             transition: all 0.3s;
+            text-decoration: none;
+            display: inline-block;
+            font-size: 13px;
         }
 
         .btn-outline:hover {
-            background: #6C63FF;
+            background: #2D6A4F;
             color: white;
         }
 
@@ -87,35 +99,34 @@
         }
 
         .stat-card {
-            background: white;
+            background: rgba(255,255,255,0.85);
             padding: 20px;
-            border-radius: 12px;
-            box-shadow: 0 2px 10px rgba(0,0,0,0.05);
+            border-radius: 16px;
             text-align: center;
+            border: 1px solid rgba(255,255,255,0.3);
         }
 
         .stat-card .value {
             font-size: 28px;
             font-weight: 700;
-            color: #6C63FF;
+            color: #2D6A4F;
         }
 
         .stat-card .label {
             font-size: 14px;
-            color: #6B7280;
+            color: #5a6a5a;
         }
 
-        /* Status Toggle */
         .status-toggle-container {
-            background: white;
+            background: rgba(255,255,255,0.85);
             padding: 20px;
-            border-radius: 12px;
-            box-shadow: 0 2px 10px rgba(0,0,0,0.05);
+            border-radius: 16px;
             margin-bottom: 30px;
             display: flex;
             justify-content: space-between;
             align-items: center;
             flex-wrap: wrap;
+            border: 1px solid rgba(255,255,255,0.3);
         }
 
         .status-toggle {
@@ -135,7 +146,7 @@
         }
 
         .toggle-track.active {
-            background: #6C63FF;
+            background: #2D6A4F;
         }
 
         .toggle-thumb {
@@ -163,12 +174,38 @@
             font-weight: 600;
         }
 
-        .session-count {
-            font-size: 14px;
-            color: #6B7280;
+        .membership-status {
+            background: rgba(255,255,255,0.85);
+            padding: 15px 20px;
+            border-radius: 16px;
+            margin-bottom: 20px;
+            border: 1px solid rgba(255,255,255,0.3);
         }
 
-        /* Session Lists */
+        .membership-status.active {
+            border-color: #34D399;
+            background: #f0fdf4;
+        }
+
+        .membership-status.expiring {
+            border-color: #F59E0B;
+            background: #fffbeb;
+        }
+
+        .membership-status.expired {
+            border-color: #EF4444;
+            background: #fef2f2;
+        }
+
+        .membership-status .status-badge {
+            font-weight: 600;
+        }
+
+        .membership-status .days {
+            font-weight: 700;
+            color: #2D6A4F;
+        }
+
         .section-header {
             display: flex;
             justify-content: space-between;
@@ -181,7 +218,7 @@
         }
 
         .badge {
-            background: #6C63FF;
+            background: #2D6A4F;
             color: white;
             padding: 2px 12px;
             border-radius: 20px;
@@ -190,16 +227,16 @@
         }
 
         .booking-card, .session-card {
-            background: white;
+            background: rgba(255,255,255,0.85);
             padding: 20px;
-            border-radius: 12px;
-            box-shadow: 0 2px 10px rgba(0,0,0,0.05);
+            border-radius: 16px;
             margin-bottom: 15px;
             display: flex;
             justify-content: space-between;
             align-items: center;
             flex-wrap: wrap;
             gap: 15px;
+            border: 1px solid rgba(255,255,255,0.3);
         }
 
         .booking-card .booking-time {
@@ -207,12 +244,12 @@
         }
 
         .booking-card .booking-tier {
-            color: #6B7280;
+            color: #5a6a5a;
             font-size: 14px;
         }
 
         .booking-card .booking-note {
-            color: #6B7280;
+            color: #5a6a5a;
             font-size: 14px;
             font-style: italic;
         }
@@ -231,7 +268,7 @@
         }
 
         .btn-small.primary {
-            background: #6C63FF;
+            background: #2D6A4F;
             color: white;
         }
 
@@ -245,15 +282,15 @@
             color: white;
         }
 
-        .btn-small.warning {
-            background: #F59E0B;
+        .btn-small.chat {
+            background: #6C63FF;
             color: white;
         }
 
         .empty-state {
             text-align: center;
             padding: 40px;
-            color: #6B7280;
+            color: #5a6a5a;
         }
 
         .empty-state .emoji {
@@ -261,7 +298,6 @@
             margin-bottom: 15px;
         }
 
-        /* Login Overlay */
         .login-overlay {
             display: flex;
             justify-content: center;
@@ -270,22 +306,23 @@
         }
 
         .login-card {
-            background: white;
+            background: rgba(255,255,255,0.95);
             padding: 40px;
-            border-radius: 16px;
-            box-shadow: 0 8px 32px rgba(0,0,0,0.1);
+            border-radius: 20px;
             max-width: 400px;
             width: 100%;
+            box-shadow: 0 8px 40px rgba(0,0,0,0.08);
         }
 
         .login-card h2 {
             text-align: center;
             margin-bottom: 10px;
+            color: #2D6A4F;
         }
 
         .login-card .subtitle {
             text-align: center;
-            color: #6B7280;
+            color: #5a6a5a;
             margin-bottom: 20px;
         }
 
@@ -302,20 +339,20 @@
         .login-card .form-group input {
             width: 100%;
             padding: 12px;
-            border: 2px solid #E5E7EB;
-            border-radius: 8px;
+            border: 2px solid #e5e7eb;
+            border-radius: 10px;
             font-size: 16px;
         }
 
         .login-card .form-group input:focus {
-            border-color: #6C63FF;
+            border-color: #2D6A4F;
             outline: none;
         }
 
         .login-card .btn-primary {
             width: 100%;
             padding: 14px;
-            background: #6C63FF;
+            background: #2D6A4F;
             color: white;
             border: none;
             border-radius: 50px;
@@ -325,22 +362,25 @@
         }
 
         .login-card .btn-primary:hover {
-            background: #5A52D5;
+            background: #1B4332;
         }
 
         .login-card .apply-link {
             text-align: center;
             margin-top: 15px;
             font-size: 14px;
-            color: #6B7280;
+            color: #5a6a5a;
         }
 
         .login-card .apply-link a {
-            color: #6C63FF;
+            color: #2D6A4F;
             text-decoration: none;
         }
 
-        /* Earnings */
+        .login-card .apply-link a:hover {
+            text-decoration: underline;
+        }
+
         .earnings-list {
             list-style: none;
             padding: 0;
@@ -370,14 +410,52 @@
             background: #10B981;
         }
 
-        .withdraw-btn:disabled {
-            opacity: 0.5;
-            cursor: not-allowed;
+        .whatsapp-float {
+            position: fixed;
+            bottom: 100px;
+            right: 20px;
+            background: #25D366;
+            color: white;
+            border-radius: 50px;
+            padding: 12px 20px;
+            display: flex;
+            align-items: center;
+            gap: 10px;
+            text-decoration: none;
+            font-weight: 600;
+            font-size: 14px;
+            box-shadow: 0 4px 20px rgba(37, 211, 102, 0.4);
+            z-index: 1000;
+            transition: all 0.3s;
+        }
+
+        .whatsapp-float:hover {
+            transform: scale(1.05);
+            box-shadow: 0 8px 30px rgba(37, 211, 102, 0.5);
+        }
+
+        .whatsapp-float img {
+            width: 28px;
+            height: 28px;
+            filter: brightness(0) invert(1);
+        }
+
+        .whatsapp-float span {
+            color: white;
+        }
+
+        footer {
+            padding: 30px 60px;
+            text-align: center;
+            background: #1a2a1f;
+            color: rgba(255,255,255,0.7);
+            margin-top: 40px;
         }
 
         @media (max-width: 768px) {
             nav {
-                padding: 15px 20px;
+                padding: 12px 20px;
+                justify-content: center;
             }
             .dashboard-container {
                 padding: 0 15px;
@@ -394,30 +472,67 @@
                 flex-direction: column;
                 align-items: flex-start;
             }
+            .whatsapp-float {
+                bottom: 80px;
+                right: 10px;
+                padding: 10px 15px;
+                font-size: 12px;
+            }
+            .whatsapp-float img {
+                width: 22px;
+                height: 22px;
+            }
+            .whatsapp-float span {
+                display: none;
+            }
+            footer {
+                padding: 20px;
+            }
         }
     </style>
 </head>
 <body>
-    <!-- Navigation -->
     <nav>
-        <div class="logo">🎙️ Talk to Me</div>
+        <div class="logo">🌿 <span>Talk to Me</span></div>
         <div>
             <a href="/">Home</a>
             <a href="/onboard.html">Apply</a>
+            <a href="https://wa.me/254700886207?text=Hi%20Talk%20to%20Me!" target="_blank" style="color:#25D366;font-weight:600;">📱 WhatsApp</a>
             <button class="btn-outline" onclick="logout()">🚪 Logout</button>
         </div>
     </nav>
 
     <div class="dashboard-container" id="dashboard-content">
-        <!-- This will be populated by JavaScript -->
+        <!-- Content loaded by JavaScript -->
     </div>
 
-    <script>
-        // ============ LISTENER DASHBOARD ============
+    <footer>
+        <p>© 2026 Talk to Me — We're all in this together. ❤️</p>
+    </footer>
 
+    <a href="https://wa.me/254700886207?text=Hello%20Talk%20to%20Me!%20I%20need%20support..." 
+       class="whatsapp-float" 
+       target="_blank"
+       rel="noopener noreferrer">
+        <img src="https://upload.wikimedia.org/wikipedia/commons/6/6b/WhatsApp.svg" alt="WhatsApp">
+        <span>Chat on WhatsApp</span>
+    </a>
+
+    <script type="text/javascript">
+    var Tawk_API=Tawk_API||{}, Tawk_LoadStart=new Date();
+    (function(){
+    var s1=document.createElement("script"),s0=document.getElementsByTagName("script")[0];
+    s1.async=true;
+    s1.src='https://embed.tawk.to/6a5540c5550ea31d480b6301/1jtega1mn';
+    s1.charset='UTF-8';
+    s1.setAttribute('crossorigin','*');
+    s0.parentNode.insertBefore(s1,s0);
+    })();
+    </script>
+
+    <script>
         const listenerToken = localStorage.getItem('listener_token');
 
-        // ============ CHECK IF LOGGED IN ============
         async function loadDashboard() {
             if (!listenerToken) {
                 showLogin();
@@ -441,7 +556,6 @@
             }
         }
 
-        // ============ SHOW LOGIN ============
         function showLogin() {
             document.getElementById('dashboard-content').innerHTML = `
                 <div class="login-overlay">
@@ -484,7 +598,7 @@
                         localStorage.setItem('listener_token', data.token);
                         loadDashboard();
                     } else {
-                        alert('Invalid email or password.');
+                        alert(data.error || 'Invalid email or password.');
                     }
                 } catch (error) {
                     alert('Login failed. Please try again.');
@@ -492,26 +606,57 @@
             });
         }
 
-        // ============ RENDER DASHBOARD ============
         function renderDashboard(listener) {
             const container = document.getElementById('dashboard-content');
 
+            let membershipHTML = '';
+            if (listener.membershipStatus === 'active') {
+                membershipHTML = `
+                    <div class="membership-status active">
+                        ✅ <span class="status-badge">Membership Active</span>
+                        — <span class="days">${listener.daysRemaining || 365} days</span> remaining
+                    </div>
+                `;
+            } else if (listener.membershipStatus === 'expiring_soon') {
+                membershipHTML = `
+                    <div class="membership-status expiring">
+                        ⚠️ <span class="status-badge">Membership Expiring Soon</span>
+                        — <span class="days">${listener.daysRemaining || 0} days</span> remaining
+                        <button onclick="renewMembership()" class="btn-small primary" style="margin-left:10px;">Renew Now</button>
+                    </div>
+                `;
+            } else if (listener.membershipStatus === 'expired') {
+                membershipHTML = `
+                    <div class="membership-status expired">
+                        ❌ <span class="status-badge">Membership Expired</span>
+                        <button onclick="renewMembership()" class="btn-small primary" style="margin-left:10px;">Renew Now</button>
+                    </div>
+                `;
+            } else {
+                membershipHTML = `
+                    <div class="membership-status" style="border-color:#3B82F6;background:#EFF6FF;">
+                        ⏳ <span class="status-badge">Membership Pending</span>
+                        <button onclick="renewMembership()" class="btn-small primary" style="margin-left:10px;">Pay Now</button>
+                    </div>
+                `;
+            }
+
             container.innerHTML = `
-                <!-- Header -->
                 <div class="dashboard-header">
                     <div>
                         <h1>👂 Welcome, ${listener.fullName || 'Listener'}!</h1>
-                        <p style="color:#6B7280;">Here's your listener dashboard</p>
+                        <p style="color:#2D6A4F;font-size:14px;">📛 Clients see you as: <strong>${listener.nickname || 'Loading...'}</strong></p>
                     </div>
                     <div>
-                        <span style="color:#6B7280;font-size:14px;">Status:</span>
+                        <span style="color:#5a6a5a;font-size:14px;">Status:</span>
                         <span class="status-text ${listener.isOnline ? 'online' : 'offline'}">
                             ${listener.isOnline ? '🟢 Online' : '⚪ Offline'}
                         </span>
                     </div>
                 </div>
 
-                <!-- Stats -->
+                ${membershipHTML}
+
                 <div class="stats-grid">
                     <div class="stat-card">
                         <div class="value">${listener.availableBookings || 0}</div>
@@ -531,7 +676,6 @@
                     </div>
                 </div>
 
-                <!-- Status Toggle -->
                 <div class="status-toggle-container">
                     <div class="status-toggle">
                         <span>📢 Availability:</span>
@@ -542,12 +686,11 @@
                             ${listener.isOnline ? 'Online' : 'Offline'}
                         </span>
                     </div>
-                    <div class="session-count">
+                    <div style="font-size:14px;color:#5a6a5a;">
                         Current sessions: ${listener.activeSessions || 0}/1
                     </div>
                 </div>
 
-                <!-- Available Bookings -->
                 <div class="section-header">
                     <h2>📋 Available Sessions</h2>
                     <span class="badge" id="available-count">${listener.availableBookings || 0}</span>
@@ -559,7 +702,6 @@
                     </div>
                 </div>
 
-                <!-- My Sessions -->
                 <div class="section-header">
                     <h2>✅ My Sessions</h2>
                 </div>
@@ -570,12 +712,11 @@
                     </div>
                 </div>
 
-                <!-- Earnings -->
                 <div class="section-header">
                     <h2>💰 Earnings</h2>
                 </div>
                 <ul class="earnings-list" id="earnings-list">
-                    <li style="color:#6B7280;text-align:center;padding:20px;">No earnings yet</li>
+                    <li style="color:#5a6a5a;text-align:center;padding:20px;">No earnings yet</li>
                 </ul>
 
                 <button class="withdraw-btn" id="withdraw-btn" onclick="withdrawEarnings()">
@@ -583,20 +724,13 @@
                 </button>
             `;
 
-            // Load available bookings
             loadAvailableBookings();
-
-            // Load my sessions
             loadMySessions();
-
-            // Load earnings
             loadEarnings();
 
-            // Toggle status
             document.getElementById('toggle-track').addEventListener('click', toggleStatus);
         }
 
-        // ============ TOGGLE STATUS ============
         async function toggleStatus() {
             const token = localStorage.getItem('listener_token');
             const track = document.getElementById('toggle-track');
@@ -608,10 +742,7 @@
                 const response = await fetch('/api/listener/status', {
                     method: 'POST',
                     headers: { 'Content-Type': 'application/json' },
-                    body: JSON.stringify({
-                        token: token,
-                        isOnline: !isOnline
-                    })
+                    body: JSON.stringify({ token, isOnline: !isOnline })
                 });
 
                 const data = await response.json();
@@ -627,7 +758,6 @@
             }
         }
 
-        // ============ LOAD AVAILABLE BOOKINGS ============
         async function loadAvailableBookings() {
             const token = localStorage.getItem('listener_token');
 
@@ -668,7 +798,6 @@
             }
         }
 
-        // ============ ACCEPT BOOKING ============
         async function acceptBooking(sessionId) {
             const token = localStorage.getItem('listener_token');
 
@@ -694,7 +823,6 @@
             }
         }
 
-        // ============ LOAD MY SESSIONS ============
         async function loadMySessions() {
             const token = localStorage.getItem('listener_token');
 
@@ -726,16 +854,20 @@
                         <div class="session-card">
                             <div>
                                 <div class="booking-time">${statusEmoji} ${new Date(session.scheduledAt).toLocaleString()}</div>
-                                <div style="font-size:14px;color:#6B7280;">
+                                <div style="font-size:14px;color:#5a6a5a;">
                                     ${session.tier === 'standard' ? '30 min' : '60 min'} • Status: ${session.status}
                                 </div>
                             </div>
-                            ${canJoin ? 
-                                `<button onclick="joinListenerSession('${session.id}')" class="btn-small success">🔗 Join</button>` :
-                                session.status === 'active' ?
-                                `<button onclick="joinListenerSession('${session.id}')" class="btn-small danger">🔴 Join Now</button>` :
-                                `<span style="color:#6B7280;font-size:14px;">${isTime ? 'Session ended' : '⏳ Upcoming'}</span>`
-                            }
+                            <div>
+                                ${canJoin ? 
+                                    `<button onclick="joinListenerSession('${session.id}')" class="btn-small success">🔗 Join</button>
+                                     <button onclick="openChat('${session.id}', 'listener')" class="btn-small chat">💬 Chat</button>` :
+                                    session.status === 'active' ?
+                                    `<button onclick="joinListenerSession('${session.id}')" class="btn-small danger">🔴 Join Now</button>
+                                     <button onclick="openChat('${session.id}', 'listener')" class="btn-small chat">💬 Chat</button>` :
+                                    `<span style="color:#5a6a5a;font-size:14px;">${isTime ? 'Session ended' : '⏳ Upcoming'}</span>`
+                                }
+                            </div>
                         </div>
                     `;
                 }).join('');
@@ -744,7 +876,10 @@
             }
         }
 
-        // ============ JOIN SESSION (LISTENER) ============
+        function openChat(sessionId, role) {
+            window.location.href = `/chat.html?session=${sessionId}&role=${role}`;
+        }
+
         async function joinListenerSession(sessionId) {
             const token = localStorage.getItem('listener_token');
 
@@ -770,7 +905,6 @@
             }
         }
 
-        // ============ LOAD EARNINGS ============
         async function loadEarnings() {
             const token = localStorage.getItem('listener_token');
 
@@ -783,7 +917,7 @@
 
                 if (earnings.length === 0) {
                     container.innerHTML = `
-                        <li style="color:#6B7280;text-align:center;padding:20px;">No earnings yet</li>
+                        <li style="color:#5a6a5a;text-align:center;padding:20px;">No earnings yet</li>
                     `;
                     return;
                 }
@@ -800,7 +934,6 @@
             }
         }
 
-        // ============ WITHDRAW EARNINGS ============
         async function withdrawEarnings() {
             const token = localStorage.getItem('listener_token');
 
@@ -826,7 +959,36 @@
             }
         }
 
-        // ============ LOGOUT ============
+        async function renewMembership() {
+            const email = prompt('Please enter your email address to renew:');
+            if (!email) return;
+
+            try {
+                const response = await fetch('/api/listener/initiate-membership', {
+                    method: 'POST',
+                    headers: { 'Content-Type': 'application/json' },
+                    body: JSON.stringify({
+                        email: email,
+                        fullName: 'Listener',
+                        mpesaNumber: '0712345678',
+                        applicationId: 'renewal_' + Date.now()
+                    })
+                });
+
+                const data = await response.json();
+
+                if (data.success) {
+                    alert('✅ Membership activated!');
+                    loadDashboard();
+                } else {
+                    alert('Renewal failed. Please try again.');
+                }
+            } catch (error) {
+                alert('Error processing renewal.');
+                console.error(error);
+            }
+        }
+
         function logout() {
             if (confirm('Are you sure you want to logout?')) {
                 localStorage.removeItem('listener_token');
@@ -834,7 +996,6 @@
             }
         }
 
-        // ============ INIT ============
         document.addEventListener('DOMContentLoaded', loadDashboard);
     </script>
 </body>

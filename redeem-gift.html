@@ -1,0 +1,373 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Redeem Your Gift — Talk to Me</title>
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        body {
+            font-family: 'Segoe UI', -apple-system, BlinkMacSystemFont, Roboto, sans-serif;
+            background: linear-gradient(145deg, #f7faf7 0%, #e8f5e9 30%, #fff8e1 60%, #f1f8e9 100%);
+            color: #1a2a1f;
+            line-height: 1.7;
+            min-height: 100vh;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            flex-direction: column;
+        }
+
+        .redeem-container {
+            max-width: 500px;
+            padding: 40px;
+            background: rgba(255,255,255,0.88);
+            backdrop-filter: blur(16px);
+            border-radius: 20px;
+            box-shadow: 0 8px 40px rgba(0,0,0,0.06);
+            border: 1px solid rgba(255,255,255,0.3);
+            text-align: center;
+            margin: 40px auto;
+        }
+
+        .redeem-container .emoji {
+            font-size: 64px;
+            margin-bottom: 15px;
+        }
+
+        .redeem-container h1 {
+            font-size: 28px;
+            color: #2D6A4F;
+            margin-bottom: 8px;
+        }
+
+        .redeem-container .subtitle {
+            color: #5a6a5a;
+            margin-bottom: 25px;
+        }
+
+        .gift-details {
+            background: #f0fdf4;
+            padding: 20px;
+            border-radius: 12px;
+            border: 2px solid #2D6A4F;
+            margin: 20px 0;
+        }
+
+        .gift-details .code {
+            font-size: 24px;
+            font-weight: 700;
+            color: #2D6A4F;
+            letter-spacing: 2px;
+        }
+
+        .btn-primary {
+            width: 100%;
+            background: linear-gradient(135deg, #2D6A4F, #40916C);
+            color: white;
+            border: none;
+            padding: 16px;
+            border-radius: 50px;
+            font-size: 18px;
+            font-weight: 600;
+            cursor: pointer;
+            transition: all 0.3s;
+        }
+
+        .btn-primary:hover {
+            transform: translateY(-2px);
+            box-shadow: 0 12px 40px rgba(45, 106, 79, 0.3);
+        }
+
+        .btn-primary:disabled {
+            opacity: 0.5;
+            cursor: not-allowed;
+            transform: none;
+        }
+
+        .btn-secondary {
+            background: #6C63FF;
+            color: white;
+            border: none;
+            padding: 14px 30px;
+            border-radius: 50px;
+            font-size: 16px;
+            font-weight: 600;
+            cursor: pointer;
+            transition: all 0.3s;
+            text-decoration: none;
+            display: inline-block;
+            margin-top: 15px;
+        }
+
+        .btn-secondary:hover {
+            background: #5A52D5;
+            transform: translateY(-2px);
+        }
+
+        .error {
+            color: #DC2626;
+            background: #FEF2F2;
+            padding: 15px;
+            border-radius: 12px;
+            border: 1px solid #FCA5A5;
+            margin: 15px 0;
+        }
+
+        .success {
+            color: #065F46;
+            background: #D1FAE5;
+            padding: 15px;
+            border-radius: 12px;
+            border: 1px solid #34D399;
+            margin: 15px 0;
+        }
+
+        .status-box {
+            margin: 15px 0;
+            padding: 15px;
+            border-radius: 12px;
+        }
+
+        .status-box.pending {
+            background: #FEF3C7;
+            border: 1px solid #F59E0B;
+            color: #D97706;
+        }
+
+        .status-box.redeemed {
+            background: #D1FAE5;
+            border: 1px solid #34D399;
+            color: #065F46;
+        }
+
+        .status-box.expired {
+            background: #FEE2E2;
+            border: 1px solid #FCA5A5;
+            color: #DC2626;
+        }
+
+        .whatsapp-float {
+            position: fixed;
+            bottom: 100px;
+            right: 20px;
+            background: #25D366;
+            color: white;
+            border-radius: 50px;
+            padding: 12px 20px;
+            display: flex;
+            align-items: center;
+            gap: 10px;
+            text-decoration: none;
+            font-weight: 600;
+            font-size: 14px;
+            box-shadow: 0 4px 20px rgba(37, 211, 102, 0.4);
+            z-index: 1000;
+            transition: all 0.3s;
+        }
+
+        .whatsapp-float:hover {
+            transform: scale(1.05);
+            box-shadow: 0 8px 30px rgba(37, 211, 102, 0.5);
+        }
+
+        .whatsapp-float img {
+            width: 28px;
+            height: 28px;
+            filter: brightness(0) invert(1);
+        }
+
+        .whatsapp-float span {
+            color: white;
+        }
+
+        footer {
+            padding: 30px 60px;
+            text-align: center;
+            background: #1a2a1f;
+            color: rgba(255,255,255,0.7);
+            width: 100%;
+            margin-top: 40px;
+        }
+
+        footer a {
+            color: #7ae0b0;
+            text-decoration: none;
+        }
+
+        @media (max-width: 768px) {
+            .redeem-container {
+                padding: 24px;
+                margin: 20px;
+            }
+            .whatsapp-float {
+                bottom: 80px;
+                right: 10px;
+                padding: 10px 15px;
+                font-size: 12px;
+            }
+            .whatsapp-float img {
+                width: 22px;
+                height: 22px;
+            }
+            .whatsapp-float span {
+                display: none;
+            }
+            footer {
+                padding: 20px;
+            }
+        }
+    </style>
+</head>
+<body>
+    <div class="redeem-container">
+        <div class="emoji">🎁</div>
+        <h1>Redeem Your Gift</h1>
+        <p class="subtitle">Enter your gift code to claim your free session</p>
+
+        <div id="gift-status"></div>
+
+        <form id="redeem-form">
+            <div style="margin-bottom: 20px;">
+                <label style="display: block; font-weight: 600; margin-bottom: 6px; color: #1a2a1f;">Gift Code</label>
+                <input type="text" id="gift-code" placeholder="e.g., GIFT-ABCDEFGH" style="width: 100%; padding: 12px 16px; border: 2px solid #e5e7eb; border-radius: 10px; font-size: 16px; font-family: inherit; text-align: center; font-weight: 700; letter-spacing: 2px;" required>
+            </div>
+            <button type="submit" class="btn-primary" id="redeem-btn">🎁 Redeem Gift</button>
+        </form>
+
+        <div style="margin-top: 15px;">
+            <a href="/" style="color: #2D6A4F; text-decoration: none;">← Return to Home</a>
+        </div>
+    </div>
+
+    <footer>
+        <p>© 2026 Talk to Me — We're all in this together. ❤️</p>
+        <p style="font-size:14px;color:#6a7a6a;">📱 WhatsApp: +254700886207</p>
+    </footer>
+
+    <a href="https://wa.me/254700886207?text=Hello%20Talk%20to%20Me!%20I%20need%20support..." 
+       class="whatsapp-float" 
+       target="_blank"
+       rel="noopener noreferrer">
+        <img src="https://upload.wikimedia.org/wikipedia/commons/6/6b/WhatsApp.svg" alt="WhatsApp">
+        <span>Chat on WhatsApp</span>
+    </a>
+
+    <script type="text/javascript">
+    var Tawk_API=Tawk_API||{}, Tawk_LoadStart=new Date();
+    (function(){
+    var s1=document.createElement("script"),s0=document.getElementsByTagName("script")[0];
+    s1.async=true;
+    s1.src='https://embed.tawk.to/6a5540c5550ea31d480b6301/1jtega1mn';
+    s1.charset='UTF-8';
+    s1.setAttribute('crossorigin','*');
+    s0.parentNode.insertBefore(s1,s0);
+    })();
+    </script>
+
+    <script>
+        const params = new URLSearchParams(window.location.search);
+        const codeParam = params.get('code');
+
+        if (codeParam) {
+            document.getElementById('gift-code').value = codeParam;
+            checkGiftStatus(codeParam);
+        }
+
+        document.getElementById('redeem-form').addEventListener('submit', async function(e) {
+            e.preventDefault();
+
+            const code = document.getElementById('gift-code').value.trim();
+            if (!code) {
+                alert('Please enter your gift code.');
+                return;
+            }
+
+            const btn = document.getElementById('redeem-btn');
+            btn.disabled = true;
+            btn.textContent = '⏳ Redeeming...';
+
+            try {
+                const token = localStorage.getItem('session_token') || 'guest_' + Date.now();
+                if (!localStorage.getItem('session_token')) {
+                    localStorage.setItem('session_token', token);
+                }
+
+                const response = await fetch('/api/gift/redeem', {
+                    method: 'POST',
+                    headers: { 'Content-Type': 'application/json' },
+                    body: JSON.stringify({ giftCode: code, recipientToken: token })
+                });
+
+                const data = await response.json();
+
+                if (data.success) {
+                    document.getElementById('gift-status').innerHTML = `
+                        <div class="success">
+                            ✅ ${data.message}<br>
+                            Your free session has been booked! Check your dashboard.
+                        </div>
+                    `;
+                    document.getElementById('redeem-form').style.display = 'none';
+                    
+                    setTimeout(() => {
+                        window.location.href = '/dashboard-client.html';
+                    }, 3000);
+                } else {
+                    document.getElementById('gift-status').innerHTML = `
+                        <div class="error">❌ ${data.error || 'Failed to redeem gift'}</div>
+                    `;
+                }
+            } catch (error) {
+                document.getElementById('gift-status').innerHTML = `
+                    <div class="error">❌ Error redeeming gift. Please try again.</div>
+                `;
+            }
+
+            btn.disabled = false;
+            btn.textContent = '🎁 Redeem Gift';
+        });
+
+        async function checkGiftStatus(code) {
+            try {
+                const response = await fetch(`/api/gift/status/${code}`);
+                const data = await response.json();
+
+                let statusHTML = '';
+                if (data.status === 'pending') {
+                    statusHTML = `
+                        <div class="status-box pending">
+                            🎁 This gift is ready to be redeemed!<br>
+                            <span style="font-size: 14px;">From: ${data.giverName}</span><br>
+                            <span style="font-size: 14px;">Expires: ${new Date(data.expiresAt).toLocaleDateString()}</span>
+                        </div>
+                    `;
+                } else if (data.status === 'redeemed') {
+                    statusHTML = `
+                        <div class="status-box redeemed">
+                            ✅ This gift has already been redeemed.
+                        </div>
+                    `;
+                    document.getElementById('redeem-form').style.display = 'none';
+                } else if (data.isExpired) {
+                    statusHTML = `
+                        <div class="status-box expired">
+                            ❌ This gift has expired.
+                        </div>
+                    `;
+                    document.getElementById('redeem-form').style.display = 'none';
+                }
+
+                document.getElementById('gift-status').innerHTML = statusHTML;
+            } catch (error) {
+                console.error('Error checking gift status:', error);
+            }
+        }
+    </script>
+</body>
+</html>

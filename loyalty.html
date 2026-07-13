@@ -10,54 +10,73 @@
             padding: 0;
             box-sizing: border-box;
         }
+
         body {
-            font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif;
-            background: #f8f9fe;
-            color: #1A1A2E;
-            line-height: 1.6;
+            font-family: 'Segoe UI', -apple-system, BlinkMacSystemFont, Roboto, sans-serif;
+            background: linear-gradient(145deg, #f7faf7 0%, #e8f5e9 30%, #fff8e1 60%, #f1f8e9 100%);
+            color: #1a2a1f;
+            line-height: 1.7;
+            min-height: 100vh;
         }
+
         nav {
             display: flex;
             justify-content: space-between;
             align-items: center;
-            padding: 20px 60px;
-            background: white;
-            box-shadow: 0 2px 10px rgba(0,0,0,0.05);
+            padding: 16px 60px;
+            background: rgba(255,255,255,0.88);
+            backdrop-filter: blur(16px);
+            box-shadow: 0 4px 30px rgba(0,0,0,0.04);
             flex-wrap: wrap;
+            gap: 12px;
+            border-bottom: 1px solid rgba(255,255,255,0.3);
         }
+
         .logo {
             font-size: 24px;
             font-weight: 700;
             color: #2D6A4F;
         }
+
         .logo span {
             color: #6C63FF;
         }
+
         nav a {
-            margin: 0 15px;
+            margin: 0 12px;
             text-decoration: none;
             color: #1A1A2E;
             font-weight: 500;
+            font-size: 14px;
         }
+
         nav a:hover {
             color: #2D6A4F;
         }
+
         .loyalty-container {
             max-width: 800px;
             margin: 40px auto;
             padding: 40px;
-            background: white;
-            border-radius: 16px;
-            box-shadow: 0 8px 32px rgba(0,0,0,0.08);
+            background: rgba(255,255,255,0.88);
+            backdrop-filter: blur(16px);
+            border-radius: 20px;
+            box-shadow: 0 8px 40px rgba(0,0,0,0.06);
+            border: 1px solid rgba(255,255,255,0.3);
         }
+
         .loyalty-container h1 {
+            font-size: 32px;
             color: #2D6A4F;
-            margin-bottom: 10px;
+            margin-bottom: 8px;
         }
+
         .loyalty-container .subtitle {
-            color: #6B7280;
+            color: #5a6a5a;
+            font-size: 17px;
             margin-bottom: 30px;
         }
+
         .reward-card {
             background: linear-gradient(135deg, #f0fdf4, #dcfce7);
             padding: 30px;
@@ -66,63 +85,80 @@
             text-align: center;
             margin-bottom: 30px;
         }
+
         .reward-card .emoji {
             font-size: 48px;
         }
+
         .reward-card h2 {
             color: #1B4332;
             margin: 10px 0;
+            font-size: 24px;
         }
+
         .reward-card .highlight {
             font-size: 24px;
             font-weight: 700;
             color: #2D6A4F;
         }
+
+        .reward-card p {
+            color: #4a5a4a;
+        }
+
         .progress-section {
             margin: 30px 0;
         }
+
+        .progress-section .info {
+            display: flex;
+            justify-content: space-between;
+            font-weight: 600;
+            margin-bottom: 8px;
+        }
+
         .progress-bar {
             width: 100%;
-            height: 16px;
-            background: #E5E7EB;
+            height: 14px;
+            background: #e5e7eb;
             border-radius: 10px;
             overflow: hidden;
         }
+
         .progress-fill {
             height: 100%;
             background: linear-gradient(90deg, #2D6A4F, #40916C);
             border-radius: 10px;
             transition: width 0.8s ease;
-            width: 60%;
+            width: 0%;
         }
-        .progress-info {
-            display: flex;
-            justify-content: space-between;
-            margin-top: 10px;
-            font-size: 14px;
-            color: #6B7280;
-        }
+
         .loyalty-stats {
             display: grid;
             grid-template-columns: repeat(3, 1fr);
             gap: 20px;
             margin: 30px 0;
         }
+
         .stat-box {
-            background: #f8f9fe;
+            background: rgba(255,255,255,0.6);
             padding: 20px;
-            border-radius: 12px;
+            border-radius: 16px;
             text-align: center;
+            border: 1px solid rgba(255,255,255,0.3);
         }
+
         .stat-box .number {
             font-size: 28px;
             font-weight: 700;
             color: #2D6A4F;
         }
+
         .stat-box .label {
             font-size: 14px;
-            color: #6B7280;
+            color: #5a6a5a;
         }
+
         .btn-primary {
             width: 100%;
             background: linear-gradient(135deg, #2D6A4F, #40916C);
@@ -134,21 +170,94 @@
             font-weight: 600;
             cursor: pointer;
             transition: all 0.3s;
+            text-decoration: none;
+            display: inline-block;
+            text-align: center;
         }
+
         .btn-primary:hover {
             transform: translateY(-2px);
             box-shadow: 0 12px 40px rgba(45, 106, 79, 0.3);
         }
+
+        .whatsapp-float {
+            position: fixed;
+            bottom: 100px;
+            right: 20px;
+            background: #25D366;
+            color: white;
+            border-radius: 50px;
+            padding: 12px 20px;
+            display: flex;
+            align-items: center;
+            gap: 10px;
+            text-decoration: none;
+            font-weight: 600;
+            font-size: 14px;
+            box-shadow: 0 4px 20px rgba(37, 211, 102, 0.4);
+            z-index: 1000;
+            transition: all 0.3s;
+        }
+
+        .whatsapp-float:hover {
+            transform: scale(1.05);
+            box-shadow: 0 8px 30px rgba(37, 211, 102, 0.5);
+        }
+
+        .whatsapp-float img {
+            width: 28px;
+            height: 28px;
+            filter: brightness(0) invert(1);
+        }
+
+        .whatsapp-float span {
+            color: white;
+        }
+
+        footer {
+            padding: 30px 60px;
+            text-align: center;
+            background: #1a2a1f;
+            color: rgba(255,255,255,0.7);
+            margin-top: 40px;
+        }
+
         @media (max-width: 768px) {
             nav {
-                padding: 15px 20px;
+                padding: 12px 20px;
+                justify-content: center;
             }
             .loyalty-container {
-                padding: 20px;
+                padding: 24px;
                 margin: 20px;
+            }
+            .loyalty-container h1 {
+                font-size: 26px;
             }
             .loyalty-stats {
                 grid-template-columns: 1fr 1fr;
+            }
+            .whatsapp-float {
+                bottom: 80px;
+                right: 10px;
+                padding: 10px 15px;
+                font-size: 12px;
+            }
+            .whatsapp-float img {
+                width: 22px;
+                height: 22px;
+            }
+            .whatsapp-float span {
+                display: none;
+            }
+            footer {
+                padding: 20px;
+            }
+        }
+
+        @media (max-width: 480px) {
+            .loyalty-stats {
+                grid-template-columns: 1fr;
             }
         }
     </style>
@@ -158,7 +267,11 @@
         <div class="logo">🌿 <span>Talk to Me</span></div>
         <div>
             <a href="/">Home</a>
-            <a href="/dashboard-client.html">Dashboard</a>
+            <a href="/book.html">Book</a>
+            <a href="/gift.html">🎁 Gift</a>
+            <a href="/loyalty.html" style="color:#2D6A4F;font-weight:600;">⭐ Loyalty</a>
+            <a href="/support.html">🕐 Support</a>
+            <a href="https://wa.me/254700886207?text=Hi%20Talk%20to%20Me!" target="_blank" style="color:#25D366;font-weight:600;">📱 WhatsApp</a>
         </div>
     </nav>
 
@@ -173,15 +286,15 @@
         </div>
 
         <div class="progress-section">
-            <div style="display:flex;justify-content:space-between;font-weight:600;">
+            <div class="info">
                 <span>Progress to Free Session</span>
-                <span id="progress-text">3.0 / 5.0 hours</span>
+                <span id="progress-text">0.0 / 5.0 hours</span>
             </div>
             <div class="progress-bar">
-                <div class="progress-fill" id="progress-fill" style="width:60%;"></div>
+                <div class="progress-fill" id="progress-fill" style="width:0%;"></div>
             </div>
-            <div class="progress-info">
-                <span>⏳ 2.0 hours remaining</span>
+            <div style="display:flex;justify-content:space-between;margin-top:8px;font-size:14px;color:#5a6a5a;">
+                <span id="remaining-text">⏳ 5.0 hours remaining</span>
                 <span>🎯 Target: 5 hours</span>
             </div>
         </div>
@@ -201,11 +314,34 @@
             </div>
         </div>
 
-        <button class="btn-primary" onclick="location.href='/book.html'">📅 Book Now & Earn</button>
+        <a href="/book.html" class="btn-primary">📅 Book Now & Earn</a>
     </div>
 
+    <footer>
+        <p>© 2026 Talk to Me — We're all in this together. ❤️</p>
+    </footer>
+
+    <a href="https://wa.me/254700886207?text=Hello%20Talk%20to%20Me!%20I%20need%20support..." 
+       class="whatsapp-float" 
+       target="_blank"
+       rel="noopener noreferrer">
+        <img src="https://upload.wikimedia.org/wikipedia/commons/6/6b/WhatsApp.svg" alt="WhatsApp">
+        <span>Chat on WhatsApp</span>
+    </a>
+
+    <script type="text/javascript">
+    var Tawk_API=Tawk_API||{}, Tawk_LoadStart=new Date();
+    (function(){
+    var s1=document.createElement("script"),s0=document.getElementsByTagName("script")[0];
+    s1.async=true;
+    s1.src='https://embed.tawk.to/6a5540c5550ea31d480b6301/1jtega1mn';
+    s1.charset='UTF-8';
+    s1.setAttribute('crossorigin','*');
+    s0.parentNode.insertBefore(s1,s0);
+    })();
+    </script>
+
     <script>
-        // Load loyalty data from localStorage
         function loadLoyaltyData() {
             const sessions = JSON.parse(localStorage.getItem('client_sessions') || '[]');
             const totalSessions = sessions.length;
@@ -216,17 +352,14 @@
             document.getElementById('total-hours').textContent = totalHours.toFixed(1);
             document.getElementById('free-sessions').textContent = freeSessions;
 
-            // Update progress
             const progress = Math.min(100, (totalHours / 5) * 100);
             document.getElementById('progress-fill').style.width = progress + '%';
             document.getElementById('progress-text').textContent = totalHours.toFixed(1) + ' / 5.0 hours';
 
-            // Update remaining text
             const remaining = Math.max(0, 5 - totalHours);
-            document.querySelector('.progress-info span:first-child').textContent = `⏳ ${remaining.toFixed(1)} hours remaining`;
+            document.getElementById('remaining-text').textContent = `⏳ ${remaining.toFixed(1)} hours remaining`;
         }
 
-        // Load on page load
         document.addEventListener('DOMContentLoaded', loadLoyaltyData);
     </script>
 </body>

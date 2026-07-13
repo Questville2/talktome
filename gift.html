@@ -4,54 +4,139 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Gift a Session — Talk to Me</title>
-    <link rel="stylesheet" href="style.css">
     <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        body {
+            font-family: 'Segoe UI', -apple-system, BlinkMacSystemFont, Roboto, sans-serif;
+            background: linear-gradient(145deg, #f7faf7 0%, #e8f5e9 30%, #fff8e1 60%, #f1f8e9 100%);
+            color: #1a2a1f;
+            line-height: 1.7;
+            min-height: 100vh;
+        }
+
+        nav {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            padding: 16px 60px;
+            background: rgba(255,255,255,0.88);
+            backdrop-filter: blur(16px);
+            box-shadow: 0 4px 30px rgba(0,0,0,0.04);
+            flex-wrap: wrap;
+            gap: 12px;
+            border-bottom: 1px solid rgba(255,255,255,0.3);
+        }
+
+        .logo {
+            font-size: 24px;
+            font-weight: 700;
+            color: #2D6A4F;
+        }
+
+        .logo span {
+            color: #6C63FF;
+        }
+
+        nav a {
+            margin: 0 12px;
+            text-decoration: none;
+            color: #1A1A2E;
+            font-weight: 500;
+            font-size: 14px;
+        }
+
+        nav a:hover {
+            color: #2D6A4F;
+        }
+
         .gift-container {
             max-width: 700px;
             margin: 40px auto;
             padding: 40px;
-            background: white;
-            border-radius: 16px;
-            box-shadow: 0 8px 32px rgba(0,0,0,0.08);
+            background: rgba(255,255,255,0.88);
+            backdrop-filter: blur(16px);
+            border-radius: 20px;
+            box-shadow: 0 8px 40px rgba(0,0,0,0.06);
+            border: 1px solid rgba(255,255,255,0.3);
         }
+
         .gift-container h1 {
+            font-size: 32px;
             color: #2D6A4F;
-            margin-bottom: 10px;
+            margin-bottom: 8px;
         }
+
         .gift-container .subtitle {
-            color: #6B7280;
+            color: #5a6a5a;
+            font-size: 17px;
             margin-bottom: 30px;
         }
+
+        .gift-preview {
+            background: linear-gradient(135deg, #f0fdf4, #dcfce7);
+            padding: 24px;
+            border-radius: 16px;
+            text-align: center;
+            margin-bottom: 25px;
+            border: 2px solid #2D6A4F;
+        }
+
+        .gift-preview .emoji {
+            font-size: 48px;
+        }
+
+        .gift-preview .price {
+            font-size: 28px;
+            font-weight: 700;
+            color: #2D6A4F;
+        }
+
         .form-group {
             margin-bottom: 20px;
         }
+
         .form-group label {
             display: block;
             font-weight: 600;
-            margin-bottom: 8px;
-            color: #1A1A2E;
+            margin-bottom: 6px;
+            color: #1a2a1f;
         }
+
         .form-group input,
-        .form-group select,
         .form-group textarea {
             width: 100%;
             padding: 12px 16px;
-            border: 2px solid #E5E7EB;
-            border-radius: 8px;
+            border: 2px solid #e5e7eb;
+            border-radius: 10px;
             font-size: 16px;
             transition: border-color 0.3s;
             font-family: inherit;
+            background: white;
         }
+
         .form-group input:focus,
-        .form-group select:focus,
         .form-group textarea:focus {
             border-color: #2D6A4F;
             outline: none;
+            box-shadow: 0 0 0 3px rgba(45, 106, 79, 0.1);
         }
+
         .form-group textarea {
             min-height: 80px;
             resize: vertical;
         }
+
+        .form-group .hint {
+            font-size: 13px;
+            color: #6a7a6a;
+            margin-top: 5px;
+        }
+
         .btn-primary {
             width: 100%;
             background: linear-gradient(135deg, #2D6A4F, #40916C);
@@ -64,64 +149,147 @@
             cursor: pointer;
             transition: all 0.3s;
         }
+
         .btn-primary:hover {
             transform: translateY(-2px);
             box-shadow: 0 12px 40px rgba(45, 106, 79, 0.3);
         }
+
+        .btn-primary:disabled {
+            opacity: 0.5;
+            cursor: not-allowed;
+        }
+
+        .success-box {
+            display: none;
+            text-align: center;
+            padding: 30px;
+        }
+
+        .success-box .emoji {
+            font-size: 64px;
+        }
+
+        .success-box h2 {
+            color: #34D399;
+            font-size: 28px;
+            margin: 15px 0;
+        }
+
+        .success-box .code {
+            background: #f0fdf4;
+            padding: 15px;
+            border-radius: 10px;
+            font-size: 24px;
+            font-weight: 700;
+            color: #2D6A4F;
+            letter-spacing: 2px;
+            margin: 15px 0;
+            border: 2px dashed #2D6A4F;
+        }
+
         .btn-secondary {
             background: #6C63FF;
             color: white;
             border: none;
-            padding: 16px;
+            padding: 14px 30px;
             border-radius: 50px;
-            font-size: 18px;
+            font-size: 16px;
             font-weight: 600;
             cursor: pointer;
             transition: all 0.3s;
-            width: 100%;
+            text-decoration: none;
+            display: inline-block;
         }
+
         .btn-secondary:hover {
             background: #5A52D5;
             transform: translateY(-2px);
         }
-        .gift-preview {
-            background: linear-gradient(135deg, #f0fdf4, #dcfce7);
-            padding: 20px;
-            border-radius: 12px;
+
+        .whatsapp-float {
+            position: fixed;
+            bottom: 100px;
+            right: 20px;
+            background: #25D366;
+            color: white;
+            border-radius: 50px;
+            padding: 12px 20px;
+            display: flex;
+            align-items: center;
+            gap: 10px;
+            text-decoration: none;
+            font-weight: 600;
+            font-size: 14px;
+            box-shadow: 0 4px 20px rgba(37, 211, 102, 0.4);
+            z-index: 1000;
+            transition: all 0.3s;
+        }
+
+        .whatsapp-float:hover {
+            transform: scale(1.05);
+            box-shadow: 0 8px 30px rgba(37, 211, 102, 0.5);
+        }
+
+        .whatsapp-float img {
+            width: 28px;
+            height: 28px;
+            filter: brightness(0) invert(1);
+        }
+
+        .whatsapp-float span {
+            color: white;
+        }
+
+        footer {
+            padding: 30px 60px;
             text-align: center;
-            margin: 20px 0;
-            border: 2px solid #2D6A4F;
+            background: #1a2a1f;
+            color: rgba(255,255,255,0.7);
+            margin-top: 40px;
         }
-        .gift-preview .emoji {
-            font-size: 48px;
-        }
-        .gift-preview .price {
-            font-size: 28px;
-            font-weight: 700;
-            color: #2D6A4F;
-        }
-        .success-box {
-            display: none;
-            text-align: center;
-            padding: 20px;
-        }
-        .success-box h2 {
-            color: #34D399;
-        }
+
         @media (max-width: 768px) {
+            nav {
+                padding: 12px 20px;
+                justify-content: center;
+            }
             .gift-container {
-                padding: 20px;
+                padding: 24px;
                 margin: 20px;
+            }
+            .gift-container h1 {
+                font-size: 26px;
+            }
+            .whatsapp-float {
+                bottom: 80px;
+                right: 10px;
+                padding: 10px 15px;
+                font-size: 12px;
+            }
+            .whatsapp-float img {
+                width: 22px;
+                height: 22px;
+            }
+            .whatsapp-float span {
+                display: none;
+            }
+            footer {
+                padding: 20px;
             }
         }
     </style>
 </head>
 <body>
     <nav>
-        <div class="logo">🌿 Talk to Me</div>
+        <div class="logo">🌿 <span>Talk to Me</span></div>
         <div>
             <a href="/">Home</a>
-            <a href="/dashboard-client.html">Dashboard</a>
+            <a href="/book.html">Book</a>
+            <a href="/gift.html" style="color:#2D6A4F;font-weight:600;">🎁 Gift</a>
+            <a href="/loyalty.html">⭐ Loyalty</a>
+            <a href="/support.html">🕐 Support</a>
+            <a href="https://wa.me/254700886207?text=Hi%20Talk%20to%20Me!" target="_blank" style="color:#25D366;font-weight:600;">📱 WhatsApp</a>
         </div>
     </nav>
 
@@ -133,7 +301,7 @@
             <div class="emoji">🎁</div>
             <div class="price">$10</div>
             <p>30-minute anonymous session</p>
-            <p style="font-size:14px;color:#6B7280;">Your friend will receive a gift code via email</p>
+            <p style="font-size:14px;color:#6a7a6a;">Your friend will receive a gift code via email</p>
         </div>
 
         <form id="gift-form">
@@ -155,20 +323,45 @@
             </div>
             <div class="form-group">
                 <label>Gift Code (Auto-generated)</label>
-                <input type="text" id="gift-code" value="GIFT-" readonly style="background:#f8f9fe;">
+                <input type="text" id="gift-code" readonly style="background:#f8f9fe;font-weight:700;color:#2D6A4F;">
             </div>
             <button type="button" class="btn-primary" onclick="sendGift()">🎁 Send Gift ($10)</button>
         </form>
 
         <div class="success-box" id="success-box">
-            <h2>✅ Gift Sent!</h2>
+            <div class="emoji">✅</div>
+            <h2>Gift Sent!</h2>
             <p>Your friend will receive an email with their gift code.</p>
-            <button onclick="location.href='/'" class="btn-secondary" style="margin-top:15px;">Return Home</button>
+            <div class="code" id="display-code">GIFT-XXXXXX</div>
+            <button onclick="location.href='/'" class="btn-secondary">Return Home</button>
         </div>
     </div>
 
+    <footer>
+        <p>© 2026 Talk to Me — We're all in this together. ❤️</p>
+    </footer>
+
+    <a href="https://wa.me/254700886207?text=Hello%20Talk%20to%20Me!%20I%20need%20support..." 
+       class="whatsapp-float" 
+       target="_blank"
+       rel="noopener noreferrer">
+        <img src="https://upload.wikimedia.org/wikipedia/commons/6/6b/WhatsApp.svg" alt="WhatsApp">
+        <span>Chat on WhatsApp</span>
+    </a>
+
+    <script type="text/javascript">
+    var Tawk_API=Tawk_API||{}, Tawk_LoadStart=new Date();
+    (function(){
+    var s1=document.createElement("script"),s0=document.getElementsByTagName("script")[0];
+    s1.async=true;
+    s1.src='https://embed.tawk.to/6a5540c5550ea31d480b6301/1jtega1mn';
+    s1.charset='UTF-8';
+    s1.setAttribute('crossorigin','*');
+    s0.parentNode.insertBefore(s1,s0);
+    })();
+    </script>
+
     <script>
-        // Generate random gift code
         function generateGiftCode() {
             const chars = 'ABCDEFGHIJKLMNOPQRSTUVWXYZ0123456789';
             let code = 'GIFT-';
@@ -178,41 +371,46 @@
             return code;
         }
 
-        // Set gift code on load
         document.getElementById('gift-code').value = generateGiftCode();
 
-        function sendGift() {
+        async function sendGift() {
             const giver = document.getElementById('giver-name').value;
             const friend = document.getElementById('friend-name').value;
             const email = document.getElementById('friend-email').value;
             const message = document.getElementById('gift-message').value;
-            const code = document.getElementById('gift-code').value;
 
             if (!giver || !friend || !email) {
                 alert('Please fill in all required fields.');
                 return;
             }
 
-            // Store gift (in production, this would be saved to database)
-            const giftData = {
-                giver,
-                friend,
-                email,
-                message,
-                code,
-                date: new Date().toISOString()
-            };
+            const btn = document.querySelector('.btn-primary');
+            btn.disabled = true;
+            btn.textContent = '⏳ Sending...';
 
-            // Save to localStorage
-            let gifts = JSON.parse(localStorage.getItem('gifts') || '[]');
-            gifts.push(giftData);
-            localStorage.setItem('gifts', JSON.stringify(gifts));
+            try {
+                const response = await fetch('/api/gift/create', {
+                    method: 'POST',
+                    headers: { 'Content-Type': 'application/json' },
+                    body: JSON.stringify({ giverName: giver, friendName: friend, friendEmail: email, message })
+                });
 
-            // Show success
-            document.getElementById('gift-form').style.display = 'none';
-            document.getElementById('success-box').style.display = 'block';
+                const data = await response.json();
 
-            console.log('🎁 Gift sent:', giftData);
+                if (data.success) {
+                    document.getElementById('gift-form').style.display = 'none';
+                    document.getElementById('success-box').style.display = 'block';
+                    document.getElementById('display-code').textContent = data.giftCode;
+                } else {
+                    alert('Failed to send gift. Please try again.');
+                }
+            } catch (error) {
+                alert('Error sending gift. Please try again.');
+                console.error(error);
+            }
+
+            btn.disabled = false;
+            btn.textContent = '🎁 Send Gift ($10)';
         }
     </script>
 </body>

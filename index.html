@@ -19,7 +19,7 @@
             min-height: 100vh;
         }
 
-        /* Animated Background Elements */
+        /* ============ BACKGROUND ELEMENTS ============ */
         .bg-elements {
             position: fixed;
             top: 0;
@@ -34,7 +34,7 @@
         .bg-elements .leaf {
             position: absolute;
             font-size: 24px;
-            opacity: 0.15;
+            opacity: 0.12;
             animation: float 20s infinite ease-in-out;
         }
 
@@ -60,11 +60,12 @@
             right: 2%;
             transform: translateY(-50%);
             font-size: 120px;
-            opacity: 0.08;
+            opacity: 0.06;
             pointer-events: none;
             z-index: 0;
         }
 
+        /* ============ NAVIGATION ============ */
         nav {
             display: flex;
             justify-content: space-between;
@@ -164,6 +165,7 @@
             box-shadow: 0 12px 40px rgba(108, 99, 255, 0.35);
         }
 
+        /* ============ HERO ============ */
         .hero {
             display: flex;
             align-items: center;
@@ -293,7 +295,7 @@
             color: #6B7280;
         }
 
-        /* Features Section */
+        /* ============ FEATURES ============ */
         .features {
             padding: 60px 60px 80px;
             max-width: 1200px;
@@ -318,7 +320,7 @@
 
         .feature-grid {
             display: grid;
-            grid-template-columns: repeat(auto-fit, minmax(220px, 1fr));
+            grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
             gap: 25px;
         }
 
@@ -353,7 +355,7 @@
             color: #6B7280;
         }
 
-        /* How It Works Section */
+        /* ============ STEPS ============ */
         .steps {
             padding: 60px 60px 80px;
             background: rgba(255,255,255,0.6);
@@ -415,7 +417,128 @@
             font-size: 15px;
         }
 
-        /* Listener CTA */
+        /* ============ TESTIMONIALS ============ */
+        .testimonials {
+            padding: 60px 60px 80px;
+            background: #f8f9fe;
+            position: relative;
+            z-index: 5;
+        }
+
+        .testimonials-container {
+            max-width: 1200px;
+            margin: 0 auto;
+        }
+
+        .testimonials h2 {
+            text-align: center;
+            font-size: 36px;
+            color: #1A1A2E;
+            margin-bottom: 10px;
+        }
+
+        .testimonials .subtitle {
+            text-align: center;
+            color: #6B7280;
+            font-size: 18px;
+            margin-bottom: 40px;
+        }
+
+        .testimonial-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
+            gap: 25px;
+        }
+
+        .testimonial-card {
+            background: white;
+            padding: 25px;
+            border-radius: 16px;
+            box-shadow: 0 4px 20px rgba(0,0,0,0.06);
+            transition: transform 0.3s, box-shadow 0.3s;
+            border: 1px solid rgba(0,0,0,0.04);
+        }
+
+        .testimonial-card:hover {
+            transform: translateY(-5px);
+            box-shadow: 0 12px 40px rgba(0,0,0,0.08);
+        }
+
+        .testimonial-card .quote-icon {
+            font-size: 36px;
+            color: #2D6A4F;
+            opacity: 0.2;
+            line-height: 1;
+            margin-bottom: 8px;
+        }
+
+        .testimonial-card .testimonial-text {
+            font-size: 14px;
+            line-height: 1.7;
+            color: #1A1A2E;
+            font-style: italic;
+            margin-bottom: 15px;
+        }
+
+        .testimonial-card .testimonial-author {
+            display: flex;
+            align-items: center;
+            gap: 12px;
+        }
+
+        .testimonial-card .author-avatar {
+            width: 44px;
+            height: 44px;
+            border-radius: 50%;
+            background: linear-gradient(135deg, #2D6A4F, #40916C);
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            color: white;
+            font-weight: 700;
+            font-size: 16px;
+            flex-shrink: 0;
+        }
+
+        .testimonial-card .author-info {
+            flex: 1;
+        }
+
+        .testimonial-card .author-name {
+            font-weight: 600;
+            color: #1A1A2E;
+            font-size: 14px;
+        }
+
+        .testimonial-card .author-details {
+            font-size: 12px;
+            color: #6B7280;
+        }
+
+        .testimonial-card .author-rating {
+            color: #F59E0B;
+            font-size: 12px;
+            letter-spacing: 1px;
+        }
+
+        .testimonials-cta {
+            text-align: center;
+            margin-top: 40px;
+            font-size: 16px;
+            color: #6B7280;
+        }
+
+        .testimonials-cta a {
+            color: #2D6A4F;
+            font-weight: 600;
+            text-decoration: none;
+        }
+
+        .testimonials-cta a:hover {
+            text-decoration: underline;
+        }
+
+        /* ============ LISTENER CTA ============ */
         .listener-cta {
             padding: 60px 60px 80px;
             background: linear-gradient(135deg, #1B4332, #2D6A4F);
@@ -450,7 +573,7 @@
             box-shadow: 0 12px 40px rgba(0,0,0,0.2);
         }
 
-        /* Footer */
+        /* ============ FOOTER ============ */
         footer {
             padding: 40px 60px;
             text-align: center;
@@ -488,7 +611,12 @@
             font-size: 14px;
         }
 
-        /* Responsive */
+        footer .footer-links a:hover {
+            color: #34D399;
+            text-decoration: none;
+        }
+
+        /* ============ RESPONSIVE ============ */
         @media (max-width: 768px) {
             nav {
                 padding: 15px 20px;
@@ -515,13 +643,16 @@
                 flex-direction: column;
                 text-align: center;
             }
-            .features, .steps, .listener-cta {
+            .features, .steps, .testimonials, .listener-cta {
                 padding: 40px 20px;
             }
             .feature-grid {
                 grid-template-columns: 1fr 1fr;
             }
             .step-grid {
+                grid-template-columns: 1fr;
+            }
+            .testimonial-grid {
                 grid-template-columns: 1fr;
             }
             .bg-elements .leaf {
@@ -543,7 +674,7 @@
     </style>
 </head>
 <body>
-    <!-- Background Elements -->
+    <!-- ============ BACKGROUND ELEMENTS ============ -->
     <div class="bg-elements">
         <div class="leaf">🌿</div>
         <div class="leaf">🌱</div>
@@ -556,20 +687,20 @@
     </div>
     <div class="mind-diagram">🧠</div>
 
-    <!-- Navigation -->
+    <!-- ============ NAVIGATION ============ -->
     <nav>
         <div class="logo">🌿 <span>Talk to Me</span></div>
         <div>
             <a href="#how-it-works">How It Works</a>
             <a href="#features">Features</a>
-            <a href="#listeners">Become a Listener</a>
             <a href="/gift.html">🎁 Gift</a>
             <a href="/loyalty.html">⭐ Loyalty</a>
-            <button class="btn-outline" onclick="location.href='/book.html'">💬 Book Now</button>
+            <a href="#listeners">Become a Listener</a>
+            <a href="/book.html" class="btn-outline" style="padding:8px 20px;font-size:13px;">💬 Book Now</a>
         </div>
     </nav>
 
-    <!-- Hero Section -->
+    <!-- ============ HERO SECTION ============ -->
     <section class="hero">
         <div class="hero-content">
             <div class="badge">🕊️ Safe. Anonymous. Always.</div>
@@ -598,7 +729,7 @@
         </div>
     </section>
 
-    <!-- Features Section -->
+    <!-- ============ FEATURES SECTION ============ -->
     <section id="features" class="features">
         <h2>Why Choose Talk to Me</h2>
         <p class="subtitle">A safe space designed for your healing journey</p>
@@ -636,7 +767,7 @@
         </div>
     </section>
 
-    <!-- How It Works -->
+    <!-- ============ HOW IT WORKS ============ -->
     <section id="how-it-works" class="steps">
         <h2>In 3 Simple Steps, You'll Feel Lighter</h2>
         <div class="step-grid">
@@ -658,14 +789,168 @@
         </div>
     </section>
 
-    <!-- Listener CTA -->
+    <!-- ============ TESTIMONIALS SECTION ============ -->
+    <section class="testimonials">
+        <div class="testimonials-container">
+            <h2>❤️ Real Stories, Real Healing</h2>
+            <p class="subtitle">Hear from people who found their voice with Talk to Me</p>
+
+            <div class="testimonial-grid">
+                <!-- Testimonial 1 -->
+                <div class="testimonial-card">
+                    <div class="quote-icon">"</div>
+                    <p class="testimonial-text">I was ready to leave my husband. I had the lawyer on speed dial. My listener didn't tell me to leave or stay. She just listened. I realized I was still in love with him. I went home and told him everything. We cried together for the first time in years.</p>
+                    <div class="testimonial-author">
+                        <div class="author-avatar">S</div>
+                        <div class="author-info">
+                            <div class="author-name">Sarah, 34</div>
+                            <div class="author-details">USA • 💔 Marriage</div>
+                            <div class="author-rating">⭐⭐⭐⭐⭐</div>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Testimonial 2 -->
+                <div class="testimonial-card">
+                    <div class="quote-icon">"</div>
+                    <p class="testimonial-text">I've had 4 miscarriages. My husband tries to understand, but he can't. My friends don't know what to say. My listener said, 'This is not your fault.' I had never heard those words before. I broke down. I still cry sometimes. But I don't cry alone anymore.</p>
+                    <div class="testimonial-author">
+                        <div class="author-avatar">G</div>
+                        <div class="author-info">
+                            <div class="author-name">Grace, 34</div>
+                            <div class="author-details">Kenya • 🍼 Infertility</div>
+                            <div class="author-rating">⭐⭐⭐⭐⭐</div>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Testimonial 3 -->
+                <div class="testimonial-card">
+                    <div class="quote-icon">"</div>
+                    <p class="testimonial-text">I was drinking myself to sleep every night. No one knew. I told my listener I was drinking a bottle of whiskey a day. She said, 'Thank you for trusting me with this.' That conversation was the beginning of my sobriety. I've been sober for 2 years now.</p>
+                    <div class="testimonial-author">
+                        <div class="author-avatar">J</div>
+                        <div class="author-info">
+                            <div class="author-name">James, 42</div>
+                            <div class="author-details">UK • 🍷 Addiction</div>
+                            <div class="author-rating">⭐⭐⭐⭐⭐</div>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Testimonial 4 -->
+                <div class="testimonial-card">
+                    <div class="quote-icon">"</div>
+                    <p class="testimonial-text">I was a straight-A student. Everyone thought I had it all figured out. But I was drowning. Panic attacks before exams. I couldn't sleep. My listener said, 'You are not your grades. You are so much more than a test result.' I'm still a student. But I'm no longer a prisoner of my own expectations.</p>
+                    <div class="testimonial-author">
+                        <div class="author-avatar">M</div>
+                        <div class="author-info">
+                            <div class="author-name">Michael, 22</div>
+                            <div class="author-details">Canada • 📚 Academic</div>
+                            <div class="author-rating">⭐⭐⭐⭐⭐</div>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Testimonial 5 -->
+                <div class="testimonial-card">
+                    <div class="quote-icon">"</div>
+                    <p class="testimonial-text">My father was abusive. I never told anyone. Not my wife. Not my therapist. I told my listener everything. I cried for the first time in 15 years. He said, 'That was so heavy to carry. I'm proud of you for putting it down.' That conversation changed me.</p>
+                    <div class="testimonial-author">
+                        <div class="author-avatar">D</div>
+                        <div class="author-info">
+                            <div class="author-name">David, 38</div>
+                            <div class="author-details">Australia • 👨‍👩‍👧 Family</div>
+                            <div class="author-rating">⭐⭐⭐⭐⭐</div>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Testimonial 6 -->
+                <div class="testimonial-card">
+                    <div class="quote-icon">"</div>
+                    <p class="testimonial-text">I moved to London for work. I knew no one. I sat in my tiny apartment every night eating instant noodles and crying. I was so lonely it physically hurt. My listener just sat with me. I wasn't alone anymore. Talk to Me is my lifeline.</p>
+                    <div class="testimonial-author">
+                        <div class="author-avatar">M</div>
+                        <div class="author-info">
+                            <div class="author-name">Maria, 29</div>
+                            <div class="author-details">Philippines (UK) • 😢 Loneliness</div>
+                            <div class="author-rating">⭐⭐⭐⭐⭐</div>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Testimonial 7 -->
+                <div class="testimonial-card">
+                    <div class="quote-icon">"</div>
+                    <p class="testimonial-text">I couldn't leave my house for 6 months. I was trapped in my own mind. My listener said, 'It's okay to be scared. You're safe here.' That was the first time I felt safe in months. I slowly started leaving my house. I'm not cured. But I have a space where I can be honest about my fear.</p>
+                    <div class="testimonial-author">
+                        <div class="author-avatar">E</div>
+                        <div class="author-info">
+                            <div class="author-name">Emily, 31</div>
+                            <div class="author-details">USA • 🌿 Anxiety</div>
+                            <div class="author-rating">⭐⭐⭐⭐⭐</div>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Testimonial 8 -->
+                <div class="testimonial-card">
+                    <div class="quote-icon">"</div>
+                    <p class="testimonial-text">I had $40,000 in credit card debt. I lost my job. I was terrified of losing everything. My listener said, 'You are not your debt. You are a human being who made mistakes. You can rebuild.' I cried for the first time in months. I still have the debt. But I'm no longer carrying it alone.</p>
+                    <div class="testimonial-author">
+                        <div class="author-avatar">T</div>
+                        <div class="author-info">
+                            <div class="author-name">Tom, 45</div>
+                            <div class="author-details">New Zealand • 💰 Financial</div>
+                            <div class="author-rating">⭐⭐⭐⭐⭐</div>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Testimonial 9 -->
+                <div class="testimonial-card">
+                    <div class="quote-icon">"</div>
+                    <p class="testimonial-text">I was assaulted as a child. I never told anyone for 34 years. I told my listener the truth. She said, 'That was so heavy to carry. You've been carrying this alone for so long. You are safe now.' I sobbed for 30 minutes. I've been in trauma therapy ever since. I'm finally healing.</p>
+                    <div class="testimonial-author">
+                        <div class="author-avatar">A</div>
+                        <div class="author-info">
+                            <div class="author-name">Anonymous, 42</div>
+                            <div class="author-details">South Africa • 🧠 Trauma</div>
+                            <div class="author-rating">⭐⭐⭐⭐⭐</div>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Testimonial 10 -->
+                <div class="testimonial-card">
+                    <div class="quote-icon">"</div>
+                    <p class="testimonial-text">My boss was emotionally abusive. He belittled me in meetings. He took credit for my work. I cried in the bathroom every day. My listener said, 'You are not your job. You are a human being who deserves respect.' I reported my boss. He was fired. I stayed. I'm still healing.</p>
+                    <div class="testimonial-author">
+                        <div class="author-avatar">R</div>
+                        <div class="author-info">
+                            <div class="author-name">Rachel, 38</div>
+                            <div class="author-details">USA • 💼 Workplace</div>
+                            <div class="author-rating">⭐⭐⭐⭐⭐</div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <div class="testimonials-cta">
+                <p>Your story could be here too. <a href="/google-form.html">Share your experience</a></p>
+            </div>
+        </div>
+    </section>
+
+    <!-- ============ LISTENER CTA ============ -->
     <section id="listeners" class="listener-cta">
         <h2>👂 Become a Listener</h2>
         <p>Earn $3 per 30-min session • $9 per hour. Turn your empathy into income.</p>
         <a href="/onboard.html" class="btn-secondary">Apply to Listen</a>
     </section>
 
-    <!-- Footer -->
+    <!-- ============ FOOTER ============ -->
     <footer>
         <p>© 2026 Talk to Me — We're all in this together. ❤️</p>
         <p class="helplines">Not a crisis line. For emergencies: 🇺🇸 988 • 🇰🇪 1190 • 🇬🇧 116 123</p>
@@ -677,6 +962,7 @@
         </div>
     </footer>
 
+    <!-- ============ SCRIPTS ============ -->
     <script>
         // Live listener count simulation
         function updateListenerCount() {
@@ -692,8 +978,19 @@
         // Update every 30 seconds
         setInterval(updateListenerCount, 30000);
 
-        // Mobile menu toggle (optional)
+        // Smooth scroll for navigation links
+        document.querySelectorAll('a[href^="#"]').forEach(anchor => {
+            anchor.addEventListener('click', function (e) {
+                e.preventDefault();
+                const target = document.querySelector(this.getAttribute('href'));
+                if (target) {
+                    target.scrollIntoView({ behavior: 'smooth', block: 'start' });
+                }
+            });
+        });
+
         console.log('🌿 Talk to Me — Your safe space to heal');
+        console.log('❤️ You are not alone. You never were.');
     </script>
 </body>
 </html>

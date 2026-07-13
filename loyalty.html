@@ -1,0 +1,233 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Loyalty Program — Talk to Me</title>
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+        body {
+            font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif;
+            background: #f8f9fe;
+            color: #1A1A2E;
+            line-height: 1.6;
+        }
+        nav {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            padding: 20px 60px;
+            background: white;
+            box-shadow: 0 2px 10px rgba(0,0,0,0.05);
+            flex-wrap: wrap;
+        }
+        .logo {
+            font-size: 24px;
+            font-weight: 700;
+            color: #2D6A4F;
+        }
+        .logo span {
+            color: #6C63FF;
+        }
+        nav a {
+            margin: 0 15px;
+            text-decoration: none;
+            color: #1A1A2E;
+            font-weight: 500;
+        }
+        nav a:hover {
+            color: #2D6A4F;
+        }
+        .loyalty-container {
+            max-width: 800px;
+            margin: 40px auto;
+            padding: 40px;
+            background: white;
+            border-radius: 16px;
+            box-shadow: 0 8px 32px rgba(0,0,0,0.08);
+        }
+        .loyalty-container h1 {
+            color: #2D6A4F;
+            margin-bottom: 10px;
+        }
+        .loyalty-container .subtitle {
+            color: #6B7280;
+            margin-bottom: 30px;
+        }
+        .reward-card {
+            background: linear-gradient(135deg, #f0fdf4, #dcfce7);
+            padding: 30px;
+            border-radius: 16px;
+            border: 2px solid #2D6A4F;
+            text-align: center;
+            margin-bottom: 30px;
+        }
+        .reward-card .emoji {
+            font-size: 48px;
+        }
+        .reward-card h2 {
+            color: #1B4332;
+            margin: 10px 0;
+        }
+        .reward-card .highlight {
+            font-size: 24px;
+            font-weight: 700;
+            color: #2D6A4F;
+        }
+        .progress-section {
+            margin: 30px 0;
+        }
+        .progress-bar {
+            width: 100%;
+            height: 16px;
+            background: #E5E7EB;
+            border-radius: 10px;
+            overflow: hidden;
+        }
+        .progress-fill {
+            height: 100%;
+            background: linear-gradient(90deg, #2D6A4F, #40916C);
+            border-radius: 10px;
+            transition: width 0.8s ease;
+            width: 60%;
+        }
+        .progress-info {
+            display: flex;
+            justify-content: space-between;
+            margin-top: 10px;
+            font-size: 14px;
+            color: #6B7280;
+        }
+        .loyalty-stats {
+            display: grid;
+            grid-template-columns: repeat(3, 1fr);
+            gap: 20px;
+            margin: 30px 0;
+        }
+        .stat-box {
+            background: #f8f9fe;
+            padding: 20px;
+            border-radius: 12px;
+            text-align: center;
+        }
+        .stat-box .number {
+            font-size: 28px;
+            font-weight: 700;
+            color: #2D6A4F;
+        }
+        .stat-box .label {
+            font-size: 14px;
+            color: #6B7280;
+        }
+        .btn-primary {
+            width: 100%;
+            background: linear-gradient(135deg, #2D6A4F, #40916C);
+            color: white;
+            border: none;
+            padding: 16px;
+            border-radius: 50px;
+            font-size: 18px;
+            font-weight: 600;
+            cursor: pointer;
+            transition: all 0.3s;
+        }
+        .btn-primary:hover {
+            transform: translateY(-2px);
+            box-shadow: 0 12px 40px rgba(45, 106, 79, 0.3);
+        }
+        @media (max-width: 768px) {
+            nav {
+                padding: 15px 20px;
+            }
+            .loyalty-container {
+                padding: 20px;
+                margin: 20px;
+            }
+            .loyalty-stats {
+                grid-template-columns: 1fr 1fr;
+            }
+        }
+    </style>
+</head>
+<body>
+    <nav>
+        <div class="logo">🌿 <span>Talk to Me</span></div>
+        <div>
+            <a href="/">Home</a>
+            <a href="/dashboard-client.html">Dashboard</a>
+        </div>
+    </nav>
+
+    <div class="loyalty-container">
+        <h1>⭐ Loyalty Program</h1>
+        <p class="subtitle">Earn rewards for every session. We appreciate you showing up for yourself.</p>
+
+        <div class="reward-card">
+            <div class="emoji">🎁</div>
+            <h2>5 Hours = 1 Free Session</h2>
+            <p>Book <span class="highlight">5 hours</span> in a single month and get <span class="highlight">1 FREE hour-long session</span> the next month!</p>
+        </div>
+
+        <div class="progress-section">
+            <div style="display:flex;justify-content:space-between;font-weight:600;">
+                <span>Progress to Free Session</span>
+                <span id="progress-text">3.0 / 5.0 hours</span>
+            </div>
+            <div class="progress-bar">
+                <div class="progress-fill" id="progress-fill" style="width:60%;"></div>
+            </div>
+            <div class="progress-info">
+                <span>⏳ 2.0 hours remaining</span>
+                <span>🎯 Target: 5 hours</span>
+            </div>
+        </div>
+
+        <div class="loyalty-stats">
+            <div class="stat-box">
+                <div class="number" id="total-sessions">0</div>
+                <div class="label">Total Sessions</div>
+            </div>
+            <div class="stat-box">
+                <div class="number" id="total-hours">0.0</div>
+                <div class="label">Total Hours</div>
+            </div>
+            <div class="stat-box">
+                <div class="number" id="free-sessions">0</div>
+                <div class="label">Free Sessions Earned</div>
+            </div>
+        </div>
+
+        <button class="btn-primary" onclick="location.href='/book.html'">📅 Book Now & Earn</button>
+    </div>
+
+    <script>
+        // Load loyalty data from localStorage
+        function loadLoyaltyData() {
+            const sessions = JSON.parse(localStorage.getItem('client_sessions') || '[]');
+            const totalSessions = sessions.length;
+            const totalHours = sessions.reduce((sum, s) => sum + (s.duration || 0.5), 0);
+            const freeSessions = Math.floor(totalHours / 5);
+
+            document.getElementById('total-sessions').textContent = totalSessions;
+            document.getElementById('total-hours').textContent = totalHours.toFixed(1);
+            document.getElementById('free-sessions').textContent = freeSessions;
+
+            // Update progress
+            const progress = Math.min(100, (totalHours / 5) * 100);
+            document.getElementById('progress-fill').style.width = progress + '%';
+            document.getElementById('progress-text').textContent = totalHours.toFixed(1) + ' / 5.0 hours';
+
+            // Update remaining text
+            const remaining = Math.max(0, 5 - totalHours);
+            document.querySelector('.progress-info span:first-child').textContent = `⏳ ${remaining.toFixed(1)} hours remaining`;
+        }
+
+        // Load on page load
+        document.addEventListener('DOMContentLoaded', loadLoyaltyData);
+    </script>
+</body>
+</html>

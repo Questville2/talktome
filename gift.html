@@ -1,0 +1,219 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Gift a Session — Talk to Me</title>
+    <link rel="stylesheet" href="style.css">
+    <style>
+        .gift-container {
+            max-width: 700px;
+            margin: 40px auto;
+            padding: 40px;
+            background: white;
+            border-radius: 16px;
+            box-shadow: 0 8px 32px rgba(0,0,0,0.08);
+        }
+        .gift-container h1 {
+            color: #2D6A4F;
+            margin-bottom: 10px;
+        }
+        .gift-container .subtitle {
+            color: #6B7280;
+            margin-bottom: 30px;
+        }
+        .form-group {
+            margin-bottom: 20px;
+        }
+        .form-group label {
+            display: block;
+            font-weight: 600;
+            margin-bottom: 8px;
+            color: #1A1A2E;
+        }
+        .form-group input,
+        .form-group select,
+        .form-group textarea {
+            width: 100%;
+            padding: 12px 16px;
+            border: 2px solid #E5E7EB;
+            border-radius: 8px;
+            font-size: 16px;
+            transition: border-color 0.3s;
+            font-family: inherit;
+        }
+        .form-group input:focus,
+        .form-group select:focus,
+        .form-group textarea:focus {
+            border-color: #2D6A4F;
+            outline: none;
+        }
+        .form-group textarea {
+            min-height: 80px;
+            resize: vertical;
+        }
+        .btn-primary {
+            width: 100%;
+            background: linear-gradient(135deg, #2D6A4F, #40916C);
+            color: white;
+            border: none;
+            padding: 16px;
+            border-radius: 50px;
+            font-size: 18px;
+            font-weight: 600;
+            cursor: pointer;
+            transition: all 0.3s;
+        }
+        .btn-primary:hover {
+            transform: translateY(-2px);
+            box-shadow: 0 12px 40px rgba(45, 106, 79, 0.3);
+        }
+        .btn-secondary {
+            background: #6C63FF;
+            color: white;
+            border: none;
+            padding: 16px;
+            border-radius: 50px;
+            font-size: 18px;
+            font-weight: 600;
+            cursor: pointer;
+            transition: all 0.3s;
+            width: 100%;
+        }
+        .btn-secondary:hover {
+            background: #5A52D5;
+            transform: translateY(-2px);
+        }
+        .gift-preview {
+            background: linear-gradient(135deg, #f0fdf4, #dcfce7);
+            padding: 20px;
+            border-radius: 12px;
+            text-align: center;
+            margin: 20px 0;
+            border: 2px solid #2D6A4F;
+        }
+        .gift-preview .emoji {
+            font-size: 48px;
+        }
+        .gift-preview .price {
+            font-size: 28px;
+            font-weight: 700;
+            color: #2D6A4F;
+        }
+        .success-box {
+            display: none;
+            text-align: center;
+            padding: 20px;
+        }
+        .success-box h2 {
+            color: #34D399;
+        }
+        @media (max-width: 768px) {
+            .gift-container {
+                padding: 20px;
+                margin: 20px;
+            }
+        }
+    </style>
+</head>
+<body>
+    <nav>
+        <div class="logo">🌿 Talk to Me</div>
+        <div>
+            <a href="/">Home</a>
+            <a href="/dashboard-client.html">Dashboard</a>
+        </div>
+    </nav>
+
+    <div class="gift-container">
+        <h1>🎁 Gift a Session</h1>
+        <p class="subtitle">Give the gift of listening to someone you care about.</p>
+
+        <div class="gift-preview">
+            <div class="emoji">🎁</div>
+            <div class="price">$10</div>
+            <p>30-minute anonymous session</p>
+            <p style="font-size:14px;color:#6B7280;">Your friend will receive a gift code via email</p>
+        </div>
+
+        <form id="gift-form">
+            <div class="form-group">
+                <label>Your Name</label>
+                <input type="text" id="giver-name" placeholder="Your name" required>
+            </div>
+            <div class="form-group">
+                <label>Friend's Name</label>
+                <input type="text" id="friend-name" placeholder="Friend's name" required>
+            </div>
+            <div class="form-group">
+                <label>Friend's Email</label>
+                <input type="email" id="friend-email" placeholder="friend@email.com" required>
+            </div>
+            <div class="form-group">
+                <label>Personal Message (Optional)</label>
+                <textarea id="gift-message" placeholder="Write a personal message..."></textarea>
+            </div>
+            <div class="form-group">
+                <label>Gift Code (Auto-generated)</label>
+                <input type="text" id="gift-code" value="GIFT-" readonly style="background:#f8f9fe;">
+            </div>
+            <button type="button" class="btn-primary" onclick="sendGift()">🎁 Send Gift ($10)</button>
+        </form>
+
+        <div class="success-box" id="success-box">
+            <h2>✅ Gift Sent!</h2>
+            <p>Your friend will receive an email with their gift code.</p>
+            <button onclick="location.href='/'" class="btn-secondary" style="margin-top:15px;">Return Home</button>
+        </div>
+    </div>
+
+    <script>
+        // Generate random gift code
+        function generateGiftCode() {
+            const chars = 'ABCDEFGHIJKLMNOPQRSTUVWXYZ0123456789';
+            let code = 'GIFT-';
+            for (let i = 0; i < 6; i++) {
+                code += chars.charAt(Math.floor(Math.random() * chars.length));
+            }
+            return code;
+        }
+
+        // Set gift code on load
+        document.getElementById('gift-code').value = generateGiftCode();
+
+        function sendGift() {
+            const giver = document.getElementById('giver-name').value;
+            const friend = document.getElementById('friend-name').value;
+            const email = document.getElementById('friend-email').value;
+            const message = document.getElementById('gift-message').value;
+            const code = document.getElementById('gift-code').value;
+
+            if (!giver || !friend || !email) {
+                alert('Please fill in all required fields.');
+                return;
+            }
+
+            // Store gift (in production, this would be saved to database)
+            const giftData = {
+                giver,
+                friend,
+                email,
+                message,
+                code,
+                date: new Date().toISOString()
+            };
+
+            // Save to localStorage
+            let gifts = JSON.parse(localStorage.getItem('gifts') || '[]');
+            gifts.push(giftData);
+            localStorage.setItem('gifts', JSON.stringify(gifts));
+
+            // Show success
+            document.getElementById('gift-form').style.display = 'none';
+            document.getElementById('success-box').style.display = 'block';
+
+            console.log('🎁 Gift sent:', giftData);
+        }
+    </script>
+</body>
+</html>
